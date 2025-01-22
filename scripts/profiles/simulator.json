@@ -1,0 +1,46 @@
+{
+    "name": "Simulator",
+    "actions": [
+        {
+            "group": "START GROUP: SINGLE TARGET ROTATION",
+            "name": "cast Eviscerate at five combo points when target health is above 75%",
+            "key": "y",
+            "conditions": ["combo_points_5", "range_8", "!target_health_under_75", "power_35"]
+        },
+        {
+            "name": "cast Eviscerate at four combo points when target health is below 75%",
+            "key": "y",
+            "conditions": ["combo_points_4", "range_8", "target_health_under_75", "power_35"]
+        },
+        {
+            "name": "cast Eviscerate at three combo points when target health is below 50%",
+            "key": "y",
+            "conditions": ["combo_points_3", "range_8", "target_health_under_50", "power_35"]
+        },
+        {
+            "name": "cast Eviscerate at two combo points when target health is below 35%",
+            "key": "y",
+            "conditions": ["combo_points_2", "range_8", "target_health_under_35", "power_35"]
+        },
+        {
+            "name": "Backstab",
+            "key": "6",
+            "conditions": ["!player_not_behind_target", "range_8", "power_60"]
+        },
+        {
+            "name": "Sinister Strike",
+            "key": "5",
+            "conditions": ["player_not_behind_target", "range_8", "power_45"]
+        },
+        {
+            "name": "Sinister Strike with energy pooling",
+            "key": "5",
+            "conditions": ["player_not_behind_target", "range_8", "energy_tick_check", "power_45"]
+        },
+        {
+            "name": "cast Eviscerate at any combo points when target health is below 35%",
+            "key": "y",
+            "conditions": ["combo_points_1", "range_8", "target_health_under_35", "power_35"]
+        }
+    ]
+}

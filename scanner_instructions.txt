@@ -1,0 +1,163 @@
+### Instructions for Creating a Scanning Tool within a World of Warcraft Profile
+
+This document provides specific instructions for creating a scanning tool within a World of Warcraft profile to dynamically target and prioritize enemies based on specific conditions using WeakAuras and Lua.
+
+#### General Instructions
+
+1. **Create a Targeting Macro**:
+   - Use a key press to engage a macro that selects the next enemy mob or player within 40 yards.
+   - Example macro: `/targetenemy` or `/targetnext`.
+
+2. **Establish Priority Targets Using WeakAuras**:
+   - Create WeakAuras to indicate class, actions, and health of the target.
+
+3. **Prevent Scanning Loop**:
+   - Ensure the scanning process does not loop indefinitely by implementing cooldown management and state management using WeakAuras.
+
+4. **Maintain Current Target if No Priority Targets**:
+   - If no priority targets are found, maintain the current target using fallback conditions.
+
+#### Specific WeakAuras to Create
+
+1. **Class Detection WeakAura**:
+   - **Objective**: Detect the class of the target.
+   - **Conditions**: Identify if the target is a specific class (e.g., Warrior, Mage, etc.).
+
+2. **Action Detection WeakAura**:
+   - **Objective**: Detect specific actions or buffs/debuffs on the target.
+   - **Conditions**: Identify if the target is performing a specific action or has a specific buff/debuff (e.g., casting a spell, under a debuff, etc.).
+
+3. **Health Detection WeakAura**:
+   - **Objective**: Detect the health percentage of the target.
+   - **Conditions**: Identify if the target's health is below a certain percentage (e.g., below 50%, below 75%, etc.).
+
+4. **Cooldown Management WeakAura**:
+   - **Objective**: Prevent the scanning process from being triggered repeatedly.
+   - **Conditions**: Implement a cooldown to ensure the scanning action is not triggered more frequently than desired (e.g., a 5-second cooldown).
+
+5. **Current Target Priority WeakAura**:
+   - **Objective**: Detect if the current target is already a priority target.
+   - **Conditions**: Identify if the current target meets the priority conditions (e.g., specific class, health percentage, etc.).
+
+6. **Target's Target Detection WeakAura**:
+   - **Objective**: Detect the target's target and determine if it is the player.
+   - **Conditions**: Identify if the target's target is the player.
+
+7. **Casting Detection WeakAura**:
+   - **Objective**: Detect if the target is casting or channeling a spell.
+   - **Conditions**: Identify the spell being cast or channeled by the target.
+
+8. **Creature Type and Classification Detection WeakAura**:
+   - **Objective**: Detect the creature type and classification of the target.
+   - **Conditions**: Identify if the target is a specific creature type (e.g., Beast, Demon, Humanoid) and its classification (e.g., normal, elite, rare, worldboss).
+
+#### Example WeakAura to Print Target Information
+
+**Objective**: Create a custom WeakAura function that prints out all the information from a target.
+
+**Event Type**: Event
+
+**Event**: `PLAYER_TARGET_CHANGED`
+
+**WeakAura Script**:
+```lua
+function(event, ...)
+    -- Check if there is a valid target
+    if not UnitExists("target") then
+        print("No target selected.")
+        return
+    end
+
+    -- Get target information
+    local name = UnitName("target")
+    local class = UnitClass("target")
+    local health = UnitHealth("target")
+    local maxHealth = UnitHealthMax("target")
+    local healthPercent = (health / maxHealth) * 100
+    local level = UnitLevel("target")
+    local isPlayer = UnitIsPlayer("target")
+    local isEnemy = UnitIsEnemy("player", "target")
+    local isDead = UnitIsDead("target")
+    local isInCombat = UnitAffectingCombat("target")
+    local creatureType = UnitCreatureType("target")
+    local classification = UnitClassification("target")
+    local castingSpell, _, _, _, startTime, endTime = UnitCastingInfo("target")
+    local channelingSpell, _, _, _, startTime, endTime = UnitChannelInfo("target")
+    local targetTarget = UnitName("targettarget")
+    local isTargetingPlayer = UnitIsUnit("targettarget", "player")
+    local buffs = {}
+    local debuffs = {}
+
+    -- Get buffs
+    for i = 1, 40 do
+        local buff = UnitBuff("target", i)
+        if not buff then break end
+        table.insert(buffs, buff)
+    end
+
+    -- Get debuffs
+    for i = 1, 40 do
+        local debuff = UnitDebuff("target", i)
+        if not debuff then break end
+        table.insert(debuffs, debuff)
+    end
+
+    -- Print target information
+    print("Target Information:")
+    print("Name:", name)
+    print("Class:", class)
+    print("Health:", health, "/", maxHealth, "(", healthPercent, "%)")
+    print("Level:", level)
+    print("Is Player:", isPlayer)
+    print("Is Enemy:", isEnemy)
+    print("Is Dead:", isDead)
+    print("Is In Combat:", isInCombat)
+    print("Creature Type:", creatureType)
+    print("Classification:", classification)
+    if castingSpell then
+        print("Casting Spell:", castingSpell)
+    elseif channelingSpell then
+        print("Channeling Spell:", channelingSpell)
+    else
+        print("Not Casting or Channeling")
+    end
+    print("Target's Target:", targetTarget)
+    print("Is Targeting Player:", isTargetingPlayer)
+    print("Buffs:", table.concat(buffs, ", "))
+    print("Debuffs:", table.concat(debuffs, ", "))
+end
+
+Instructions for Creating Profile Sections for Each Class
+Create Profile Sections for Low Health Targets:
+
+Use the conditions class_is_<class>, target_health_under_20, range_8, and target_is_player to detect low health targets in melee range for each class.
+Create Profile Sections for Targets Casting Harmful Spells on the Player:
+
+Use the conditions class_is_<class>, target_casting, target_interruptible, and target_is_player to detect targets casting harmful spells on the player for each class.
+Create Profile Sections for Class-Specific Actions:
+
+Use the conditions listed above for each class to create profile sections that prioritize targets based on their class-specific actions and states.
+
+
+Important scripting References and weak aura creating
+WeakAuras Wiki: Documentation and guides for creating WeakAuras.
+Lua Scripting Guide: Comprehensive guide to Lua scripting in World of Warcraft.
+WeakAuras Companion: Tool for managing and sharing WeakAuras.
+WoW Programming: Resource for learning about WoW's API and Lua scripting.
+
+Important profile information and weak aura creating
+Icy Veins: Lists of classes and rotations.
+Wowpedia: Information on WoW.
+WeakAuras GitHub: WeakAura GitHub.
+Lua: Information on Lua programming language used by WoW macros and WeakAuras.
+WoW API: Information on the WoW API.
+Wowhead: Database for World of Warcraft items, quests, and more.
+
+Other key resources
+Noxxic
+Elitist Jerks
+Classic WoWhead
+WoW Classic Subreddit
+Warcraft Logs
+WoW Classic Discord Servers
+

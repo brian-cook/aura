@@ -1,0 +1,146 @@
+{
+    "name": "Paladin SOD",
+    "actions": [
+        {
+            "group": "START GROUP: CC COUNTERS",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["will_of_the_forsaken"]
+        },
+
+
+        {
+            "group": "START GROUP: EMERGENCY ACTIONS WHEN LOW HEALTH",
+            "name": "cast Divine Protection on self if under 20% health",
+            "key": "u",
+            "conditions": ["divine_protection", "power_10", "health_under_20"]
+        },
+
+
+        {
+            "group": "START GROUP: SELF HEALS AND CLEANSES",
+            "name": "cast Holy Light on self if under 50% health",
+            "key": "x",
+            "conditions": ["power_20", "health_under_50"]
+        },
+        {
+            "name": "cast Purify on self if poisoned",
+            "key": "p",
+            "conditions": ["power_25", "player_poisoned"]
+        },
+        {
+            "name": "cast Purify on self if diseased",
+            "key": "p",
+            "conditions": ["power_25", "player_diseased"]
+        },
+
+
+        {
+            "group": "START GROUP: OOC BUFFS",
+            "name": "cast Blessing of Might on self",
+            "key": "SHIFT-2",
+            "conditions": ["!blessing_of_might_buff", "power_30", "!combat"]
+        },
+        
+
+        {
+            "group": "START GROUP: MIKE HEALS AND BUFFS",
+            "name": "Cast Holy Light on Party1 if health_under_70",
+            "key": "c",
+            "conditions": ["power_20", "party_1_range_35", "party_1_health_under_70"]
+        }, 
+
+        
+        {
+            "group": "START GROUP: INTERUPTS ON TARGET",
+            "name": "cast Hammer of Justice when target is casting",
+            "key": "0",
+            "conditions": ["hammer_of_justice", "power_30", "range_8", "target_interruptible"]
+        }, 
+
+ 
+        {
+            "group": "START GROUP: COMBAT BUFFS",
+            "name": "Cast Seal of Martyrdom in combat",
+            "key": "k",
+            "conditions": ["!seal_of_martyrdown_buff", "power_25", "combat"]
+        },
+        {
+            "name": "Cast Sacred Shield in combat",
+            "key": "i",
+            "conditions": ["!sacred_shield_buff", "power_25", "combat"]
+        },
+
+
+        {
+            "group": "START GROUP: CC ON TARGET(S)",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["will_of_the_forsaken"]
+        },
+
+
+        {
+            "group": "START GROUP: REACTIONARIES: HIGH PRIORITY ",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["will_of_the_forsaken"]
+        },
+
+
+        {
+            "group": "START GROUP: RANGED ATTACKS: PRIORITY OVER MELEE",
+            "name": "cast Avenger's Shield at range",
+            "key": "5",
+            "conditions": ["avenger's_shield", "power_40", "range_30"]
+        },
+
+        
+        {
+            "group": "START GROUP: EXPEND EXCESS RESOURCES: PRIORITY OVER ROTATION",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["will_of_the_forsaken"]
+        },
+
+
+        {
+            "group": "START GROUP: ON COOLDOWN ABILITIES",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["will_of_the_forsaken"]
+        },
+
+
+        {
+            "group": "START GROUP: MULTIPLE ENEMIES IN MELEE",
+            "name": "cast Hammer of Righteous on 2+ enemies",
+            "key": "6",
+            "conditions": ["hammer_of_righteous", "power_25", "range_8_2+"]
+        },
+
+       
+        {
+            "group": "START GROUP: SINGLE TARGET ROTATION",
+            "name": "cast Crusader Strike",
+            "key": "3",
+            "conditions": ["crusader_strike", "range_8"]
+        },
+        {
+            "name": "cast Divine Storm",
+            "key": "7",
+            "conditions": ["divine_storm", "power_25", "range_8"]
+        },  
+        {
+            "name": "cast Judgement if Seal of Righteousness is up",
+            "key": "9",
+            "conditions": ["judgement", "power_25", "range_8", "seal_of_martyrdown_buff"]
+        },
+        {
+            "name": "cast Shield of Righteousness",
+            "key": "8",
+            "conditions": ["shield_of_righteousness", "power_25", "range_8"]
+        }
+
+    ]
+} 

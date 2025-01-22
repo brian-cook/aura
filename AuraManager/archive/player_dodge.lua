@@ -1,0 +1,137 @@
+
+local ADDON_NAME, ns = ...
+ns.auras = ns.auras or {}
+ns.auras["player_dodge"] = {
+    id = "Player Dodge",
+    uid = "DSTkwC9zuQ)",
+    internalVersion = 78,
+    regionType = "aurabar",
+    anchorPoint = "CENTER",
+    selfPoint = "CENTER",
+    xOffset = 52,
+    yOffset = -12,
+    width = 3,
+    height = 3,
+    frameStrata = 1,
+    barColor = {
+        1,
+        0,
+        0,
+        1,
+    },
+    barColor2 = {
+        1,
+        0,
+        0,
+        1,
+    },
+    backgroundColor = {
+        1,
+        0,
+        0,
+        1,
+    },
+    texture = "Solid",
+    textureSource = "LSM",
+    triggers = {
+        activeTriggerMode = -10,
+        disjunctive = "any",
+        {
+            trigger = {
+                type = "combatlog",
+                debuffType = "HELPFUL",
+                subeventSuffix = "_MISSED",
+                event = "Combat Log",
+                unit = "player",
+                names = {},
+                spellIds = {},
+                subeventPrefix = "SWING",
+                use_genericShowOn = true,
+                realSpellName = "Revenge",
+                use_spellName = true,
+                genericShowOn = "showOnCooldown",
+                spellName = 6572,
+                use_track = true,
+                duration = "4",
+                use_sourceUnit = true,
+                use_destFlags2 = false,
+                use_missType = true,
+                sourceUnit = "target",
+                missType = "DODGE",
+            },
+            untrigger = {},
+        },
+        {
+            trigger = {
+                type = "combatlog",
+                debuffType = "HELPFUL",
+                subeventSuffix = "_MISSED",
+                event = "Combat Log",
+                unit = "player",
+                names = {},
+                spellIds = {},
+                subeventPrefix = "SPELL",
+                use_genericShowOn = true,
+                realSpellName = "Revenge",
+                use_spellName = true,
+                genericShowOn = "showOnCooldown",
+                spellName = 6572,
+                use_track = true,
+                duration = "4",
+                use_sourceUnit = true,
+                use_destFlags2 = false,
+                use_missType = true,
+                sourceUnit = "target",
+                missType = "DODGE",
+            },
+            untrigger = {},
+        },
+    },
+    conditions = {},
+    load = {
+        size = {
+            multi = {},
+        },
+        spec = {
+            multi = {},
+        },
+        class = {
+            multi = {
+                WARRIOR = true,
+            },
+            single = "WARRIOR",
+        },
+        talent = {
+            multi = {},
+        },
+    },
+    animation = {
+        start = {
+            type = "none",
+            easeStrength = 3,
+            duration_type = "seconds",
+            easeType = "none",
+        },
+        main = {
+            type = "none",
+            easeStrength = 3,
+            duration_type = "seconds",
+            easeType = "none",
+        },
+        finish = {
+            type = "none",
+            easeStrength = 3,
+            duration_type = "seconds",
+            easeType = "none",
+        },
+    },
+    subRegions = {
+        {
+            type = "subbackground",
+        },
+        {
+            type = "subforeground",
+        },
+    },
+    information = {},
+}

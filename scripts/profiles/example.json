@@ -1,0 +1,25 @@
+{
+    "name": "Rogue",
+    "actions": [
+        {
+            "key": "1",
+            "conditions": ["power_40", "combat", "enemy_in_melee_range"]
+        },
+        {
+            "key": "4",
+            "conditions": ["power_60", "combat", "enemy_in_melee_range"]
+        },
+        {
+            "key": "1",
+            "conditions": ["health_below_20"]
+        },
+        {
+            "key": "i",
+            "conditions": ["enemy_casting", "enemy_in_melee_range"]
+        },
+        {
+            "key": "5",
+            "conditions": ["target_health_below_20", "combat", "enemy_in_melee_range", "power_40"]
+        }
+    ]
+} 

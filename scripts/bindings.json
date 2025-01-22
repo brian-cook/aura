@@ -1,0 +1,246 @@
+{
+    "metadata": {
+        "account": "YABUCHI",
+        "path": "c:\\Program Files (x86)\\World of Warcraft\\_classic_era_\\WTF\\Account\\YABUCHI\\bindings-cache.wtf"
+    },
+    "bindings": {
+        "PADFORWARD": {
+            "default": "TOGGLEGAMEMENU",
+            "SHIFT": "CLICK",
+            "CTRL": "CAMERAZOOMOUT"
+        },
+        "PADRSTICK": {
+            "default": "TURNORACTION",
+            "SHIFT": "NONE",
+            "CTRL": "NONE"
+        },
+        "PADDUP": {
+            "default": "MULTIACTIONBAR1BUTTON12",
+            "SHIFT": "MULTIACTIONBAR2BUTTON2",
+            "CTRL": "MULTIACTIONBAR2BUTTON6"
+        },
+        "PADDDOWN": {
+            "default": "ACTIONBUTTON11",
+            "SHIFT": "MULTIACTIONBAR2BUTTON4"
+        },
+        "PADDLEFT": {
+            "default": "MULTIACTIONBAR1BUTTON11",
+            "SHIFT": "MULTIACTIONBAR2BUTTON1",
+            "CTRL": "MULTIACTIONBAR2BUTTON5"
+        },
+        "PADDRIGHT": {
+            "default": "ACTIONBUTTON12",
+            "SHIFT": "MULTIACTIONBAR2BUTTON3",
+            "CTRL": "MULTIACTIONBAR2BUTTON7"
+        },
+        "PAD1": {
+            "SHIFT": "ACTIONBUTTON9",
+            "CTRL": "CLICK"
+        },
+        "PAD2": {
+            "SHIFT": "ACTIONBUTTON8"
+        },
+        "PAD3": {
+            "default": "ACTIONBUTTON1",
+            "CTRL": "MULTIACTIONBAR1BUTTON1"
+        },
+        "PAD4": {
+            "default": "ACTIONBUTTON2",
+            "SHIFT": "ACTIONBUTTON7",
+            "CTRL": "MULTIACTIONBAR1BUTTON2"
+        },
+        "PADRSHOULDER": {
+            "default": "TARGETNEARESTENEMY",
+            "SHIFT": "TARGETSCANENEMY",
+            "CTRL": "MULTIACTIONBAR1BUTTON4"
+        },
+        "PADRTRIGGER": {
+            "default": "NONE",
+            "SHIFT": "TARGETNEARESTFRIEND",
+            "CTRL": "NONE"
+        },
+        "SHIFT-PAD1": {
+            "CTRL": "CLICK"
+        },
+        "SHIFT-PAD2": {
+            "CTRL": "MULTIACTIONBAR1BUTTON8"
+        },
+        "SHIFT-PAD4": {
+            "CTRL": "MULTIACTIONBAR1BUTTON7"
+        },
+        "SHIFT-PADRSHOULDER": {
+            "CTRL": "MULTIACTIONBAR1BUTTON9"
+        },
+        "SHIFT-PADRTRIGGER": {
+            "CTRL": "NONE"
+        },
+        "SHIFT-PADDUP": {
+            "CTRL": "MULTIACTIONBAR2BUTTON10"
+        },
+        "SHIFT-PADDDOWN": {
+            "CTRL": "MULTIACTIONBAR2BUTTON12"
+        },
+        "SHIFT-PADDLEFT": {
+            "CTRL": "MULTIACTIONBAR2BUTTON9"
+        },
+        "SHIFT-PADDRIGHT": {
+            "CTRL": "MULTIACTIONBAR2BUTTON11"
+        },
+        "BUTTON3": {
+            "default": "NONE"
+        },
+        "Q": {
+            "default": "NONE"
+        },
+        "E": {
+            "default": "NONE"
+        },
+        "/": {
+            "default": "TOGGLECHARACTER0"
+        },
+        "R": {
+            "default": "NONE"
+        },
+        "1": {
+            "default": "MULTIACTIONBAR3BUTTON1",
+            "SHIFT": "MULTIACTIONBAR1BUTTON1"
+        },
+        "2": {
+            "default": "MULTIACTIONBAR3BUTTON2",
+            "SHIFT": "MULTIACTIONBAR1BUTTON2"
+        },
+        "3": {
+            "default": "MULTIACTIONBAR3BUTTON3",
+            "SHIFT": "MULTIACTIONBAR1BUTTON3"
+        },
+        "4": {
+            "default": "MULTIACTIONBAR3BUTTON4",
+            "SHIFT": "MULTIACTIONBAR1BUTTON4"
+        },
+        "5": {
+            "default": "MULTIACTIONBAR3BUTTON5",
+            "SHIFT": "MULTIACTIONBAR1BUTTON5"
+        },
+        "6": {
+            "default": "MULTIACTIONBAR3BUTTON6",
+            "SHIFT": "MULTIACTIONBAR1BUTTON6"
+        },
+        "7": {
+            "default": "MULTIACTIONBAR3BUTTON7",
+            "SHIFT": "MULTIACTIONBAR1BUTTON7"
+        },
+        "8": {
+            "default": "MULTIACTIONBAR3BUTTON8",
+            "SHIFT": "MULTIACTIONBAR1BUTTON8"
+        },
+        "9": {
+            "default": "MULTIACTIONBAR3BUTTON9",
+            "SHIFT": "MULTIACTIONBAR1BUTTON9"
+        },
+        "0": {
+            "default": "MULTIACTIONBAR3BUTTON10",
+            "SHIFT": "MULTIACTIONBAR1BUTTON10"
+        },
+        "": {
+            "": "MULTIACTIONBAR3BUTTON11"
+        },
+        "=": {
+            "default": "MULTIACTIONBAR3BUTTON12",
+            "SHIFT": "MULTIACTIONBAR1BUTTON12"
+        },
+        "F1": {
+            "CTRL": "NONE"
+        },
+        "F2": {
+            "CTRL": "NONE"
+        },
+        "F3": {
+            "CTRL": "NONE"
+        },
+        "F4": {
+            "CTRL": "NONE"
+        },
+        "F5": {
+            "CTRL": "NONE"
+        },
+        "F6": {
+            "CTRL": "NONE"
+        },
+        "F7": {
+            "CTRL": "NONE"
+        },
+        "F8": {
+            "CTRL": "NONE"
+        },
+        "F9": {
+            "CTRL": "NONE"
+        },
+        "F10": {
+            "CTRL": "NONE"
+        },
+        "F": {
+            "default": "NONE"
+        },
+        "T": {
+            "default": "NONE"
+        },
+        "C": {
+            "default": "NONE"
+        },
+        "P": {
+            "default": "NONE"
+        },
+        "Y": {
+            "default": "NONE"
+        },
+        "U": {
+            "default": "NONE"
+        },
+        "O": {
+            "default": "NONE"
+        },
+        "I": {
+            "default": "NONE"
+        },
+        "MOUSEWHEELDOWN": {
+            "default": "NONE"
+        },
+        "PADLSTICK": {
+            "default": "CAMERAORSELECTORMOVE"
+        },
+        "PADLSHOULDER": {
+            "default": "ACTIONBUTTON5",
+            "SHIFT": "ACTIONBUTTON10",
+            "CTRL": "MULTIACTIONBAR1BUTTON5"
+        },
+        "SHIFT-PADLSHOULDER": {
+            "CTRL": "MULTIACTIONBAR1BUTTON10"
+        },
+        "SHIFT-PADFORWARD": {
+            "CTRL": "CAMERAZOOMIN"
+        },
+        "PADBACK": {
+            "CTRL": "TOGGLEWORLDMAP",
+            "SHIFT": "OPENALLBAGS"
+        },
+        "SHIFT-PADBACK": {
+            "CTRL": "TOGGLEAUTORUN"
+        },
+        "PADLTRIGGER": {
+            "default": "INTERACTTARGET",
+            "CTRL": "TARGETPREVIOUSFRIEND"
+        },
+        "[": {
+            "default": "NONE"
+        },
+        "]": {
+            "default": "NONE"
+        },
+        "\\": {
+            "default": "NONE"
+        },
+        "-": {
+            "SHIFT": "MULTIACTIONBAR1BUTTON11"
+        }
+    }
+}

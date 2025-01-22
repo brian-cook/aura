@@ -1,0 +1,1842 @@
+# Building WeakAuras: Comprehensive Guide for AI Implementation
+
+## Table of Contents
+1. Core Concepts
+2. Types of Triggers
+3. State Management
+4. Performance Optimization
+5. Implementation Patterns
+6. Testing and Validation
+7. Examples and Case Studies
+8. Troubleshooting
+9. Resources and References
+
+## 1. Core Concepts
+
+### 1.1 WeakAura Fundamentals
+- WeakAuras are custom displays that react to game conditions
+- Each WeakAura consists of triggers, conditions, and actions
+- WeakAuras can monitor continuous states or respond to specific events
+- Multiple triggers can be combined for complex behavior
+
+### 1.2 Basic Components
+1. **Triggers**: Define when the aura should activate
+2. **Conditions**: Additional requirements for activation
+3. **Actions**: What happens when triggered
+4. **Display**: How the aura appears
+5. **Load Conditions**: When the aura should be loaded
+
+### 1.3 Development Process
+1. **Analysis**:
+   - Identify the exact condition to monitor
+   - Determine required API calls
+   - Consider performance implications
+
+2. **Design**:
+   - Choose appropriate trigger type
+   - Plan state management
+   - Consider edge cases
+
+3. **Implementation**:
+   - Create custom functions
+   - Set up triggers and conditions
+   - Configure display options
+
+4. **Testing**:
+   - Verify functionality
+   - Check performance
+   - Test edge cases
+
+## 2. Types of Triggers
+
+### 2.1 Status Triggers
+- Monitor continuous states
+- Update at regular intervals
+- Examples: health, power, combat status
+
+### 2.2 Event Triggers
+- Respond to specific game events
+- Trigger once when event occurs
+- Examples: combat log events, unit events
+
+### 2.3 Custom Triggers
+1. **Basic Custom**:
+   ```lua
+   function(event, ...)
+       -- Simple state check
+       return true/false
+   end
+   ```
+
+2. **State Update Custom**:
+   ```lua
+   function(allstates, event, ...)
+       -- Complex state management
+       allstates[""] = {show = true/false, changed = true}
+       return true
+   end
+   ```
+
+### 2.4 Trigger Settings Matrix
+| Trigger Type | Event Type | Check On | Use Case |
+|--------------|------------|-----------|-----------|
+| Status | Status | Every Frame | Continuous monitoring |
+| Event | Event | Event | Specific occurrences |
+| Custom (Basic) | Custom | Event | Simple conditions |
+| Custom (State) | Trigger State Updater | Every Frame | Complex states |
+
+### 2.5 Choosing the Right Trigger
+1. **Status Triggers** when:
+   - Monitoring continuous values
+   - Need regular updates
+   - Checking simple conditions
+
+2. **Event Triggers** when:
+   - Responding to specific game events
+   - One-time reactions needed
+   - Event provides necessary data
+
+3. **Custom Triggers** when:
+   - Complex conditions
+   - Multiple state management
+   - Custom logic required
+
+## 3. WeakAura Categories and Implementation Patterns
+
+### 3.1 State Monitoring Auras
+
+#### Combat State Monitoring
+```lua
+-- Trigger Settings:
+-- Event: Custom
+-- Event Type: Trigger State Updater (Advanced)
+-- Check On: Every Frame
+-- Custom Variables: {}
+
+function(allstates)
+    allstates[""] = allstates[""] or {show = false}
+    allstates[""].show = UnitAffectingCombat("player")
+    allstates[""].changed = true
+    return true
+end
+```
+
+#### Resource Tracking
+```lua
+-- For tracking combo points, energy, etc.
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.1 then
+        aura_env.last = GetTime()
+        
+        local points = GetComboPoints("player", "target")
+        local threshold = aura_env.config.threshold or 1
+        
+        allstates[""] = allstates[""] or {show = false}
+        allstates[""].show = points >= threshold
+        allstates[""].changed = true
+        allstates[""].points = points
+        
+        return true
+    end
+end
+```
+
+### 3.2 Item and Inventory Auras
+
+#### Item Count Tracking
+```lua
+-- Based on bomb_in_inventory.lua pattern
+function(allstates)
+    local itemCount = GetItemCount(itemID) or 0
+    
+    allstates[""] = allstates[""] or {show = false}
+    allstates[""].show = itemCount >= 1
+    allstates[""].changed = true
+    allstates[""].count = itemCount
+    
+    return true
+end
+```
+
+### 3.3 Target State Auras
+
+#### Cast Monitoring
+```lua
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.1 then
+        aura_env.last = GetTime()
+        
+        local casting = false
+        if UnitExists("target") then
+            local name, _, _, _, endTime = UnitCastingInfo("target")
+            if name then
+                casting = true
+            end
+        end
+        
+        allstates[""] = allstates[""] or {show = false}
+        allstates[""].show = casting
+        allstates[""].changed = true
+        return true
+    end
+end
+```
+
+### 3.4 Buff and Debuff Tracking
+
+#### Simple Buff Tracking
+```lua
+-- Trigger Settings:
+-- Event: Custom
+-- Event Type: Trigger State Updater (Advanced)
+-- Check On: Every Frame
+-- Custom Variables: {buffName = "Slice and Dice"}
+
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
+        aura_env.last = GetTime()
+        
+        local name, _, _, _, duration, expirationTime = 
+            AuraUtil.FindAuraByName(aura_env.config.buffName, "player", "HELPFUL")
+        
+        allstates[""] = allstates[""] or {
+            show = false,
+            duration = 0,
+            expirationTime = 0
+        }
+        
+        if name then
+            allstates[""].show = true
+            allstates[""].duration = duration
+            allstates[""].expirationTime = expirationTime
+            allstates[""].changed = true
+        else
+            allstates[""].show = false
+            allstates[""].changed = true
+        end
+        
+        return true
+    end
+end
+```
+
+#### Multi-Target Debuff Tracking
+```lua
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.3 then
+        aura_env.last = GetTime()
+        
+        -- Track debuffs on multiple targets
+        for i = 1, 40 do
+            local unit = "nameplate"..i
+            if UnitExists(unit) and UnitCanAttack("player", unit) then
+                local guid = UnitGUID(unit)
+                if guid then
+                    local name, _, _, _, duration, expirationTime = 
+                        AuraUtil.FindAuraByName(aura_env.config.debuffName, unit, "HARMFUL", "PLAYER")
+                    
+                    allstates[guid] = allstates[guid] or {show = false}
+                    if name then
+                        allstates[guid].show = true
+                        allstates[guid].duration = duration
+                        allstates[guid].expirationTime = expirationTime
+                        allstates[guid].changed = true
+                    else
+                        allstates[guid].show = false
+                        allstates[guid].changed = true
+                    end
+                end
+            end
+        end
+        
+        -- Cleanup old states
+        for guid in pairs(allstates) do
+            if not UnitExists(guid) then
+                allstates[guid] = nil
+            end
+        end
+        
+        return true
+    end
+end
+```
+
+### 3.5 Complex State Management
+
+#### Combo System with Multiple States
+```lua
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
+        aura_env.last = GetTime()
+        
+        local points = GetComboPoints("player", "target")
+        
+        -- Update states for each combo point threshold
+        for i = 1, 5 do
+            local stateKey = "cp"..i
+            allstates[stateKey] = allstates[stateKey] or {show = false}
+            allstates[stateKey].show = points >= i
+            allstates[stateKey].changed = true
+            allstates[stateKey].value = points
+        end
+        
+        return true
+    end
+end
+```
+
+#### Priority-Based State Management
+```lua
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.3 then
+        aura_env.last = GetTime()
+        
+        -- Define priority order of conditions
+        local conditions = {
+            {
+                name = "high_priority",
+                check = function() return UnitHealth("player") < UnitHealthMax("player") * 0.2 end
+            },
+            {
+                name = "medium_priority",
+                check = function() return GetComboPoints("player", "target") >= 5 end
+            },
+            {
+                name = "low_priority",
+                check = function() return UnitPower("player") >= UnitPowerMax("player") * 0.9 end
+            }
+        }
+        
+        -- Check conditions in priority order
+        local activeCondition = nil
+        for _, condition in ipairs(conditions) do
+            if condition.check() then
+                activeCondition = condition.name
+                break
+            end
+        end
+        
+        -- Update state
+        allstates[""] = allstates[""] or {show = false}
+        allstates[""].show = activeCondition ~= nil
+        allstates[""].changed = true
+        allstates[""].condition = activeCondition
+        
+        return true
+    end
+end
+```
+
+### 3.6 Event-Based Triggers
+
+#### Combat Log Event Processing
+```lua
+-- Trigger Settings:
+-- Event: Custom
+-- Event Type: Trigger State Updater (Advanced)
+-- Check On: Combat Log Event
+-- Custom Variables: {}
+
+function(allstates, event)
+    if event == "COMBAT_LOG_EVENT_UNFILTERED" then
+        local timestamp, subevent, _, sourceGUID, sourceName, _, _, 
+              destGUID, destName, _, _, spellID = CombatLogGetCurrentEventInfo()
+        
+        -- Process specific combat events
+        if subevent == "SPELL_INTERRUPT" and sourceGUID == UnitGUID("player") then
+            -- Track successful interrupts
+            allstates[""] = allstates[""] or {show = false}
+            allstates[""].show = true
+            allstates[""].spellID = spellID
+            allstates[""].targetName = destName
+            allstates[""].changed = true
+            
+            -- Auto-hide after 2 seconds
+            C_Timer.After(2, function()
+                allstates[""].show = false
+                allstates[""].changed = true
+                WeakAuras.ScanEvents("TRIGGER_RESET")
+            end)
+        end
+    end
+    return true
+end
+```
+
+#### Unit Event Handling
+```lua
+-- Trigger Settings:
+-- Event: Custom
+-- Event Type: Trigger State Updater (Advanced)
+-- Check On: Unit Events
+-- Custom Variables: {}
+
+function(allstates, event, unit)
+    if event == "UNIT_SPELLCAST_START" and unit == "target" then
+        local name, _, _, startTime, endTime, _, _, notInterruptible = UnitCastingInfo(unit)
+        if name then
+            allstates[""] = allstates[""] or {show = false}
+            allstates[""].show = true
+            allstates[""].spellName = name
+            allstates[""].duration = (endTime - startTime) / 1000
+            allstates[""].expirationTime = endTime / 1000
+            allstates[""].interruptible = not notInterruptible
+            allstates[""].changed = true
+        end
+    elseif event == "UNIT_SPELLCAST_STOP" and unit == "target" then
+        allstates[""] = allstates[""] or {show = false}
+        allstates[""].show = false
+        allstates[""].changed = true
+    end
+    return true
+end
+```
+
+### 3.7 Advanced Optimization Techniques
+
+#### Efficient Multi-Unit Scanning
+```lua
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.3 then
+        aura_env.last = GetTime()
+        
+        -- Reuse tables to prevent garbage collection
+        aura_env.unitTable = aura_env.unitTable or {}
+        local units = aura_env.unitTable
+        wipe(units)
+        
+        -- Efficient unit scanning
+        local updated = false
+        for i = 1, 40 do
+            local unit = "nameplate"..i
+            if UnitExists(unit) then
+                local guid = UnitGUID(unit)
+                if guid then
+                    units[guid] = unit
+                    updated = true
+                end
+            end
+        end
+        
+        -- Only process if units changed
+        if updated then
+            -- Process units
+            for guid, unit in pairs(units) do
+                allstates[guid] = allstates[guid] or {show = false}
+                -- Update unit-specific information
+                allstates[guid].show = true
+                allstates[guid].changed = true
+            end
+            
+            -- Cleanup old states
+            for guid in pairs(allstates) do
+                if not units[guid] then
+                    allstates[guid] = nil
+                end
+            end
+        end
+        
+        return true
+    end
+end
+```
+
+#### Throttled State Updates with Batching
+```lua
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
+        aura_env.last = GetTime()
+        
+        -- Batch state updates
+        local updates = {}
+        local updateNeeded = false
+        
+        -- Collect all needed updates
+        for i = 1, 5 do
+            local stateKey = "state"..i
+            local newValue = CalculateState(i)  -- Your state calculation
+            
+            if not aura_env.lastValues or aura_env.lastValues[i] ~= newValue then
+                updates[stateKey] = newValue
+                updateNeeded = true
+            end
+        end
+        
+        -- Apply updates if needed
+        if updateNeeded then
+            -- Store last values
+            aura_env.lastValues = aura_env.lastValues or {}
+            
+            -- Apply all updates at once
+            for stateKey, value in pairs(updates) do
+                allstates[stateKey] = allstates[stateKey] or {show = false}
+                allstates[stateKey].show = value > 0
+                allstates[stateKey].value = value
+                allstates[stateKey].changed = true
+                
+                aura_env.lastValues[stateKey] = value
+            end
+        end
+        
+        return true
+    end
+end
+```
+
+### 3.8 Debugging and Troubleshooting
+
+#### Debug Logging Implementation
+```lua
+-- Trigger Settings:
+-- Event: Custom
+-- Event Type: Trigger State Updater (Advanced)
+-- Custom Variables: {debug = true}
+
+function(allstates)
+    -- Debug logging helper function
+    local function debugLog(...)
+        if aura_env.config.debug then
+            print(string.format("[WeakAura:%s]", aura_env.id), ...)
+        end
+    end
+    
+    if not aura_env.last or GetTime() - aura_env.last > 0.3 then
+        aura_env.last = GetTime()
+        
+        debugLog("Update triggered")
+        
+        -- Track performance
+        local startTime = debugprofilestop()
+        
+        -- Your aura logic here
+        local condition = CheckCondition()  -- Your condition check
+        debugLog("Condition check:", condition)
+        
+        allstates[""] = allstates[""] or {show = false}
+        allstates[""].show = condition
+        allstates[""].changed = true
+        
+        -- Log performance metrics
+        local endTime = debugprofilestop()
+        debugLog("Execution time:", endTime - startTime, "ms")
+        
+        return true
+    end
+end
+```
+
+#### State Validation Pattern
+```lua
+function(allstates)
+    -- Validation helper
+    local function validateState(state, guid)
+        if type(state) ~= "table" then
+            print("Invalid state for", guid)
+            return false
+        end
+        if type(state.show) ~= "boolean" then
+            print("Invalid show value for", guid)
+            return false
+        end
+        return true
+    end
+    
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
+        aura_env.last = GetTime()
+        
+        -- Process states with validation
+        for guid, unit in pairs(units) do
+            allstates[guid] = allstates[guid] or {show = false}
+            
+            -- Update state
+            local newState = ProcessUnit(unit)  -- Your processing logic
+            
+            -- Validate before applying
+            if validateState(newState, guid) then
+                allstates[guid] = newState
+                allstates[guid].changed = true
+            end
+        end
+        
+        return true
+    end
+end
+```
+
+### 3.9 Error Recovery Patterns
+
+#### Safe State Management
+```lua
+function(allstates)
+    -- Protect against nil state table
+    if type(allstates) ~= "table" then
+        print("Error: allstates is not a table")
+        return false
+    end
+    
+    -- Safe state update
+    local function safeUpdateState(key, newData)
+        if type(newData) ~= "table" then
+            print("Error: invalid state data for", key)
+            return false
+        end
+        
+        allstates[key] = allstates[key] or {show = false}
+        for k, v in pairs(newData) do
+            allstates[key][k] = v
+        end
+        allstates[key].changed = true
+        return true
+    end
+    
+    -- Your aura logic with error handling
+    local success, result = pcall(function()
+        -- Your processing logic here
+        return {show = true, value = GetValue()}
+    end)
+    
+    if success then
+        safeUpdateState("", result)
+    else
+        print("Error in aura processing:", result)
+        -- Set safe fallback state
+        safeUpdateState("", {show = false})
+    end
+    
+    return true
+end
+```
+
+#### Recovery from Common Errors
+```lua
+function(allstates)
+    -- Handle common error conditions
+    if not aura_env then
+        print("Error: aura_env not initialized")
+        return false
+    end
+    
+    -- Initialize or recover persistent storage
+    if type(aura_env.storage) ~= "table" then
+        aura_env.storage = {}
+        print("Recovered: Reinitialized storage")
+    end
+    
+    -- Recover from invalid states
+    for key, state in pairs(allstates) do
+        if type(state) ~= "table" or type(state.show) ~= "boolean" then
+            print("Recovered: Reset invalid state for", key)
+            allstates[key] = {
+                show = false,
+                changed = true
+            }
+        end
+    end
+    
+    -- Continue with normal processing
+    if not aura_env.last or GetTime() - aura_env.last > 0.3 then
+        aura_env.last = GetTime()
+        
+        -- Your aura logic here
+        
+        return true
+    end
+end
+```
+
+### 3.10 Performance Monitoring
+
+#### Built-in Performance Tracking
+```lua
+function(allstates)
+    -- Initialize performance tracking
+    aura_env.perfStats = aura_env.perfStats or {
+        counts = {},
+        times = {},
+        lastReset = GetTime()
+    }
+    
+    -- Update performance stats
+    local function trackPerf(category, startTime)
+        local elapsed = debugprofilestop() - startTime
+        aura_env.perfStats.counts[category] = (aura_env.perfStats.counts[category] or 0) + 1
+        aura_env.perfStats.times[category] = (aura_env.perfStats.times[category] or 0) + elapsed
+    end
+    
+    -- Reset stats periodically
+    if GetTime() - aura_env.perfStats.lastReset > 60 then
+        aura_env.perfStats.counts = {}
+        aura_env.perfStats.times = {}
+        aura_env.perfStats.lastReset = GetTime()
+    end
+    
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
+        aura_env.last = GetTime()
+        
+        -- Track main update performance
+        local startTime = debugprofilestop()
+        
+        -- Your aura logic here
+        
+        trackPerf("update", startTime)
+        return true
+    end
+end
+```
+
+### 3.11 Best Practices for Specific Use Cases
+
+#### Tank Defensive Tracking
+```lua
+-- Trigger Settings:
+-- Event: Custom
+-- Event Type: Trigger State Updater (Advanced)
+-- Check On: Every Frame
+-- Custom Variables: {threshold = 0.3}
+
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
+        aura_env.last = GetTime()
+        
+        -- Track multiple defensive conditions
+        local healthPercent = UnitHealth("player") / UnitHealthMax("player")
+        local activeDefensives = 0
+        local defensiveNeeded = false
+        
+        -- Check defensive buffs
+        local function hasDefensiveBuff(buffName)
+            local name = AuraUtil.FindAuraByName(buffName, "player", "HELPFUL")
+            return name ~= nil
+        end
+        
+        -- Count active defensives
+        for _, buff in ipairs({"Shield Wall", "Last Stand"}) do
+            if hasDefensiveBuff(buff) then
+                activeDefensives = activeDefensives + 1
+            end
+        end
+        
+        -- Check if defensive is needed
+        defensiveNeeded = healthPercent < aura_env.config.threshold and activeDefensives == 0
+        
+        allstates[""] = allstates[""] or {
+            show = false,
+            defensiveCount = 0,
+            healthPercent = 1
+        }
+        
+        allstates[""].show = defensiveNeeded
+        allstates[""].defensiveCount = activeDefensives
+        allstates[""].healthPercent = healthPercent
+        allstates[""].changed = true
+        
+        return true
+    end
+end
+```
+
+#### Proc Tracking with History
+```lua
+function(allstates)
+    -- Initialize proc history
+    aura_env.procHistory = aura_env.procHistory or {
+        lastProc = 0,
+        counts = {},
+        totalProcs = 0
+    }
+    
+    if event == "COMBAT_LOG_EVENT_UNFILTERED" then
+        local timestamp, subevent, _, sourceGUID, _, _, _, destGUID, 
+              _, _, _, spellID = CombatLogGetCurrentEventInfo()
+        
+        if subevent == "SPELL_AURA_APPLIED" and 
+           sourceGUID == UnitGUID("player") and 
+           spellID == aura_env.config.procSpellID then
+            
+            local currentTime = GetTime()
+            
+            -- Update proc history
+            aura_env.procHistory.totalProcs = aura_env.procHistory.totalProcs + 1
+            local timeSinceLastProc = currentTime - aura_env.procHistory.lastProc
+            aura_env.procHistory.lastProc = currentTime
+            
+            -- Track proc timing
+            local minute = math.floor(currentTime / 60)
+            aura_env.procHistory.counts[minute] = 
+                (aura_env.procHistory.counts[minute] or 0) + 1
+            
+            -- Cleanup old history
+            for k in pairs(aura_env.procHistory.counts) do
+                if k < minute - 5 then  -- Keep last 5 minutes
+                    aura_env.procHistory.counts[k] = nil
+                end
+            end
+            
+            -- Update state
+            allstates[""] = allstates[""] or {show = false}
+            allstates[""].show = true
+            allstates[""].procCount = aura_env.procHistory.totalProcs
+            allstates[""].timeSinceLastProc = timeSinceLastProc
+            allstates[""].procsPerMinute = aura_env.procHistory.counts[minute] or 0
+            allstates[""].changed = true
+            
+            -- Auto-hide after duration
+            C_Timer.After(aura_env.config.displayDuration or 3, function()
+                allstates[""].show = false
+                allstates[""].changed = true
+                WeakAuras.ScanEvents("TRIGGER_RESET")
+            end)
+        end
+    end
+    return true
+end
+```
+
+#### Dynamic Group Management
+```lua
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.3 then
+        aura_env.last = GetTime()
+        
+        -- Track group composition
+        local groupSize = IsInRaid() and 40 or 5
+        local healerCount = 0
+        local tankCount = 0
+        
+        -- Scan group
+        for i = 1, groupSize do
+            local unit = IsInRaid() and "raid"..i or "party"..i
+            if UnitExists(unit) then
+                local role = UnitGroupRolesAssigned(unit)
+                if role == "HEALER" then
+                    healerCount = healerCount + 1
+                elseif role == "TANK" then
+                    tankCount = tankCount + 1
+                end
+            end
+        end
+        
+        -- Update states for different roles
+        local function updateRoleState(role, count, required)
+            local stateKey = "role_"..role
+            allstates[stateKey] = allstates[stateKey] or {
+                show = false,
+                count = 0,
+                required = 0
+            }
+            
+            allstates[stateKey].show = count < required
+            allstates[stateKey].count = count
+            allstates[stateKey].required = required
+            allstates[stateKey].changed = true
+        end
+        
+        -- Set requirements based on group type
+        local requiredHealers = IsInRaid() and 3 or 1
+        local requiredTanks = IsInRaid() and 2 or 1
+        
+        updateRoleState("healer", healerCount, requiredHealers)
+        updateRoleState("tank", tankCount, requiredTanks)
+        
+        return true
+    end
+end
+```
+
+### 3.13 Integration Patterns and Configuration
+
+#### Custom Options Integration
+```lua
+-- Trigger Settings:
+-- Event: Custom
+-- Event Type: Trigger State Updater (Advanced)
+-- Custom Variables:
+--[[
+{
+    threshold = 0.5,
+    trackSpells = {
+        "Shield Wall",
+        "Last Stand",
+        "Shield Block"
+    },
+    enableDebug = false,
+    updateInterval = 0.2
+}
+]]
+
+function(allstates)
+    -- Access custom options
+    local threshold = aura_env.config.threshold or 0.5
+    local interval = aura_env.config.updateInterval or 0.2
+    
+    if not aura_env.last or GetTime() - aura_env.last > interval then
+        aura_env.last = GetTime()
+        
+        -- Debug logging
+        local function debug(...)
+            if aura_env.config.enableDebug then
+                print(string.format("[%s]", aura_env.id), ...)
+            end
+        end
+        
+        -- Process tracked spells
+        local activeSpells = {}
+        for _, spellName in ipairs(aura_env.config.trackSpells) do
+            local name = AuraUtil.FindAuraByName(spellName, "player", "HELPFUL")
+            if name then
+                table.insert(activeSpells, spellName)
+            end
+        end
+        
+        debug("Active spells:", table.concat(activeSpells, ", "))
+        
+        -- Update state
+        allstates[""] = allstates[""] or {show = false}
+        allstates[""].show = #activeSpells > 0
+        allstates[""].spells = activeSpells
+        allstates[""].changed = true
+        
+        return true
+    end
+end
+```
+
+#### WeakAura Communication
+```lua
+function(allstates)
+    -- Register for WeakAura messages
+    if not aura_env.registered then
+        WeakAuras.RegisterMessage(aura_env.id, "WA_CUSTOM_EVENT", function(event, ...)
+            aura_env.lastMessage = {
+                event = event,
+                args = {...}
+            }
+            WeakAuras.ScanEvents("WA_MESSAGE_RECEIVED")
+        end)
+        aura_env.registered = true
+    end
+    
+    if event == "WA_MESSAGE_RECEIVED" and aura_env.lastMessage then
+        -- Process received message
+        allstates[""] = allstates[""] or {show = false}
+        allstates[""].show = true
+        allstates[""].message = aura_env.lastMessage
+        allstates[""].changed = true
+        
+        -- Auto-hide after 3 seconds
+        C_Timer.After(3, function()
+            allstates[""].show = false
+            allstates[""].changed = true
+            WeakAuras.ScanEvents("TRIGGER_RESET")
+        end)
+    end
+    
+    return true
+end
+```
+
+### 3.14 Best Practices Summary
+
+1. **State Management**
+   - Always initialize states before use
+   - Use changed flag for updates
+   - Clean up unused states
+   - Handle nil cases
+
+2. **Performance**
+   - Implement appropriate throttling
+   - Reuse tables when possible
+   - Use early exits
+   - Batch updates when possible
+
+3. **Error Handling**
+   - Validate inputs
+   - Use safe defaults
+   - Implement debug logging
+   - Handle edge cases
+
+4. **Configuration**
+   - Use custom variables
+   - Provide sensible defaults
+   - Document options
+   - Validate user input
+
+5. **Integration**
+   - Use WeakAuras messaging
+   - Handle events properly
+   - Clean up resources
+   - Support addon communication
+
+### 3.15 Common Pitfalls
+
+1. **State Updates**
+   ```lua
+   -- INCORRECT
+   allstates[""].show = true
+   
+   -- CORRECT
+   allstates[""] = allstates[""] or {show = false}
+   allstates[""].show = true
+   allstates[""].changed = true
+   ```
+
+2. **Performance Issues**
+   ```lua
+   -- INCORRECT: No throttling
+   function(allstates)
+       -- Updates every frame
+   end
+   
+   -- CORRECT: With throttling
+   function(allstates)
+       if not aura_env.last or GetTime() - aura_env.last > 0.2 then
+           -- Updates every 0.2 seconds
+       end
+   end
+   ```
+
+3. **Memory Management**
+   ```lua
+   -- INCORRECT: Creating new tables constantly
+   local data = {}
+   
+   -- CORRECT: Reusing tables
+   aura_env.data = aura_env.data or {}
+   wipe(aura_env.data)
+   ```
+
+## 4. State Management
+
+### 4.1 The `allstates` Table
+- Primary mechanism for managing WeakAura states
+- Required when using Trigger State Updater
+- Enables multiple state tracking
+
+#### Structure:
+```lua
+allstates["state_key"] = {
+    show = true/false,    -- Controls visibility
+    changed = true,       -- Marks state as updated
+    -- Custom state data
+    value = number,
+    unit = string,
+    -- etc.
+}
+```
+
+### 4.2 State Management Patterns
+
+#### Single State Management:
+```lua
+function(allstates)
+    allstates[""] = allstates[""] or {show = false}
+    allstates[""].show = condition_met
+    allstates[""].changed = true
+    return true
+end
+```
+
+#### Multiple State Management:
+```lua
+function(allstates)
+    -- Clear old states
+    for key in pairs(allstates) do
+        allstates[key].show = false
+        allstates[key].changed = true
+    end
+    
+    -- Create new states
+    for i = 1, max_states do
+        if condition_met[i] then
+            allstates[tostring(i)] = allstates[tostring(i)] or {}
+            allstates[tostring(i)].show = true
+            allstates[tostring(i)].changed = true
+        end
+    end
+    return true
+end
+```
+
+### 4.3 State Update Requirements
+
+1. **Trigger Configuration**:
+   - Event: Custom
+   - Event Type: Trigger State Updater (Advanced)
+   - Check On: Every Frame (for continuous monitoring)
+
+2. **Function Structure**:
+   ```lua
+   function(allstates)
+       if not aura_env.last or GetTime() - aura_env.last > update_interval then
+           aura_env.last = GetTime()
+           -- State updates here
+       end
+       return true
+   end
+   ```
+
+3. **State Initialization**:
+   - Always check if state exists before use
+   - Initialize with default values
+   - Mark changed = true when updating
+
+### 4.4 Common State Management Errors
+
+1. **Wrong Trigger Type**:
+   ```lua
+   -- INCORRECT: Using with basic trigger
+   function(event, ...)
+       allstates[""].show = true  -- Will cause error
+   end
+   
+   -- CORRECT: Using with Trigger State Updater
+   function(allstates)
+       allstates[""].show = true
+       return true
+   end
+   ```
+
+2. **Missing State Initialization**:
+   ```lua
+   -- INCORRECT: No initialization
+   allstates[""].show = true  -- May cause error
+   
+   -- CORRECT: With initialization
+   allstates[""] = allstates[""] or {show = false}
+   allstates[""].show = true
+   ```
+
+### 4.5 Case Study: Area Threat Detection
+
+```lua
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.5 then
+        aura_env.last = GetTime()
+        
+        local hasAggro = false
+        -- Check all units in combat with player via nameplates
+        for i = 1, 40 do
+            local unitID = "nameplate" .. i
+            if UnitExists(unitID) and UnitCanAttack("player", unitID) then
+                local isTanking = UnitDetailedThreatSituation("player", unitID)
+                if isTanking then
+                    hasAggro = true
+                    break
+                end
+            end
+        end
+        
+        allstates[""] = allstates[""] or {show = false}
+        allstates[""].show = hasAggro
+        allstates[""].changed = true
+        return true
+    end
+end
+```
+
+Key Features:
+- Performance throttling with GetTime()
+- Single state management
+- Proper initialization
+- Efficient loop breaking
+
+## 5. Performance Optimization
+
+### 5.1 Update Frequency Management
+
+#### Throttling Updates
+```lua
+function(allstates)
+    -- Standard throttle pattern
+    if not aura_env.last or GetTime() - aura_env.last > interval then
+        aura_env.last = GetTime()
+        -- Update logic here
+    end
+    return true
+end
+```
+
+#### Recommended Intervals:
+- Combat-critical: 0.1-0.2 seconds
+- Standard updates: 0.5 seconds
+- Background checks: 1.0+ seconds
+
+### 5.2 Efficient Coding Practices
+
+1. **Early Exit**:
+```lua
+function(allstates)
+    if not condition_met then
+        allstates[""].show = false
+        allstates[""].changed = true
+        return true
+    end
+    -- Continue with complex logic
+end
+```
+
+2. **Loop Optimization**:
+```lua
+-- INEFFICIENT:
+for i = 1, 40 do
+    -- Check every unit regardless
+end
+
+-- EFFICIENT:
+for i = 1, 40 do
+    if condition_met then
+        break  -- Exit as soon as possible
+    end
+end
+```
+
+3. **Variable Localization**:
+```lua
+-- INEFFICIENT:
+function(allstates)
+    for i = 1, max do
+        UnitExists("unit"..i)  -- Global lookup each time
+    end
+end
+
+-- EFFICIENT:
+local UnitExists = UnitExists  -- Local reference
+function(allstates)
+    for i = 1, max do
+        UnitExists("unit"..i)  -- Local lookup
+    end
+end
+```
+
+### 5.3 Memory Management
+
+1. **State Cleanup**:
+```lua
+function(allstates)
+    -- Clear unused states
+    for key in pairs(allstates) do
+        if not current_states[key] then
+            allstates[key] = nil
+        end
+    end
+end
+```
+
+2. **Table Reuse**:
+```lua
+-- Store in aura_env for reuse
+aura_env.tempTable = aura_env.tempTable or {}
+local temp = aura_env.tempTable
+wipe(temp)  -- Clear previous data
+```
+
+## 6. Implementation Patterns
+
+### 6.1 Common WeakAura Patterns
+
+#### 1. Resource Monitoring
+```lua
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.5 then
+        aura_env.last = GetTime()
+        
+        local current = UnitPower("player")
+        local max = UnitPowerMax("player")
+        local percent = max > 0 and (current / max * 100) or 0
+        
+        allstates[""] = allstates[""] or {show = false}
+        allstates[""].show = percent >= threshold
+        allstates[""].changed = true
+        return true
+    end
+end
+```
+
+#### 2. Buff/Debuff Tracking
+```lua
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
+        aura_env.last = GetTime()
+        
+        local name, _, _, _, duration, expirationTime = 
+            AuraUtil.FindAuraByName(auraName, "player", "HELPFUL")
+        
+        allstates[""] = allstates[""] or {show = false}
+        allstates[""].show = name ~= nil
+        allstates[""].changed = true
+        if name then
+            allstates[""].duration = duration
+            allstates[""].expirationTime = expirationTime
+        end
+        return true
+    end
+end
+```
+
+#### 3. Combat Event Response
+```lua
+function(allstates)
+    if event == "COMBAT_LOG_EVENT_UNFILTERED" then
+        local _, subevent, _, sourceGUID, _, _, _, destGUID = CombatLogGetCurrentEventInfo()
+        
+        if subevent == "SPELL_CAST_SUCCESS" and sourceGUID == UnitGUID("player") then
+            allstates[""] = allstates[""] or {show = false}
+            allstates[""].show = true
+            allstates[""].changed = true
+            C_Timer.After(1, function()
+                allstates[""].show = false
+                allstates[""].changed = true
+                WeakAuras.ScanEvents("TRIGGER_RESET")
+            end)
+        end
+    end
+    return true
+end
+```
+
+#### Example: Item Count Tracking
+```lua
+-- Based on bomb_in_inventory.lua pattern
+function(allstates)
+    local itemCount = GetItemCount(itemID) or 0
+    
+    allstates[""] = allstates[""] or {show = false}
+    allstates[""].show = itemCount >= 1
+    allstates[""].changed = true
+    allstates[""].count = itemCount
+    
+    return true
+end
+```
+
+Key features:
+- Simple state management
+- Item count tracking
+- Single state usage
+- Proper initialization
+
+### 6.2 Advanced Implementation Techniques
+
+#### Dynamic Multi-Unit Tracking
+```lua
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.3 then
+        aura_env.last = GetTime()
+        
+        local updated = false
+        for i = 1, 40 do
+            local unit = "nameplate"..i
+            if UnitExists(unit) then
+                local guid = UnitGUID(unit)
+                if guid then
+                    updated = true
+                    allstates[guid] = allstates[guid] or {show = false}
+                    -- Update unit-specific information
+                    allstates[guid].show = true
+                    allstates[guid].changed = true
+                end
+            end
+        end
+        
+        if updated then
+            -- Cleanup old states
+            for guid in pairs(allstates) do
+                if not UnitExists(guid) then
+                    allstates[guid] = nil
+                end
+            end
+        end
+        return true
+    end
+end
+```
+
+## 7. Examples and Case Studies
+
+### 7.1 Complete WeakAura Examples
+
+#### Example 1: Area Threat Detection
+```lua
+-- Trigger Settings:
+-- Event: Custom
+-- Event Type: Trigger State Updater (Advanced)
+-- Check On: Every Frame
+-- Custom Variables: {}
+
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.5 then
+        aura_env.last = GetTime()
+        
+        local hasAggro = false
+        for i = 1, 40 do
+            local unitID = "nameplate" .. i
+            if UnitExists(unitID) and UnitCanAttack("player", unitID) then
+                local isTanking = UnitDetailedThreatSituation("player", unitID)
+                if isTanking then
+                    hasAggro = true
+                    break
+                end
+            end
+        end
+        
+        allstates[""] = allstates[""] or {show = false}
+        allstates[""].show = hasAggro
+        allstates[""].changed = true
+        return true
+    end
+end
+```
+
+Key Features:
+- Performance throttling
+- Early exit optimization
+- Proper state management
+- Nameplate iteration
+- Threat detection
+
+#### Example 2: Resource Threshold Monitor
+```lua
+-- Trigger Settings:
+-- Event: Custom
+-- Event Type: Trigger State Updater
+-- Check On: Every Frame
+-- Custom Variables: {threshold = 80}
+
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
+        aura_env.last = GetTime()
+        
+        local current = UnitPower("player")
+        local max = UnitPowerMax("player")
+        local percent = max > 0 and (current / max * 100) or 0
+        
+        allstates[""] = allstates[""] or {show = false, percentage = 0}
+        allstates[""].show = percent >= aura_env.config.threshold
+        allstates[""].percentage = percent
+        allstates[""].changed = true
+        return true
+    end
+end
+```
+
+### 7.2 Common Implementation Patterns
+
+#### Pattern 1: Buff Duration Tracking
+```lua
+function(allstates)
+    if not aura_env.last or GetTime() - aura_env.last > 0.1 then
+        aura_env.last = GetTime()
+        
+        local name, _, _, _, duration, expirationTime = 
+            AuraUtil.FindAuraByName(aura_env.config.buffName, "player", "HELPFUL")
+        
+        allstates[""] = allstates[""] or {
+            show = false,
+            duration = 0,
+            expirationTime = 0
+        }
+        
+        if name then
+            allstates[""].show = true
+            allstates[""].duration = duration
+            allstates[""].expirationTime = expirationTime
+            allstates[""].changed = true
+        else
+            allstates[""].show = false
+            allstates[""].changed = true
+        end
+        return true
+    end
+end
+```
+
+#### Pattern 2: Combat Event Response
+```lua
+function(allstates)
+    if event == "COMBAT_LOG_EVENT_UNFILTERED" then
+        local timestamp, subevent, _, sourceGUID, _, _, _, 
+              destGUID, destName, _, _, spellID = CombatLogGetCurrentEventInfo()
+        
+        if subevent == "SPELL_INTERRUPT" and sourceGUID == UnitGUID("player") then
+            allstates[""] = allstates[""] or {show = false}
+            allstates[""].show = true
+            allstates[""].spellID = spellID
+            allstates[""].destName = destName
+            allstates[""].changed = true
+            
+            C_Timer.After(2, function()
+                allstates[""].show = false
+                allstates[""].changed = true
+                WeakAuras.ScanEvents("TRIGGER_RESET")
+            end)
+        end
+    end
+    return true
+end
+```
+
+### 7.3 Dynamic Mark Management
+
+This pattern demonstrates advanced state management for raid target markers, essential for coordinated targeting and crowd control.
+
+#### Core Components
+
+1. **Mark Priority System**:
+```lua
+-- Define mark priorities and special marks
+local MARKS = {8, 7, 2, 3, 6, 4, 1, 5}  -- Skull, Cross, Circle, Diamond, Square, Moon, Star, Triangle
+local SPECIAL_MARKS = {
+    INTERRUPT = 3,  -- Diamond reserved for interruptible casts
+    CC = 0         -- Remove mark when CC'd
+}
+
+-- State tracking tables
+local markedEnemies = {}    -- Current mark assignments
+local specialUnits = {}     -- Units with special conditions
+local unmarkedEnemies = {}  -- Units needing marks
+```
+
+2. **Persistent State Management**:
+```lua
+function(allstates, event)
+    -- Initialize persistent state
+    aura_env.marks = aura_env.marks or {}
+    aura_env.conditions = aura_env.conditions or {}
+    
+    -- Throttle updates
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
+        aura_env.last = GetTime()
+        -- ... marking logic ...
+    end
+end
+```
+
+#### Implementation Patterns
+
+1. **Condition-Based Marking**:
+```lua
+-- Example: Marking interruptible casts
+local function HandleSpecialConditions(unit, guid, currentMark)
+    local isCasting, endTime = IsInterruptibleInRange(unit)
+    if isCasting then
+        if currentMark ~= SPECIAL_MARKS.INTERRUPT then
+            SetRaidTarget(unit, SPECIAL_MARKS.INTERRUPT)
+        end
+        specialUnits[guid] = endTime
+        return true
+    end
+    return false
+end
+```
+
+2. **Mark Promotion System**:
+```lua
+-- Promote marks when higher priority marks are available
+local function PromoteMarks(markedEnemies, MARKS)
+    for i, highMark in ipairs(MARKS) do
+        if not markedEnemies[highMark] then
+            for j = i + 1, #MARKS do
+                local lowerMark = MARKS[j]
+                if markedEnemies[lowerMark] then
+                    local target = markedEnemies[lowerMark]
+                    SetRaidTarget(target.unit, highMark)
+                    markedEnemies[highMark] = target
+                    markedEnemies[lowerMark] = nil
+                    break
+                end
+            end
+        end
+    end
+end
+```
+
+#### Best Practices
+
+1. **State Management**:
+   - Use aura_env for persistent state
+   - Track temporary conditions separately
+   - Clean up expired states regularly
+   - Handle state transitions smoothly
+
+2. **Performance Optimization**:
+   - Implement proper throttling
+   - Check current marks before setting new ones
+   - Use efficient range checks
+   - Clean up unused state data
+
+3. **Condition Handling**:
+   - Prioritize special conditions
+   - Handle condition expiration
+   - Manage mark transitions
+   - Consider range limitations
+
+4. **Error Prevention**:
+   - Validate unit existence
+   - Check GUID availability
+   - Handle nil cases
+   - Prevent mark flickering
+
+#### Example: Complete Mark Management System
+```lua
+function(allstates, event)
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
+        -- Initialize state
+        aura_env.marks = aura_env.marks or {}
+        local currentEnemies = {}
+        local markedEnemies = {}
+        local specialUnits = {}
+
+        -- Scan units
+        for i = 1, 40 do
+            local unit = "nameplate"..i
+            if UnitExists(unit) and UnitCanAttack("player", unit) then
+                -- Process unit conditions and marks
+                ProcessUnit(unit, currentEnemies, markedEnemies, specialUnits)
+            end
+        end
+
+        -- Update marks based on conditions
+        UpdateMarks(markedEnemies, specialUnits)
+
+        -- Clean up state
+        CleanupState(currentEnemies)
+
+        return true
+    end
+end
+```
+
+## 8. Troubleshooting
+
+### 8.1 Common Issues
+- Trigger not activating
+- State management errors
+- Performance bottlenecks
+
+### 8.2 Debugging Techniques
+- Use print statements
+- Check API calls
+- Verify state updates
+
+### 8.3 Advanced Case Study: Automatic Target Marking
+
+The following example demonstrates a complex WeakAura that automatically marks targets using raid markers:
+
+```lua
+-- Trigger Settings:
+-- Event: Custom
+-- Event Type: Trigger State Updater (Advanced)
+-- Check On: Every Frame
+-- Custom Variables: {stacks = true}
+
+function(allstates, event)
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
+        -- Initialize our mark storage if it doesn't exist
+        aura_env.marks = aura_env.marks or {}
+        
+        -- Available marks in priority order
+        local MARKS = {8, 7, 2, 3, 6, 4, 1, 5}  -- Skull, Cross, Circle, Diamond, Square, Moon, Star, Triangle
+        
+        -- Track current enemies and their GUIDs
+        local currentEnemies = {}
+        local enemyList = {}  -- Ordered list for consistent assignment
+        
+        -- First pass: Identify all valid targets
+        for i = 1, 40 do
+            local unit = "nameplate"..i
+            if UnitExists(unit) and UnitCanAttack("player", unit) then
+                local guid = UnitGUID(unit)
+                if guid then
+                    currentEnemies[guid] = unit
+                    table.insert(enemyList, guid)
+                end
+            end
+        end
+        
+        -- Clean up marks for enemies no longer present
+        for guid, mark in pairs(aura_env.marks) do
+            if not currentEnemies[guid] then
+                aura_env.marks[guid] = nil
+            end
+        end
+        
+        -- Assign marks to unmarked targets and adjust existing marks
+        for i, guid in ipairs(enemyList) do
+            local unit = currentEnemies[guid]
+            local currentMark = GetRaidTargetIndex(unit)
+            
+            if aura_env.marks[guid] then
+                -- Clear if it needs a higher priority mark
+                if i <= #MARKS and MARKS[i] ~= aura_env.marks[guid] then
+                    SetRaidTarget(unit, 0)
+                    aura_env.marks[guid] = MARKS[i]
+                    SetRaidTarget(unit, MARKS[i])
+                end
+            elseif not currentMark and i <= #MARKS then
+                aura_env.marks[guid] = MARKS[i]
+                SetRaidTarget(unit, MARKS[i])
+            end
+        end
+        
+        -- Update state for visualization
+        allstates[""] = {
+            changed = true,
+            show = true,
+            activeMarks = aura_env.marks
+        }
+        
+        return true
+    end
+end
+```
+
+Key Implementation Features:
+1. **Performance Optimization**:
+   - Uses 0.2s throttle with GetTime()
+   - Efficient table management
+   - Early exits when possible
+
+2. **State Management**:
+   - Persistent state with aura_env.marks
+   - Proper cleanup of old states
+   - Single visualization state
+
+3. **Data Structure Usage**:
+   - Ordered arrays for priority
+   - Hash tables for quick lookups
+   - Proper table initialization
+
+4. **Error Prevention**:
+   - Checks for unit existence
+   - Validates GUIDs
+   - Safe state initialization
+
+5. **Game Integration**:
+   - Uses nameplate scanning
+   - Proper raid marker management
+   - Respects existing marks
+
+Load Conditions:
+```lua
+load = {
+    class = {
+        multi = {
+            WARRIOR = true,
+        },
+        single = "WARRIOR",
+    },
+}
+```
+
+This example demonstrates how to:
+- Handle complex state management
+- Implement efficient scanning
+- Manage persistent data
+- Apply proper throttling
+- Use appropriate load conditions
+
+## 9. Resources and References
+
+### 9.1 Essential WoW API Functions
+- UnitExists(unit): Check if unit exists
+- UnitGUID(unit): Get unit's GUID
+- GetTime(): Get current time
+- UnitPower(unit): Get unit's power
+- AuraUtil.FindAuraByName(): Find aura on unit
+- CombatLogGetCurrentEventInfo(): Get combat log info
+
+### 9.2 WeakAuras Specific Functions
+- WeakAuras.ScanEvents(event): Trigger event scan
+- C_Timer.After(duration, function): Delayed execution
+
+### 9.3 Important References
+1. [World of Warcraft API](https://wowpedia.fandom.com/wiki/World_of_Warcraft_API)
+2. [WeakAuras Documentation](https://github.com/WeakAuras/WeakAuras2/wiki)
+3. [Combat Log Events](https://wowpedia.fandom.com/wiki/COMBAT_LOG_EVENT)
+4. [Unit IDs](https://wowpedia.fandom.com/wiki/UnitId)
+
+### 9.4 Best Practices Summary
+1. Always use Trigger State Updater for state management
+2. Implement performance throttling
+3. Initialize states before use
+4. Use local variables for API functions
+5. Include error handling
+6. Test thoroughly with debug prints
+7. Consider performance impact
+8. Document custom variables and requirements
+
+### 9.5 Common Events
+- COMBAT_LOG_EVENT_UNFILTERED
+- UNIT_POWER_UPDATE
+- PLAYER_TARGET_CHANGED
+- UNIT_AURA
+- PLAYER_ENTERING_WORLD
+
+### 3.16 WeakAura Development Checklist
+
+#### Initial Development
+- [ ] Define clear purpose and requirements
+- [ ] Choose appropriate trigger type
+- [ ] Plan state management approach
+- [ ] Identify required API functions
+- [ ] Design load conditions
+
+#### Performance Considerations
+- [ ] Implement throttling (GetTime check)
+- [ ] Use table recycling where appropriate
+- [ ] Implement early exits
+- [ ] Minimize string concatenations
+- [ ] Localize frequently used functions
+
+#### State Management
+- [ ] Initialize all states properly
+- [ ] Set changed flag on updates
+- [ ] Clean up unused states
+- [ ] Handle nil cases
+- [ ] Validate state data
+
+#### Error Handling
+- [ ] Add input validation
+- [ ] Implement safe defaults
+- [ ] Add debug logging (optional)
+- [ ] Handle edge cases
+- [ ] Test error recovery
+
+#### Testing
+- [ ] Test in combat
+- [ ] Test in different group sizes
+- [ ] Verify load conditions
+- [ ] Check memory usage
+- [ ] Verify cleanup on disable
+
+#### Documentation
+- [ ] Document custom variables
+- [ ] Explain configuration options
+- [ ] Note required addons/dependencies
+- [ ] List known limitations
+- [ ] Include version history
+
+### 3.17 Final Notes
+
+1. **Version Control**
+   - Keep track of changes
+   - Document major updates
+   - Test thoroughly before sharing
+
+2. **Community Best Practices**
+   - Share knowledge
+   - Credit sources
+   - Provide support
+   - Accept feedback
+
+3. **Maintenance**
+   - Regular testing
+   - Update for patches
+   - Monitor performance
+   - Gather user feedback
+
+For additional resources and updates, refer to:
+- WeakAuras Discord
+- WoW API Documentation
+- WeakAuras Wiki
+- Community Forums

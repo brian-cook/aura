@@ -1,0 +1,245 @@
+# World of Warcraft Profile Creation Guide: AI Implementation
+
+## 1. Profile Structure and Syntax
+
+### 1.1 Basic JSON Structure
+```json
+{
+    "name": "Class Name [Version]",
+    "actions": [
+        {
+            "group": "START GROUP: GROUP_NAME",
+            "name": "action description",
+            "key": "key_binding",
+            "conditions": ["condition1", "condition2", "!negative_condition"]
+        }
+    ]
+}
+```
+
+### 1.2 Version Naming Standards
+- Retail: "Class Name" (e.g., "Paladin")
+- Classic: "Class Name Classic" (e.g., "Rogue Classic")
+- Season of Discovery: "Class Name SOD" (e.g., "Paladin SOD")
+- Hardcore: "Class Name Hardcore" (e.g., "Rogue Hardcore")
+
+## 2. Practical Profile Creation
+
+### 2.1 Research Phase
+1. Identify class abilities using:
+   - Wowhead class guides
+   - Icy Veins rotation guides
+   - In-game spellbook
+   - Class Discord channels
+
+2. Document for each ability:
+   - Resource cost
+   - Cooldown
+   - Range requirements
+   - Prerequisites (talents, level, etc.)
+   - Buffs/debuffs applied
+
+### 2.2 Required Aura Types
+1. **Ability Availability Auras**
+```lua
+-- Example: arcane_shot aura
+function(allstates, event)
+    -- Basic ability check includes:
+    -- - Is ability learned
+    -- - Is ability off cooldown
+    -- - Does player have enough resources
+    local available = IsUsableSpell("Arcane Shot")
+    allstates[""] = {
+        show = available,
+        changed = true
+    }
+    return true
+end
+```
+
+2. **Resource Checks**
+```lua
+-- Example: power_50 aura
+function(allstates, event)
+    local power = UnitPower("player")
+    allstates[""] = {
+        show = power >= 50,
+        changed = true
+    }
+    return true
+end
+```
+
+3. **Buff/Debuff Tracking**
+```lua
+-- Example: slice_and_dice_buff aura
+function(allstates, event)
+    local name = AuraUtil.FindAuraByName("Slice and Dice", "player")
+    allstates[""] = {
+        show = name ~= nil,
+        changed = true
+    }
+    return true
+end
+```
+
+### 2.3 Common Condition Patterns
+
+1. **Basic Ability Use**
+```json
+{
+    "name": "Sinister Strike",
+    "conditions": ["sinister_strike", "power_45", "range_8"]
+}
+```
+
+2. **Buff Application**
+```json
+{
+    "name": "Apply Slice and Dice",
+    "conditions": ["!slice_and_dice_buff", "combo_points_1", "power_25"]
+}
+```
+
+3. **Emergency Actions**
+```json
+{
+    "name": "Divine Shield",
+    "conditions": ["divine_shield", "health_under_20", "!forbearance_debuff"]
+}
+```
+
+4. **Multi-Target Abilities**
+```json
+{
+    "name": "Multi-Shot",
+    "conditions": ["multi_shot", "power_50", "range_35", "target_count_2"]
+}
+```
+
+## 3. Priority Group Organization
+
+### 3.1 Standard Group Order
+1. CC COUNTERS
+2. EMERGENCY ACTIONS
+3. SELF HEALS AND CLEANSES
+4. OOC BUFFS
+5. PARTY SUPPORT
+6. INTERRUPTS
+7. COMBAT BUFFS
+8. CC ON TARGET(S)
+9. SCANNING
+10. REACTIONARIES
+11. RANGED ATTACKS
+12. RESOURCE MANAGEMENT
+13. COOLDOWN ABILITIES
+14. AOE ABILITIES
+15. SINGLE TARGET ROTATION
+
+### 3.2 Group Placement Rules
+1. Place crowd control before damage abilities if interruption is priority
+2. Place DOTs and debuffs with core rotation abilities
+3. Place mutual exclusive buffs (like Aspects) in separate conditional groups
+4. Order abilities within groups by:
+   - Priority (highest first)
+   - Resource efficiency
+   - Damage/healing output
+
+### 3.3 Example Group Implementation
+```json
+{
+    "group": "START GROUP: EMERGENCY ACTIONS",
+    "actions": [
+        {
+            "name": "Divine Shield at low health",
+            "conditions": ["divine_shield", "health_under_20"]
+        },
+        {
+            "name": "Healthstone",
+            "conditions": ["healthstone", "health_under_40", "!healthstone_cooldown"]
+        }
+    ]
+}
+```
+
+## 4. Common Profile Issues and Solutions
+
+### 4.1 Infinite Buff Switching
+Problem:
+```json
+{
+    "name": "Aspect of the Hawk",
+    "conditions": ["!aspect_of_the_hawk_buff"]
+},
+{
+    "name": "Aspect of the Monkey",
+    "conditions": ["!aspect_of_the_monkey_buff"]
+}
+```
+
+Solution:
+```json
+{
+    "name": "Aspect of the Hawk",
+    "conditions": ["!aspect_of_the_hawk_buff", "!combat"]
+},
+{
+    "name": "Aspect of the Monkey",
+    "conditions": ["!aspect_of_the_monkey_buff", "combat", "health_under_50"]
+}
+```
+
+### 4.2 Unreachable Actions
+Problem:
+```json
+{
+    "name": "Sinister Strike",
+    "conditions": ["sinister_strike", "range_8"]
+},
+{
+    "name": "Gouge",
+    "conditions": ["gouge", "range_8"]  // Never reached
+}
+```
+
+Solution:
+```json
+{
+    "group": "START GROUP: CC ON TARGET(S)",
+    "name": "Gouge",
+    "conditions": ["gouge", "range_8"]
+},
+{
+    "group": "START GROUP: SINGLE TARGET ROTATION",
+    "name": "Sinister Strike",
+    "conditions": ["sinister_strike", "range_8"]
+}
+```
+
+## 5. Testing and Validation
+
+### 5.1 Profile Testing Checklist
+- [ ] Test all emergency actions
+- [ ] Verify buff management
+- [ ] Check resource usage
+- [ ] Test target switching
+- [ ] Verify AOE functionality
+- [ ] Test crowd control priority
+- [ ] Check combat entry/exit
+- [ ] Verify mark management
+
+### 5.2 Common Aura Requirements
+1. Ability availability
+2. Resource checks
+3. Range requirements
+4. Buff/debuff tracking
+5. Cooldown monitoring
+6. Target state tracking
+7. Combat state checks
+8. Health/resource thresholds
+
+## 6. Resources
+1. [Wowhead](https://www.wowhead.com/)
+2. [Icy Veins](https://www.icy-veins.com/)
+3. [WoW API Documentation](https://wowpedia.fandom.com/wiki/World_of_Warcraft_API)
+4. Class Discord channels

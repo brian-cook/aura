@@ -1,0 +1,235 @@
+{
+    "name": "Death Knight",
+    "actions": [
+        {
+            "group": "START GROUP: CC COUNTERS",
+            "name": "cast Death's Advance when rooted",
+            "key": "r",
+            "conditions": ["death's_advance", "player_rooted"]
+        },
+        {
+            "name": "cast Will of the Forsaken when feared",
+            "key": "=",
+            "conditions": ["will_of_the_forsaken", "player_feared"]
+        },
+        {
+            "name": "cast Will of the Forsaken when charmed",
+            "key": "=",
+            "conditions": ["will_of_the_forsaken", "player_charmed"]
+        },
+        {
+            "name": "cast Lichborne when feared",
+            "key": "i",
+            "conditions": ["lichborne", "player_feared"]
+        },
+        {
+            "name": "cast Lichborne when charmed",
+            "key": "i",
+            "conditions": ["lichborne", "player_charmed"]
+        },
+        {
+            "name": "cast Icebound Fortitude when stunned",
+            "key": "p",
+            "conditions": ["icebound_fortitude", "player_stunned"]
+        },
+        {
+            "name": "use PVP trinket when crowd controlled",
+            "key": "n",
+            "conditions": ["pvp_trinket", "player_crowd_controlled"]
+        },
+
+
+        {
+            "group": "START GROUP: FECAL HEALS AND BUFFS",
+            "name": "Potion to gain power to Raise Ally (Fecal)",
+            "key": "]",
+            "conditions": ["noth's_special_brew", "raise_ally", "Fecal_dead"]
+        }, 
+        {
+            "name": "Raise Ally (Fecal)",
+            "key": ";",
+            "conditions": ["raise_ally", "power_30", "Fecal_dead"]
+        },
+
+
+        {
+            "group": "START GROUP: SELF HEALS",
+            "name": "cast Icebound Fortitude if under 50% health",
+            "key": "p",
+            "conditions": ["icebound_fortitude", "health_under_50"]
+        },
+        {
+            "name": "cast Lichborne to heal self if under 50% health",
+            "key": "i",
+            "conditions": ["lichborne", "health_under_50"]
+        },
+        {
+            "name": "cast Death Coil to heal self if lichborne active",
+            "key": "o",
+            "conditions": ["power_30", "lichborne_buff"]
+        },
+        {
+            "name": "cast Death Strike in melee range if under 50% health",
+            "key": "6",
+            "conditions": ["power_35", "range_8", "health_under_50"]
+        },
+        
+        
+        {
+            "group": "START GROUP: PET SUMMON",
+            "name": "cast Raise Dead if pet is not summoned",
+            "key": "t",
+            "conditions": ["raise_dead", "!player_has_pet"]
+        },
+
+
+        {
+            "group": "START GROUP: PET BUFFS",
+            "name": "cast Dark Transformation",
+            "key": "f",
+            "conditions": ["dark_transformation", "player_has_pet", "combat"]
+        },
+
+
+        {
+            "group": "START GROUP: INTERUPTS ON TARGET",
+            "name": "cast Mind Freeze when target is casting",
+            "key": "k",
+            "conditions": ["mind_freeze", "range_15", "target_interruptible"]
+        }, 
+        {
+            "name": "cast Leap (pet) at range if pet has Dark Transformation buff, target is over 15 yards and casting",
+            "key": ".",
+            "conditions": ["leap", "!range_15", "range_30", "player_has_pet", "pet range 8", "dark_transformation_buff", "target_interruptible"]
+        },
+        {
+            "name": "cast Leap (pet) at range if pet has Dark Transformation buff, Mind Freeze on cooldown and target casting",
+            "key": ".",
+            "conditions": ["leap", "!range_8", "range_30", "player_has_pet", "pet range 8", "dark_transformation_buff", "!mind_freeze", "target_interruptible"]
+        },
+        {
+            "name": "cast Gnaw (pet) when target is casting and Mind Freeze on cooldown",
+            "key": ",",
+            "conditions": ["gnaw_or_monstrous_blow", "range_8", "player_has_pet", "pet range 8", "target_interruptible", "!mind_freeze"]
+        },
+        {
+            "name": "cast Anti Magic Shell when enemy within 30 range is casting on me",
+            "key": "h",
+            "conditions": ["anti_magic_shell", "target_interruptible_range_30"]
+        },
+
+ 
+        {
+            "group": "START GROUP: MOVEMENT BUFFS",
+            "name": "cast Death's Advance when Death Grip and Leap (pet) are on cooldown and at range",
+            "key": "r",
+            "conditions": ["death's_advance", "!range_8", "!death_grip", "!leap"]
+        },
+
+
+        {
+            "group": "START GROUP: CC ON TARGET(S)",
+            "name": "cast Death Grip at range",
+            "key": "3",
+            "conditions": ["death_grip", "!range_8", "range_30"]
+        },
+        {
+            "name": "cast Chains of Ice when target flees",
+            "key": "u",
+            "conditions": ["rune_1", "!range_8", "range_30", "!chain's_of_ice_debuff", "combat", "!combat_start", "target_moving"]
+        },
+        {
+            "name": "cast Blinding Sleet with multiple enemies fleeing in melee",
+            "key": "l",
+            "conditions": ["blinding_sleet", "range_8_2+", "!chain's_of_ice_debuff", "range_30", "combat", "!combat_start", "target_moving"]
+        },
+        {
+            "name": "cast Gnaw (pet) if target is elite or player",
+            "key": ",",
+            "conditions": ["gnaw_or_monstrous_blow", "range_8", "player_has_pet", "pet range 8", "target_is_elite_boss_or_player"]
+        },
+
+
+        {
+            "group": "START GROUP: REACTIONARIES: HIGH PRIORITY ",
+            "name": "cast Death Coil with Sudden Dooom active",
+            "key": "2",
+            "conditions": ["power_20", "range_30", "sudden_doom_buff"]
+        },
+        {
+            "name": "cast Soul Reaper in melee with target at 35%",
+            "key": "z",
+            "conditions": ["soul_reaper", "rune_1", "range_8", "target_health_under_35"]
+        },
+        {
+            "name": "cast Death Strike with Dark Succor active",
+            "key": "6",
+            "conditions": ["range_8", "dark_succor_buff"]
+        },
+
+
+        {
+            "group": "START GROUP: RANGED ATTACKS: PRIORITY OVER MELEE",
+            "name": "cast Death Coil at range",
+            "key": "2",
+            "conditions": ["power_30", "!range_8", "range_30"]
+        },
+        {
+            "name": "cast Outbreak",
+            "key": "9",
+            "conditions": ["rune_1", "range_30", "!virulent_plague_debuff"]
+        },
+        {
+            "name": "cast Leap (pet) at range if Death Grip on cooldown",
+            "key": ".",
+            "conditions": ["leap", "!range_8", "range_30", "player_has_pet", "!death_grip"]
+        },
+
+        
+        {
+            "group": "START GROUP: EXPEND EXCESS RESOURCES: PRIORITY OVER ROTATION",
+            "name": "cast Death Coil at 80 power",
+            "key": "2",
+            "conditions": ["power_80", "range_30"]
+        },
+
+        {
+            "group": "START GROUP: ON COOLDOWN ABILITIES",
+            "name": "cast Apocalypse with 1+ festering wounds",
+            "key": "j",
+            "conditions": ["apocalypse", "range_8", "festering_wound_debuff_1_stack"]
+        },
+
+
+        {
+            "group": "START GROUP: MULTIPLE ENEMIES IN MELEE",
+            "name": "cast Death and Decay with multiple enemies in melee",
+            "key": "5",
+            "conditions": ["death_and_decay", "rune_1", "range_8_3+"]
+        },
+        {
+            "name": "cast Epidemic with multiple enemies in melee",
+            "key": "g",
+            "conditions": ["power_30", "range_8_3+", "range_30", "virulent_plague_debuff"]
+        },        
+        {
+            "name": "cast Scourge Strike in Death and Decay with multiple enemies in melee",
+            "key": "8",
+            "conditions": ["rune_1", "range_8_3+", "death_and_decay_buff"]
+        },
+        
+
+       
+        {
+            "group": "START GROUP: SINGLE TARGET ROTATION",
+            "name": "cast Scourge Strike with 1+ festering wounds",
+            "key": "8",
+            "conditions": ["rune_1", "range_8", "festering_wound_debuff_1_stack"]
+        },
+        {
+            "name": "cast Festering Strike",
+            "key": "7",
+            "conditions": ["rune_2", "range_8"]
+        }
+    ]
+} 

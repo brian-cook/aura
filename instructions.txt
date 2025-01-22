@@ -1,0 +1,179 @@
+Getting Started with Aura
+=======================
+
+1. Python Setup
+--------------
+a) Check if Python is installed:
+   - Open Command Prompt (Windows key + R, type "cmd", press Enter)
+   - Type: python --version
+   - You should see Python 3.11 or higher. If not, download from python.org
+   - Note: If using Windows Store Python, use the alternative setup in step c)
+
+b) Install Dependencies:
+   - Open Command Prompt in the project folder (hold Shift + right-click in the folder, "Open PowerShell window here")
+   - Run: pip install -r requirements.txt
+   - If you get errors, try: python -m pip install -r requirements.txt
+
+c) Install the Project:
+   For standard Python installation:
+   - In the same Command Prompt window
+   - Run: python setup.py develop
+   - This installs the project in development mode
+
+   For Windows Store Python:
+   - Run PowerShell as Administrator
+   - Run: pip install -e .
+   - Or alternatively, just run the project from the root directory
+   - Make sure to always run scripts from the project root
+
+   If you get permission errors:
+   - Don't worry about installing in development mode
+   - Just run all commands from the project root directory
+   - Make sure the project root is in your PYTHONPATH:
+     ```
+     $env:PYTHONPATH = "C:\Users\YourUsername\path\to\aura;$env:PYTHONPATH"
+     ```
+
+2. World of Warcraft Setup
+-------------------------
+a) Find your WoW addon folder:
+   - Usually at: C:\Program Files (x86)\World of Warcraft\_retail_\Interface\AddOns
+   - If not there, open WoW, click 'Addons' in the character select screen, click 'Open Addon Folder'
+
+b) Install WeakAuras:
+   - Download WeakAuras from: https://www.curseforge.com/wow/addons/weakauras-2
+   - Extract to your WoW addon folder
+   - Make sure you have version 3.7.8 or higher
+
+c) Configure WoW paths:
+   - Open config.py in a text editor
+   - Update WOW_PATH to your WoW installation directory
+   - Update the account name in WEAKAURAS_PATH (change "YABUCHI" to your account name)
+   - Save the file
+
+3. Setting Up Aura
+-----------------
+a) Deploy the AuraManager addon:
+   - Run: python scripts/deploy_auras.py
+   - This copies the addon to your WoW folder
+   - You should see a "Deployment Summary" showing copied files
+   - If it can't find your WoW folder, check the paths in config.py
+
+b) Generate WeakAuras:
+   - Run: python scripts/aura_generator.py
+   - This creates the WeakAura Lua files
+   - Check AuraManager/auras/ folder to verify files were created
+   - The process might take a few minutes for many auras
+
+c) Import the WeakAuras in-game:
+   - Start World of Warcraft
+   - Log into your character
+   - Type: /am export
+   - You should see a message that auras were imported
+   - Type: /wa to open WeakAuras and verify they appear
+
+4. Creating Your Own Auras
+-------------------------
+a) Understanding the layout:
+   - Open scripts/layout.json
+   - Each entry defines a screen position and color to check
+   - Example:
+     {
+         "id": "power_40",
+         "name": "Power 40%",
+         "xOffset": 0,
+         "yOffset": 0,
+         "backgroundColor": {
+             "r": 1.0,
+             "g": 0.0,
+             "b": 0.0,
+             "a": 1.0
+         }
+     }
+
+b) Creating action profiles:
+   - Check scripts/profiles/ for examples
+   - Each profile defines what keys to press when conditions are met
+   - Example:
+     {
+         "name": "Example Profile",
+         "actions": [
+             {
+                 "key": "1",
+                 "conditions": ["power_40", "combat"]
+             }
+         ]
+     }
+
+5. Running the Monitor
+---------------------
+a) Basic usage:
+   - Run: python scripts/screen_monitor.py
+   - Hold right trigger on gamepad (or 'r' key) to activate
+   - Press ESC to exit
+   - Make sure WoW is in fullscreen windowed mode for best results
+
+b) Using different profiles:
+   - Run: python scripts/screen_monitor.py -p scripts/profiles/your_profile.json
+   - Default profile is scripts/profiles/rogue.json
+
+c) Debug mode:
+   - Add --debug flag: python scripts/screen_monitor.py --debug
+   - Shows detailed info about what's being detected
+
+6. Common Issues
+---------------
+a) "Module not found" errors:
+   - Make sure you ran pip install -r requirements.txt
+   - Try running python with -m flag: python -m scripts.screen_monitor
+3440 * 1.875 x 1440 / 768 -> 3840 x 2160
+b) WeakAuras not showing:
+   - Type /reload in WoW
+   - Check if WeakAuras addon is enabled
+   - Try /am export again
+   - Verify your account name in config.py is correct
+
+c) Actions not triggering:
+   - Run in debug mode to see what's being detected
+   - Check your profile JSON for correct condition names
+   - Verify WeakAuras are visible and in correct positions
+   - Make sure you're in fullscreen windowed mode
+
+d) Screen detection issues:
+   - Make sure WoW is in fullscreen windowed mode
+   - Check layout.json coordinates match WeakAura positions
+   - Try running in debug mode to see color values
+   - Adjust your UI scale if needed
+
+e) Deployment errors:
+   - Check WoW path in config.py
+   - Make sure WoW is closed during deployment
+   - Run deploy_auras.py with --debug flag
+   - Check permissions on WoW addon folder
+
+7. Useful Commands
+-----------------
+- Generate auras: python scripts/aura_generator.py
+- Deploy addon: python scripts/deploy_auras.py
+- Run monitor: python scripts/screen_monitor.py
+- Import bindings: python scripts/import_bindings.py
+- In-game commands:
+  - /am export : Export auras to WeakAuras
+  - /am delete : Delete all AuraManager auras
+  - /wa : Open WeakAuras interface
+
+8. File Structure
+----------------
+Important files you might need to edit:
+- config.py : Configure WoW directory path and account name
+- scripts/layout.json : Define screen positions to check
+- scripts/profiles/*.json : Define action profiles
+- AuraManager/auras/ : Generated WeakAura files
+
+Remember:
+- Always run scripts from the project root directory
+- Keep WeakAuras addon updated
+- Back up your profiles before making changes
+- Use debug mode if something's not working
+- Make sure WoW is in fullscreen windowed mode
+- Update config.py with your specific paths 

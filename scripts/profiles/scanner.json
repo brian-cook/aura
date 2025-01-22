@@ -1,0 +1,75 @@
+{
+    "name": "Scanner",
+    "actions": [
+        {
+            "name": "Gouge Target Cross",
+            "key": "4",
+            "conditions": ["icon_cross_exists","can_cc_cross", "gouge", "power_45", "!target_cross"]
+        },
+        {
+            "name": "Gouge Cross",
+            "key": "3",
+            "conditions": ["gouge", "power_45", "target_cross", "can_cc_cross"]
+        },
+        {
+            "name": "Return to Skull (after gouging)",
+            "key": "4",
+            "conditions": ["icon_skull_exists", "!target_skull", "!can_cc_cross"]
+        },
+
+
+        
+        {
+            "name": "Gouge Target Diamond: /targetenemy",
+            "key": "i",
+            "conditions": ["icon_diamond_exists", "can_cc_diamond", "!target_diamond", "gouge", "power_45"]
+        },
+        {
+            "name": "Gouge Diamond",
+            "key": "0",
+            "conditions": ["target_diamond", "can_cc_diamond", "gouge", "power_45"]
+        },
+        {
+            "name": "Gouge Target Square: /targetenemy",
+            "key": "i",
+            "conditions": ["icon_square_exists", "can_cc_square", "!target_square", "gouge", "power_45"]
+        },
+        {
+            "name": "Gouge Square",
+            "key": "0",
+            "conditions": ["target_square", "can_cc_square", "gouge", "power_45"]
+        },
+        {
+            "name": "Gouge Target Moon: /targetenemy",
+            "key": "i",
+            "conditions": ["icon_moon_exists", "can_cc_moon", "!target_moon", "gouge", "power_45"]
+        },
+        {
+            "name": "Gouge Moon",
+            "key": "0",
+            "conditions": ["target_moon", "can_cc_moon", "gouge", "power_45"]
+        },
+        {
+            "name": "Gouge Target Star: /targetenemy",
+            "key": "i",
+            "conditions": ["icon_star_exists", "can_cc_star", "!target_star", "gouge", "power_45"]
+        },
+        {
+            "name": "Gouge Star",
+            "key": "0",
+            "conditions": ["target_star", "can_cc_star", "gouge", "power_45"]
+        },
+        {
+            "name": "Gouge Target Triangle: /targetenemy",
+            "key": "i",
+            "conditions": ["icon_triangle_exists", "can_cc_triangle", "!target_triangle", "gouge", "power_45"]
+        },
+        {
+            "name": "Gouge Triangle",
+            "key": "0",
+            "conditions": ["target_triangle", "can_cc_triangle", "gouge", "power_45"]
+        }
+
+       
+    ]
+} 

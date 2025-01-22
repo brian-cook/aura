@@ -1,0 +1,207 @@
+{
+    "name": "Paladin Retail",
+    "actions": [
+        {
+            "group": "START GROUP: CC COUNTERS",
+            "name": "use PVP trinket when crowd controlled",
+            "key": "'",
+            "conditions": ["pvp_trinket", "player_crowd_controlled"]
+        },
+        {
+            "name": "cast Blessing of Freedom on self when rooted",
+            "key": "[",
+            "conditions": ["blessing_of_freedom", "power_5", "player_rooted"]
+        },
+        {
+            "name": "cast Divine Protection on self when stunned",
+            "key": ".",
+            "conditions": ["divine_protection", "power_5", "player_stunned", "combat"]
+        },
+
+
+
+        {
+            "group": "START GROUP: EMERGENCY ACTIONS WHEN LOW HEALTH",
+            "name": "cast Divine Shield at 20% health",
+            "key": "y",
+            "conditions": ["divine_shield", "combat", "health_under_20", "!forbearance_debuff"]
+        },
+        {
+            "name": "cast Lay on Hands at 20% health",
+            "key": "u",
+            "conditions": ["lay_on_hands", "!divine_shield", "combat", "health_under_20", "!forbearance_debuff"]
+        },
+        {
+            "name": "cast Blessing of Protection at 20% health",
+            "key": "=",
+            "conditions": ["blessing_of_protection", "combat", "health_under_20", "!forbearance_debuff"]
+        },
+        {
+            "name": "use potion at 50% health",
+            "key": "]",
+            "conditions": ["potion_in_inventory", "combat", "health_under_50", "!potion_cooldown"]
+        },
+
+
+        {
+            "group": "START GROUP: SELF HEALS AND CLEANSES",
+            "name": "Cast Stoneform on self with poison, disease, curse, magic, bleed debuff",
+            "key": ";",
+            "conditions": ["stoneform", "player_all_debuff"]
+        },
+        {
+            "name": "Cast Cleanse on self with magic debuff",
+            "key": "k",
+            "conditions": ["cleanse", "power_10", "player_magic_debuff"]
+        },
+        {
+            "name": "Cast Holy Shock on self if health_under_75 (need Macro)",
+            "key": "l",
+            "conditions": ["holy_shock", "power_15", "health_under_75"]
+        },
+        {
+            "name": "Cast Word of Glory on self if health_under_75",
+            "key": "f",
+            "conditions": ["word_of_glory", "holy_power_3", "health_under_75", "combat"]
+        },
+        {
+            "name": "Cast Flash of Light on self if health_under_50",
+            "key": "p",
+            "conditions": ["flash_of_light", "power_10", "health_under_50"]
+        },
+  
+
+        {
+            "group": "START GROUP: OOC BUFFS",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+        
+
+        {
+            "group": "START GROUP: MIKE HEALS AND BUFFS",
+            "name": "Cast Holy Shock on Mike if health_under_50 (need Macro)",
+            "key": "z",
+            "conditions": ["holy_shock", "power_10", "mike_health_under_50"]
+        }, 
+        {
+            "name": "Cast Blesssing of Sacrifice on Mike if health_under_50 (need Macro)",
+            "key": ",",
+            "conditions": ["blessing_of_sacrifice", "power_10", "mike_health_under_50"]
+        }, 
+        {
+            "name": "Cast Holy Prism on Mike if health_under_50 (need Macro)",
+            "key": "n",
+            "conditions": ["holy_prism", "power_10", "mike_health_under_50"]
+        }, 
+        {
+            "name": "Cast Flash of Light on Mike if health_under_50 (need Macro)",
+            "key": "b",
+            "conditions": ["flash_of_light", "power_10", "mike_health_under_50", "!player_moving"]
+        }, 
+
+        
+        {
+            "group": "START GROUP: INTERUPTS ON TARGET",
+            "name": "cast Rebuke when target is casting",
+            "key": "1",
+            "conditions": ["rebuke", "range_8", "target_interruptible"]
+        }, 
+        {
+            "name": "cast Hammer of Justice when target is casting",
+            "key": "r",
+            "conditions": ["hammer_of_justice", "power_10", "range_8", "target_interruptible"]
+        }, 
+
+ 
+        {
+            "group": "START GROUP: COMBAT BUFFS",
+            "name": "Cast Avenging Wrath if target is elite or player",
+            "key": "2",
+            "conditions": ["avenging_wrath", "combat", "target_elite_or_player"]
+        },
+
+
+        {
+            "group": "START GROUP: CC ON TARGET(S)",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+
+        {
+            "group": "START GROUP: REACTIONARIES: HIGH PRIORITY ",
+            "name": "cast Hammer of Wrath when target health below 20%",
+            "key": "7",
+            "conditions": ["hammer_of_wrath", "power_10", "range_30", "target_health_under_20"]
+        },
+
+
+        {
+            "group": "START GROUP: RANGED ATTACKS: PRIORITY OVER MELEE",
+            "name": "Divine Steed to reach target outside of melee",
+            "key": "j",
+            "conditions": ["divine_steed", "!judgement", "!range_15"]
+        },
+
+        
+        {
+            "group": "START GROUP: EXPEND EXCESS RESOURCES: PRIORITY OVER ROTATION",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+
+        {
+            "group": "START GROUP: ON COOLDOWN ABILITIES",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+
+        {
+            "group": "START GROUP: MULTIPLE ENEMIES IN MELEE",
+            "name": "cast Divine Toll with multiple enemies in melee",
+            "key": "e",
+            "conditions": ["divine_toll", "range_8_3+"]
+        },
+        {
+            "name": "cast Consecration with multiple enemies in melee",
+            "key": "t",
+            "conditions": ["consecration", "range_8_3+"]
+        },
+
+       
+        {
+            "group": "START GROUP: SINGLE TARGET ROTATION",
+            "name": "cast Shield of the Righteous",
+            "key": "5",
+            "conditions": ["shield_of_righteousness_retail", "holy_power_3", "range_8", "!health_under_75"]
+        },
+        {
+            "name": "cast Holy Prism at enemy",
+            "key": "3",
+            "conditions": ["holy_prism", "power_10", "range_40"]
+        },
+        {
+            "name": "cast Holy Shock at enemy",
+            "key": "0",
+            "conditions": ["holy_shock", "power_10", "range_40"]
+        },
+        {
+            "name": "cast Judgement",
+            "key": "8",
+            "conditions": ["judgement", "power_10", "range_30"]
+        },
+        {
+            "name": "cast Crusader Strike",
+            "key": "9",
+            "conditions": ["crusader_strike_retail", "power_10", "range_8"]
+        }
+
+    ]
+} 

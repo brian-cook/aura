@@ -1,0 +1,1994 @@
+[
+    {
+        "id": "a_test",
+        "name": "A Test",
+        "xOffset": 100,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "a_test_combat_log",
+        "name": "A test combat log",
+        "xOffset": 104,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "bandage_in_inventory",
+        "name": "Bandage in Inventory",
+        "xOffset": 108,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "between_the_eyes",
+        "name": "Between the Eyes",
+        "xOffset": 112,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "blade_dance",
+        "name": "Blade Dance",
+        "xOffset": 116,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "blade_flurry",
+        "name": "Blade Flurry",
+        "xOffset": 120,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "blunderbuss",
+        "name": "Blunderbuss",
+        "xOffset": 124,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "bomb",
+        "name": "Bomb",
+        "xOffset": 128,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "bomb_in_inventory",
+        "name": "Bomb in Inventory",
+        "xOffset": 132,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "can_cc_circle",
+        "name": "Can CC Circle",
+        "xOffset": 136,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "can_cc_cross",
+        "name": "Can CC Cross",
+        "xOffset": 140,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "can_cc_diamond",
+        "name": "Can CC Diamond",
+        "xOffset": 144,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "can_cc_moon",
+        "name": "Can CC Moon",
+        "xOffset": 148,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "can_cc_square",
+        "name": "Can CC Square",
+        "xOffset": 152,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "can_cc_star",
+        "name": "Can CC Star",
+        "xOffset": 156,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "can_cc_triangle",
+        "name": "Can CC Triangle",
+        "xOffset": 160,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "combat",
+        "name": "Combat",
+        "xOffset": 164,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "combat_start",
+        "name": "Combat Start",
+        "xOffset": 168,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "combo_points_1",
+        "name": "Combo Points 1",
+        "xOffset": 172,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "combo_points_2",
+        "name": "Combo Points 2",
+        "xOffset": 176,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "combo_points_3",
+        "name": "Combo Points 3",
+        "xOffset": 180,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "combo_points_4",
+        "name": "Combo Points 4",
+        "xOffset": 184,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "combo_points_5",
+        "name": "Combo Points 5",
+        "xOffset": 188,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "enemy_loose",
+        "name": "Enemy Loose",
+        "xOffset": 192,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "envenom",
+        "name": "Envenom",
+        "xOffset": 196,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "evasion",
+        "name": "Evasion",
+        "xOffset": 200,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "eviscerate",
+        "name": "Eviscerate",
+        "xOffset": 204,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "fan_of_knives",
+        "name": "Fan of Knives",
+        "xOffset": 208,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "fecal_dead",
+        "name": "Fecal Dead",
+        "xOffset": 212,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "focus_equals_target",
+        "name": "Focus equals Target",
+        "xOffset": 216,
+        "yOffset": 100,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "gouge",
+        "name": "Gouge",
+        "xOffset": 100,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "gouge_debuff",
+        "name": "Gouge Debuff",
+        "xOffset": 104,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "health_under_20",
+        "name": "Health Under 20",
+        "xOffset": 108,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "health_under_50",
+        "name": "Health Under 50",
+        "xOffset": 112,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "health_under_75",
+        "name": "Health Under 75",
+        "xOffset": 116,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "icon_circle_exists",
+        "name": "Icon Circle Exists",
+        "xOffset": 120,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "icon_cross_exists",
+        "name": "Icon Cross Exists",
+        "xOffset": 124,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "icon_diamond_exists",
+        "name": "Icon Diamond Exists",
+        "xOffset": 128,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "icon_moon_exists",
+        "name": "Icon Moon Exists",
+        "xOffset": 132,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "icon_skull_exists",
+        "name": "Icon Skull Exists",
+        "xOffset": 136,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "icon_square_exists",
+        "name": "Icon Square Exists",
+        "xOffset": 140,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "icon_star_exists",
+        "name": "Icon Star Exists",
+        "xOffset": 144,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "icon_triangle_exists",
+        "name": "Icon Triangle Exists",
+        "xOffset": 148,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "kick",
+        "name": "Kick",
+        "xOffset": 152,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "leaving_combat",
+        "name": "Leaving Combat",
+        "xOffset": 156,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "main_gauche",
+        "name": "Main Gauche",
+        "xOffset": 160,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "mana_10",
+        "name": "Mana 10",
+        "xOffset": 164,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "mana_100",
+        "name": "Mana 100",
+        "xOffset": 168,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "mana_20",
+        "name": "Mana 20",
+        "xOffset": 172,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "mana_30",
+        "name": "Mana 30",
+        "xOffset": 176,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "mana_40",
+        "name": "Mana 40",
+        "xOffset": 180,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "mana_50",
+        "name": "Mana 50",
+        "xOffset": 184,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "mana_60",
+        "name": "Mana 60",
+        "xOffset": 188,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "mana_70",
+        "name": "Mana 70",
+        "xOffset": 192,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "mana_80",
+        "name": "Mana 80",
+        "xOffset": 196,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "mana_90",
+        "name": "Mana 90",
+        "xOffset": 200,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "mike_health_under_50",
+        "name": "Mike Health Under 50",
+        "xOffset": 204,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "mutilate",
+        "name": "Mutilate",
+        "xOffset": 208,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "pvp_trinket",
+        "name": "PVP Trinket",
+        "xOffset": 212,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "party_1_health_under_70",
+        "name": "Party 1 Health Under 70",
+        "xOffset": 216,
+        "yOffset": 96,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "party_1_range_35",
+        "name": "Party 1 Range 35",
+        "xOffset": 100,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "party_1_sacred_shield_buff",
+        "name": "Party 1 Sacred Shield Buff",
+        "xOffset": 104,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "party_2_health_under_70",
+        "name": "Party 2 Health Under 70",
+        "xOffset": 108,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "party_3_health_under_70",
+        "name": "Party 3 Health Under 70",
+        "xOffset": 112,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "party_4_health_under_70",
+        "name": "Party 4 Health Under 70",
+        "xOffset": 116,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "pet_combat",
+        "name": "Pet Combat",
+        "xOffset": 120,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "pet_focus_15",
+        "name": "Pet Focus 15",
+        "xOffset": 124,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "pet_focus_40",
+        "name": "Pet Focus 40",
+        "xOffset": 128,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "pet_focus_50",
+        "name": "Pet Focus 50",
+        "xOffset": 132,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "pet_health_under_20",
+        "name": "Pet Health Under 20",
+        "xOffset": 136,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "pet_health_under_50",
+        "name": "Pet Health Under 50",
+        "xOffset": 140,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "pet_health_under_75",
+        "name": "Pet Health Under 75",
+        "xOffset": 144,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "pet_range_20",
+        "name": "Pet Range 20",
+        "xOffset": 148,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "pet_range_8",
+        "name": "Pet Range 8",
+        "xOffset": 152,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "pet_target_aggro",
+        "name": "Pet Target Aggro",
+        "xOffset": 156,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_all_debuff",
+        "name": "Player All Debuff",
+        "xOffset": 160,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_attacking",
+        "name": "Player Attacking",
+        "xOffset": 164,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_casting",
+        "name": "Player Casting",
+        "xOffset": 168,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_casting_heal",
+        "name": "Player Casting Heal",
+        "xOffset": 172,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_charmed",
+        "name": "Player Charmed",
+        "xOffset": 176,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_charmed_feared_or_slept",
+        "name": "Player Charmed Feared or Slept",
+        "xOffset": 180,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_crowd_controlled",
+        "name": "Player Crowd Controlled",
+        "xOffset": 184,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_diseased",
+        "name": "Player Diseased",
+        "xOffset": 188,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_dodge",
+        "name": "Player Dodge",
+        "xOffset": 192,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_feared",
+        "name": "Player Feared",
+        "xOffset": 196,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_has_pet",
+        "name": "Player Has Pet",
+        "xOffset": 200,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_magic_debuff",
+        "name": "Player Magic Debuff",
+        "xOffset": 204,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_moving",
+        "name": "Player Moving",
+        "xOffset": 208,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_poisoned",
+        "name": "Player Poisoned",
+        "xOffset": 212,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_rooted",
+        "name": "Player Rooted",
+        "xOffset": 216,
+        "yOffset": 92,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_silenced",
+        "name": "Player Silenced",
+        "xOffset": 100,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_slowed",
+        "name": "Player Slowed",
+        "xOffset": 104,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_stunned",
+        "name": "Player Stunned",
+        "xOffset": 108,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_weaked_soul_debuff",
+        "name": "Player Weaked Soul Debuff",
+        "xOffset": 112,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_has_aggro_from_any_mob",
+        "name": "Player has Aggro from Any Mob",
+        "xOffset": 116,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "player_not_behind_target",
+        "name": "Player not behind target",
+        "xOffset": 120,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "potion",
+        "name": "Potion",
+        "xOffset": 124,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "potion_cooldown",
+        "name": "Potion Cooldown",
+        "xOffset": 128,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "potion_in_inventory",
+        "name": "Potion in Inventory",
+        "xOffset": 132,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "power_10",
+        "name": "Power 10",
+        "xOffset": 136,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "power_100",
+        "name": "Power 100",
+        "xOffset": 140,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "power_15",
+        "name": "Power 15",
+        "xOffset": 144,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "power_20",
+        "name": "Power 20",
+        "xOffset": 148,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "power_25",
+        "name": "Power 25",
+        "xOffset": 152,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "power_30",
+        "name": "Power 30",
+        "xOffset": 156,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "power_35",
+        "name": "Power 35",
+        "xOffset": 160,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "power_40",
+        "name": "Power 40",
+        "xOffset": 164,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "power_45",
+        "name": "Power 45",
+        "xOffset": 168,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "power_5",
+        "name": "Power 5",
+        "xOffset": 172,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "power_50",
+        "name": "Power 50",
+        "xOffset": 176,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "power_60",
+        "name": "Power 60",
+        "xOffset": 180,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "power_70",
+        "name": "Power 70",
+        "xOffset": 184,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "power_80",
+        "name": "Power 80",
+        "xOffset": 188,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "power_90",
+        "name": "Power 90",
+        "xOffset": 192,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "range_10",
+        "name": "Range 10",
+        "xOffset": 196,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "range_15",
+        "name": "Range 15",
+        "xOffset": 200,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "range_25",
+        "name": "Range 25",
+        "xOffset": 204,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "range_30",
+        "name": "Range 30",
+        "xOffset": 208,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "range_35",
+        "name": "Range 35",
+        "xOffset": 212,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "range_40",
+        "name": "Range 40",
+        "xOffset": 216,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "range_8",
+        "name": "Range 8",
+        "xOffset": 100,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "range_8_2+",
+        "name": "Range 8 2+",
+        "xOffset": 104,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "range_8_3+",
+        "name": "Range 8 3+",
+        "xOffset": 108,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "recently_bandaged_debuff",
+        "name": "Recently Bandaged Debuff",
+        "xOffset": 112,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "role_toggle",
+        "name": "Role Toggle",
+        "xOffset": 116,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "saber_slash",
+        "name": "Saber Slash",
+        "xOffset": 120,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "sap",
+        "name": "Sap",
+        "xOffset": 124,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "sap_debuff",
+        "name": "Sap Debuff",
+        "xOffset": 128,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "scanner",
+        "name": "Scanner",
+        "xOffset": 132,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "scanner_test",
+        "name": "Scanner Test",
+        "xOffset": 136,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "shadowstep",
+        "name": "Shadowstep",
+        "xOffset": 140,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "shadowstrike",
+        "name": "Shadowstrike",
+        "xOffset": 144,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "sinister_strike",
+        "name": "Sinister Strike",
+        "xOffset": 148,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "slice_and_dice_buff",
+        "name": "Slice and Dice Buff",
+        "xOffset": 152,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "sprint",
+        "name": "Sprint",
+        "xOffset": 156,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "stealth_buff",
+        "name": "Stealth Buff",
+        "xOffset": 160,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "swing_timer_test",
+        "name": "Swing Timer Test",
+        "xOffset": 164,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "swing_timer_at_max",
+        "name": "Swing Timer at Max",
+        "xOffset": 168,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_aggro",
+        "name": "Target Aggro",
+        "xOffset": 172,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_casting",
+        "name": "Target Casting",
+        "xOffset": 176,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_circle",
+        "name": "Target Circle",
+        "xOffset": 180,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_cross",
+        "name": "Target Cross",
+        "xOffset": 184,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_diamond",
+        "name": "Target Diamond",
+        "xOffset": 188,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_health_under_20",
+        "name": "Target Health Under 20",
+        "xOffset": 192,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_health_under_35",
+        "name": "Target Health Under 35",
+        "xOffset": 196,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_health_under_50",
+        "name": "Target Health Under 50",
+        "xOffset": 200,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_health_under_75",
+        "name": "Target Health Under 75",
+        "xOffset": 204,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_health_under_90",
+        "name": "Target Health Under 90",
+        "xOffset": 208,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_interruptible",
+        "name": "Target Interruptible",
+        "xOffset": 212,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_interruptible_range_12",
+        "name": "Target Interruptible Range 12",
+        "xOffset": 216,
+        "yOffset": 84,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_is_player",
+        "name": "Target Is Player",
+        "xOffset": 100,
+        "yOffset": 80,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_moon",
+        "name": "Target Moon",
+        "xOffset": 104,
+        "yOffset": 80,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_moving",
+        "name": "Target Moving",
+        "xOffset": 108,
+        "yOffset": 80,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_skull",
+        "name": "Target Skull",
+        "xOffset": 112,
+        "yOffset": 80,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_square",
+        "name": "Target Square",
+        "xOffset": 116,
+        "yOffset": 80,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_star",
+        "name": "Target Star",
+        "xOffset": 120,
+        "yOffset": 80,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_triangle",
+        "name": "Target Triangle",
+        "xOffset": 124,
+        "yOffset": 80,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_interruptible_range_15",
+        "name": "Target interruptible Range 15",
+        "xOffset": 128,
+        "yOffset": 80,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_interruptible_range_30",
+        "name": "Target interruptible Range 30",
+        "xOffset": 132,
+        "yOffset": 80,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_is_elite_boss_or_player",
+        "name": "Target is Elite Boss or Player",
+        "xOffset": 136,
+        "yOffset": 80,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "target_is_humanoid",
+        "name": "Target is Humanoid",
+        "xOffset": 140,
+        "yOffset": 80,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "theiranus_dead",
+        "name": "Theiranus Dead",
+        "xOffset": 144,
+        "yOffset": 80,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "threat_under_80",
+        "name": "Threat Under 80",
+        "xOffset": 148,
+        "yOffset": 80,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "throw",
+        "name": "Throw",
+        "xOffset": 152,
+        "yOffset": 80,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "undead_or_mechanical",
+        "name": "Undead or Mechanical",
+        "xOffset": 156,
+        "yOffset": 80,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "vanish",
+        "name": "Vanish",
+        "xOffset": 160,
+        "yOffset": 80,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    }
+]

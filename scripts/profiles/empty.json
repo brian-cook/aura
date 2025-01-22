@@ -1,0 +1,140 @@
+{
+    "name": "Empty",
+    "actions": [
+        {
+            "group": "START GROUP: CC COUNTERS",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+
+        {
+            "group": "START GROUP: EMERGENCY ACTIONS WHEN LOW HEALTH",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+
+        {
+            "group": "START GROUP: SELF HEALS AND CLEANSES",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+
+        {
+            "group": "START GROUP: OOC BUFFS",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+        
+
+        {
+            "group": "START GROUP: MIKE HEALS AND BUFFS",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        }, 
+
+        
+        {
+            "group": "START GROUP: INTERUPTS ON TARGET",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        }, 
+
+ 
+        {
+            "group": "START GROUP: COMBAT BUFFS",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+
+        {
+            "group": "START GROUP: CC ON TARGET(S)",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+
+        {
+            "group": "START GROUP: REACTIONARIES: HIGH PRIORITY ",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+
+        {
+            "group": "START GROUP: RANGED ATTACKS: PRIORITY OVER MELEE",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+        
+        {
+            "group": "START GROUP: EXPEND EXCESS RESOURCES: PRIORITY OVER ROTATION",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+
+        {
+            "group": "START GROUP: ON COOLDOWN ABILITIES",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+
+        {
+            "group": "START GROUP: MULTIPLE ENEMIES IN MELEE",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+       
+        {
+            "group": "START GROUP: SINGLE TARGET ROTATION",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+        {
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+        {
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+        {
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+        {
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+        {
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        }
+    ]
+} 
