@@ -37,21 +37,21 @@ ns.auras["player_casting_heal"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "unit",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Cast",
-                names = {},
-                spellIds = {},
-                use_unit = true,
                 subeventSuffix = "_CAST_START",
+                event = "Cast",
+                subeventPrefix = "SPELL",
+                use_unit = true,
+                spellIds = {},
+                unit = "player",
+                names = {},
+                debuffType = "HELPFUL",
+                spellName = 0,
                 realSpellName = 0,
                 use_spellName = true,
-                use_genericShowOn = true,
                 genericShowOn = "showOnCooldown",
+                use_genericShowOn = true,
                 use_track = true,
-                spellName = 0,
                 use_castType = false,
                 use_destUnit = false,
                 use_spellNames = true,
@@ -70,10 +70,10 @@ ns.auras["player_casting_heal"] = {
         class = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

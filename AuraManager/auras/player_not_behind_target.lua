@@ -37,45 +37,45 @@ ns.auras["player_not_behind_target"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
+                custom_hide = "timed",
                 type = "custom",
-                unit = "target",
-                subeventPrefix = "SPELL",
+                subeventSuffix = "_CAST_START",
                 duration = ".5",
                 event = "Crowd Controlled",
-                names = {},
+                subeventPrefix = "SPELL",
                 custom_type = "event",
+                use_unit = true,
+                spellIds = {},
                 custom = [[function(event, arg1, arg2)
     if event == "UI_ERROR_MESSAGE" and string.find(arg2, "be behind your") then
         return true
     end
     return false
 end]],
-                spellIds = {},
-                use_unit = true,
-                subeventSuffix = "_CAST_START",
-                custom_hide = "timed",
+                unit = "target",
+                names = {},
+                debuffType = "HELPFUL",
                 use_inverse = false,
                 auranames = {
                     "Quick Flame Ward",
                 },
                 unitExists = false,
-                useRem = false,
-                useName = true,
-                use_debuffClass = false,
                 matchesShowOn = "showOnActive",
+                use_debuffClass = false,
+                useName = true,
+                useRem = false,
                 debuffClass = {
                     magic = true,
                 },
+                interruptSchool = 16,
+                useExactSpellId = false,
                 use_controlType = true,
                 use_interruptSchool = true,
-                useExactSpellId = false,
-                controlType = "ROOT",
                 events = "UI_ERROR_MESSAGE",
+                controlType = "ROOT",
                 auraspellids = {
                     "116",
                 },
-                interruptSchool = 16,
             },
             untrigger = {},
         },
@@ -92,10 +92,10 @@ end]],
             },
             single = "MAGE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

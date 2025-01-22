@@ -37,14 +37,14 @@ ns.auras["player_diseased"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HARMFUL",
                 type = "aura2",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Health",
-                names = {},
-                spellIds = {},
                 subeventSuffix = "_CAST_START",
+                event = "Health",
+                subeventPrefix = "SPELL",
+                spellIds = {},
+                unit = "player",
+                names = {},
+                debuffType = "HARMFUL",
                 auranames = {
                     "17183",
                     "17292",
@@ -70,10 +70,10 @@ ns.auras["player_diseased"] = {
                     "8313",
                 },
                 unitExists = false,
-                useRem = false,
-                useName = false,
-                use_debuffClass = true,
                 matchesShowOn = "showOnActive",
+                use_debuffClass = true,
+                useName = false,
+                useRem = false,
                 debuffClass = {
                     disease = true,
                 },
@@ -92,10 +92,10 @@ ns.auras["player_diseased"] = {
             },
             single = "ROGUE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

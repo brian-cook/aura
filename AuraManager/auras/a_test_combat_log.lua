@@ -37,13 +37,13 @@ ns.auras["a_test_combat_log"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "BOTH",
+                custom_hide = "custom",
                 type = "custom",
-                unit = "player",
-                subeventPrefix = "SPELL",
+                subeventSuffix = "_CAST_START",
                 event = "Health",
-                names = {},
+                subeventPrefix = "SPELL",
                 custom_type = "event",
+                spellIds = {},
                 custom = [[function(event, ...)
     -- Check if the player is in combat
     local inCombat = UnitAffectingCombat("player")
@@ -63,17 +63,17 @@ ns.auras["a_test_combat_log"] = {
     end
     return false
 end]],
-                spellIds = {},
                 check = "update",
-                subeventSuffix = "_CAST_START",
-                custom_hide = "custom",
+                unit = "player",
+                names = {},
+                debuffType = "BOTH",
                 auranames = {
                     "Amplify Magic",
                 },
                 unitExists = false,
-                useRem = false,
-                useName = true,
                 matchesShowOn = "showOnActive",
+                useName = true,
+                useRem = false,
                 ownOnly = true,
                 events = "PLAYER_REGEN_DISABLED PLAYER_REGEN_ENABLED",
             },
@@ -94,10 +94,10 @@ end]],
             },
             single = "MAGE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

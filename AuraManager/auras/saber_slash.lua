@@ -37,21 +37,21 @@ ns.auras["saber_slash"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "spell",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Action Usable",
-                names = {},
-                spellIds = {},
                 subeventSuffix = "_CAST_START",
+                event = "Action Usable",
+                subeventPrefix = "SPELL",
+                spellIds = {},
+                unit = "player",
+                names = {},
+                debuffType = "HELPFUL",
+                spellName = 424785,
                 use_inverse = false,
                 realSpellName = "Arcane Blast",
                 use_spellName = true,
-                use_genericShowOn = true,
                 genericShowOn = "showOnCooldown",
+                use_genericShowOn = true,
                 use_track = true,
-                spellName = 424785,
             },
             untrigger = {},
         },
@@ -68,10 +68,10 @@ ns.auras["saber_slash"] = {
             },
             single = "MAGE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
         race = {

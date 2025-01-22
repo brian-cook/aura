@@ -37,21 +37,21 @@ ns.auras["sprint"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "spell",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Action Usable",
-                names = {},
-                spellIds = {},
                 subeventSuffix = "_CAST_START",
+                event = "Action Usable",
+                subeventPrefix = "SPELL",
+                spellIds = {},
+                unit = "player",
+                names = {},
+                debuffType = "HELPFUL",
+                spellName = 2983,
                 use_inverse = false,
                 realSpellName = "Arcane Blast",
                 use_spellName = true,
-                use_genericShowOn = true,
                 genericShowOn = "showOnCooldown",
+                use_genericShowOn = true,
                 use_track = true,
-                spellName = 2983,
             },
             untrigger = {},
         },
@@ -68,10 +68,10 @@ ns.auras["sprint"] = {
             },
             single = "MAGE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
         race = {

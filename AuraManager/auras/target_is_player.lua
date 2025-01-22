@@ -38,21 +38,21 @@ ns.auras["target_is_player"] = {
         activeTriggerMode = 1,
         {
             trigger = {
-                debuffType = "HELPFUL",
+                custom_hide = "timed",
                 type = "unit",
-                unit = "target",
                 unevent = "auto",
-                subeventPrefix = "SPELL",
+                subeventSuffix = "_CAST_START",
+                customVariables = "{}",
                 duration = "1",
                 event = "Unit Characteristics",
-                names = {},
+                subeventPrefix = "SPELL",
                 custom_type = "stateupdate",
-                spellIds = {},
                 use_unit = true,
+                spellIds = {},
                 check = "update",
-                customVariables = "{}",
-                subeventSuffix = "_CAST_START",
-                custom_hide = "timed",
+                unit = "target",
+                names = {},
+                debuffType = "HELPFUL",
                 use_unitisunit = false,
                 use_character = true,
                 use_class = false,
@@ -74,20 +74,20 @@ ns.auras["target_is_player"] = {
             },
             single = "WARLOCK",
         },
-        size = {
-            multi = {},
-        },
-        spec = {
-            multi = {},
-        },
+        zoneIds = "",
+        use_level = false,
         level_operator = {
             "~=",
         },
         level = {
             "120",
         },
-        use_level = false,
-        zoneIds = "",
+        spec = {
+            multi = {},
+        },
+        size = {
+            multi = {},
+        },
     },
     animation = {
         start = {

@@ -38,15 +38,15 @@ ns.auras["target_is_elite_boss_or_player"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "unit",
-                unit = "target",
-                subeventPrefix = "SPELL",
-                event = "Unit Characteristics",
-                names = {},
-                spellIds = {},
-                use_unit = true,
                 subeventSuffix = "_CAST_START",
+                event = "Unit Characteristics",
+                subeventPrefix = "SPELL",
+                use_unit = true,
+                spellIds = {},
+                unit = "target",
+                names = {},
+                debuffType = "HELPFUL",
                 use_unitisunit = false,
                 use_character = false,
                 unitisunit = "Quinik",
@@ -74,8 +74,8 @@ ns.auras["target_is_elite_boss_or_player"] = {
                 },
                 use_classification = false,
                 use_namerealm = false,
-                use_specific_unitisunit = true,
                 use_npcId = false,
+                use_specific_unitisunit = true,
             },
             untrigger = {},
         },
@@ -91,10 +91,10 @@ ns.auras["target_is_elite_boss_or_player"] = {
             },
             single = "ROGUE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

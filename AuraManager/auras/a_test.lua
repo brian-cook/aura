@@ -37,21 +37,21 @@ ns.auras["a_test"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "BOTH",
                 type = "aura2",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Health",
-                names = {},
-                spellIds = {},
                 subeventSuffix = "_CAST_START",
+                event = "Health",
+                subeventPrefix = "SPELL",
+                spellIds = {},
+                unit = "player",
+                names = {},
+                debuffType = "BOTH",
                 auranames = {
                     "Amplify Magic",
                 },
                 unitExists = false,
-                useRem = false,
-                useName = true,
                 matchesShowOn = "showOnActive",
+                useName = true,
+                useRem = false,
                 ownOnly = true,
             },
             untrigger = {},
@@ -69,10 +69,10 @@ ns.auras["a_test"] = {
             },
             single = "MAGE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

@@ -37,20 +37,20 @@ ns.auras["throw"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "spell",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Action Usable",
-                names = {},
-                spellIds = {},
                 subeventSuffix = "_CAST_START",
+                event = "Action Usable",
+                subeventPrefix = "SPELL",
+                spellIds = {},
+                unit = "player",
+                names = {},
+                debuffType = "HELPFUL",
+                spellName = 2764,
                 realSpellName = "Counterspell",
                 use_spellName = true,
-                use_genericShowOn = true,
                 genericShowOn = "showOnCooldown",
+                use_genericShowOn = true,
                 use_track = true,
-                spellName = 2764,
             },
             untrigger = {},
         },
@@ -67,10 +67,10 @@ ns.auras["throw"] = {
             },
             single = "MAGE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
         race = {

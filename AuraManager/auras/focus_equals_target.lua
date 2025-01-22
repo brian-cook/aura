@@ -37,15 +37,15 @@ ns.auras["focus_equals_target"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "unit",
-                unit = "focus",
-                subeventPrefix = "SPELL",
-                event = "Unit Characteristics",
-                names = {},
-                spellIds = {},
-                use_unit = true,
                 subeventSuffix = "_CAST_START",
+                event = "Unit Characteristics",
+                subeventPrefix = "SPELL",
+                use_unit = true,
+                spellIds = {},
+                unit = "focus",
+                names = {},
+                debuffType = "HELPFUL",
                 use_unitisunit = true,
                 use_character = false,
                 use_class = false,
@@ -81,10 +81,10 @@ ns.auras["focus_equals_target"] = {
             },
             single = "ROGUE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

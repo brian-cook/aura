@@ -37,25 +37,25 @@ ns.auras["combo_points_3"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "unit",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Power",
-                names = {},
-                spellIds = {},
-                use_unit = true,
                 subeventSuffix = "_CAST_START",
+                event = "Power",
+                subeventPrefix = "SPELL",
+                use_unit = true,
+                spellIds = {},
+                unit = "player",
+                names = {},
+                debuffType = "HELPFUL",
                 use_power = true,
                 use_showCost = false,
                 powertype = 4,
                 use_powertype = true,
                 use_percentpower = false,
-                percentpower = {
-                    "5",
-                },
                 percentpower_operator = {
                     ">=",
+                },
+                percentpower = {
+                    "5",
                 },
                 power_operator = {
                     ">=",
@@ -78,10 +78,10 @@ ns.auras["combo_points_3"] = {
             },
             single = "ROGUE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

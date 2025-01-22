@@ -38,15 +38,17 @@ ns.auras["party_2_health_under_70"] = {
         activeTriggerMode = 1,
         {
             trigger = {
-                debuffType = "HELPFUL",
+                custom_hide = "timed",
                 type = "custom",
-                unit = "player",
                 unevent = "auto",
-                subeventPrefix = "SPELL",
+                subeventSuffix = "_CAST_START",
+                customVariables = "{}",
                 duration = "1",
                 event = "Health",
-                names = {},
+                subeventPrefix = "SPELL",
                 custom_type = "stateupdate",
+                use_unit = true,
+                spellIds = {},
                 custom = [[function(allstates)
     if not aura_env.last or GetTime() - aura_env.last > 0.5 then
         aura_env.last = GetTime()
@@ -73,12 +75,10 @@ ns.auras["party_2_health_under_70"] = {
         end
     end
 end]],
-                spellIds = {},
-                use_unit = true,
                 check = "update",
-                customVariables = "{}",
-                subeventSuffix = "_CAST_START",
-                custom_hide = "timed",
+                unit = "player",
+                names = {},
+                debuffType = "HELPFUL",
             },
             untrigger = {
                 custom = [[function()
@@ -100,20 +100,20 @@ end]],
             single = "WARLOCK",
         },
         use_spellknown = false,
-        size = {
-            multi = {},
-        },
-        spec = {
-            multi = {},
-        },
+        zoneIds = "",
+        use_level = false,
         level_operator = {
             "~=",
         },
         level = {
             "120",
         },
-        use_level = false,
-        zoneIds = "",
+        spec = {
+            multi = {},
+        },
+        size = {
+            multi = {},
+        },
     },
     animation = {
         start = {

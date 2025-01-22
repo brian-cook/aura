@@ -37,15 +37,15 @@ ns.auras["threat_under_80"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "unit",
-                unit = "target",
-                subeventPrefix = "SPELL",
-                event = "Threat Situation",
-                names = {},
-                spellIds = {},
-                use_unit = true,
                 subeventSuffix = "_CAST_START",
+                event = "Threat Situation",
+                subeventPrefix = "SPELL",
+                use_unit = true,
+                spellIds = {},
+                unit = "target",
+                names = {},
+                debuffType = "HELPFUL",
                 use_showCost = true,
                 powertype = 0,
                 use_powertype = true,
@@ -72,10 +72,10 @@ ns.auras["threat_under_80"] = {
             },
             single = "ROGUE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

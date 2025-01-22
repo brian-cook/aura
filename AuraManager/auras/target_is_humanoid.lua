@@ -37,19 +37,19 @@ ns.auras["target_is_humanoid"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "custom",
-                unit = "player",
-                subeventPrefix = "SPELL",
+                subeventSuffix = "_CAST_START",
                 event = "Health",
-                names = {},
+                subeventPrefix = "SPELL",
                 custom_type = "status",
+                spellIds = {},
                 custom = [[function()
     return UnitExists("target") and (UnitCreatureType("target") == "Humanoid")
 end]],
-                spellIds = {},
                 check = "event",
-                subeventSuffix = "_CAST_START",
+                unit = "player",
+                names = {},
+                debuffType = "HELPFUL",
                 events = "PLAYER_TARGET_CHANGED",
             },
             untrigger = {},
@@ -63,10 +63,10 @@ end]],
         class = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

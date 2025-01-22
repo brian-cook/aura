@@ -37,21 +37,21 @@ ns.auras["slice_and_dice_buff"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "aura2",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Health",
-                names = {},
-                spellIds = {},
                 subeventSuffix = "_CAST_START",
+                event = "Health",
+                subeventPrefix = "SPELL",
+                spellIds = {},
+                unit = "player",
+                names = {},
+                debuffType = "HELPFUL",
                 auranames = {
                     "Slice and Dice",
                 },
                 unitExists = false,
-                useRem = false,
-                useName = true,
                 matchesShowOn = "showOnActive",
+                useName = true,
+                useRem = false,
                 ownOnly = true,
             },
             untrigger = {},
@@ -68,10 +68,10 @@ ns.auras["slice_and_dice_buff"] = {
             },
             single = "ROGUE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
         use_class = true,

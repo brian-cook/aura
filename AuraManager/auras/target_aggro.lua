@@ -37,13 +37,14 @@ ns.auras["target_aggro"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "custom",
-                unit = "target",
-                subeventPrefix = "SPELL",
+                subeventSuffix = "_CAST_START",
+                customVariables = "{}",
                 event = "Conditions",
-                names = {},
+                subeventPrefix = "SPELL",
                 custom_type = "stateupdate",
+                use_unit = true,
+                spellIds = {},
                 custom = [[function(allstates)
     if not UnitAffectingCombat("player") then
         allstates[""] = allstates[""] or {show = false}
@@ -70,27 +71,26 @@ ns.auras["target_aggro"] = {
     
     return true
 end]],
-                spellIds = {},
-                use_unit = true,
                 check = "update",
-                customVariables = "{}",
-                subeventSuffix = "_CAST_START",
+                unit = "target",
+                names = {},
+                debuffType = "HELPFUL",
+                spellName = 5176,
                 use_inverse = false,
                 realSpellName = "Wrath",
                 use_spellName = true,
-                use_genericShowOn = true,
                 genericShowOn = "showOnCooldown",
+                use_genericShowOn = true,
                 use_track = true,
-                spellName = 5176,
                 itemName = 0,
                 use_itemName = true,
                 use_messageType = false,
-                use_ismoving = true,
+                use_message = false,
                 instance_size = {},
                 use_sourceName = false,
                 use_targetRequired = false,
                 use_moveSpeed = false,
-                use_message = false,
+                use_ismoving = true,
                 use_spec = true,
             },
             untrigger = {},
@@ -105,10 +105,10 @@ end]],
         class = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

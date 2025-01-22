@@ -37,15 +37,15 @@ ns.auras["range_8"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "unit",
-                unit = "target",
-                subeventPrefix = "SPELL",
-                event = "Range Check",
-                names = {},
-                spellIds = {},
-                use_unit = true,
                 subeventSuffix = "_CAST_START",
+                event = "Range Check",
+                subeventPrefix = "SPELL",
+                use_unit = true,
+                spellIds = {},
+                unit = "target",
+                names = {},
+                debuffType = "HELPFUL",
                 use_power = false,
                 use_showCost = true,
                 powertype = 3,
@@ -55,10 +55,10 @@ ns.auras["range_8"] = {
                     "20",
                 },
                 use_percentpower = false,
-                range = "8",
+                range_operator = "<=",
                 use_absorbMode = true,
                 use_range = true,
-                range_operator = "<=",
+                range = "8",
                 use_percenthealth = true,
                 percenthealth_operator = {
                     "<",
@@ -78,10 +78,10 @@ ns.auras["range_8"] = {
             },
             single = "ROGUE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

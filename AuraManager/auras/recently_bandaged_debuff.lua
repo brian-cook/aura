@@ -37,21 +37,21 @@ ns.auras["recently_bandaged_debuff"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HARMFUL",
                 type = "aura2",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Health",
-                names = {},
-                spellIds = {},
                 subeventSuffix = "_CAST_START",
+                event = "Health",
+                subeventPrefix = "SPELL",
+                spellIds = {},
+                unit = "player",
+                names = {},
+                debuffType = "HARMFUL",
                 auranames = {
                     "Recently Bandaged",
                 },
                 unitExists = false,
-                useRem = false,
-                useName = true,
                 matchesShowOn = "showOnActive",
+                useName = true,
+                useRem = false,
                 ownOnly = true,
             },
             untrigger = {},
@@ -68,10 +68,10 @@ ns.auras["recently_bandaged_debuff"] = {
             },
             single = "ROGUE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

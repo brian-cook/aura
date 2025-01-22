@@ -37,15 +37,15 @@ ns.auras["player_slowed"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HARMFUL",
                 type = "unit",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Crowd Controlled",
-                names = {},
-                spellIds = {},
-                use_unit = true,
                 subeventSuffix = "_CAST_START",
+                event = "Crowd Controlled",
+                subeventPrefix = "SPELL",
+                use_unit = true,
+                spellIds = {},
+                unit = "player",
+                names = {},
+                debuffType = "HARMFUL",
                 use_absorbHealMode = true,
                 use_absorbMode = true,
                 auranames = {
@@ -63,10 +63,10 @@ ns.auras["player_slowed"] = {
                     "Hamstring",
                 },
                 unitExists = false,
-                useRem = false,
-                useName = false,
-                use_debuffClass = false,
                 matchesShowOn = "showOnActive",
+                use_debuffClass = false,
+                useName = false,
+                useRem = false,
                 use_controlType = true,
                 controlType = "ROOT",
                 use_health = true,
@@ -85,10 +85,10 @@ ns.auras["player_slowed"] = {
             },
             single = "ROGUE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

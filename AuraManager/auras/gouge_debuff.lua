@@ -37,21 +37,21 @@ ns.auras["gouge_debuff"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HARMFUL",
                 type = "aura2",
-                unit = "target",
-                subeventPrefix = "SPELL",
-                event = "Health",
-                names = {},
-                spellIds = {},
                 subeventSuffix = "_CAST_START",
+                event = "Health",
+                subeventPrefix = "SPELL",
+                spellIds = {},
+                unit = "target",
+                names = {},
+                debuffType = "HARMFUL",
                 auranames = {
                     "Gouge",
                 },
                 unitExists = false,
-                useRem = false,
-                useName = true,
                 matchesShowOn = "showOnActive",
+                useName = true,
+                useRem = false,
                 ownOnly = true,
             },
             untrigger = {},
@@ -68,10 +68,10 @@ ns.auras["gouge_debuff"] = {
             },
             single = "ROGUE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
         use_class = true,

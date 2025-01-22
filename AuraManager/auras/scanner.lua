@@ -37,15 +37,18 @@ ns.auras["scanner"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "custom",
-                unit = "player",
                 unevent = "auto",
-                subeventPrefix = "SPELL",
+                subeventSuffix = "_CAST_START",
+                customVariables = [[{
+  stacks = true,
+}]],
                 duration = "1",
                 event = "Health",
-                names = {},
+                subeventPrefix = "SPELL",
                 custom_type = "stateupdate",
+                use_unit = true,
+                spellIds = {},
                 custom = [[function(allstates, event)
     if not aura_env.last or GetTime() - aura_env.last > 0.2 then
         aura_env.last = GetTime()
@@ -113,13 +116,10 @@ ns.auras["scanner"] = {
         return true
     end
 end]],
-                spellIds = {},
-                use_unit = true,
                 check = "update",
-                customVariables = [[{
-  stacks = true,
-}]],
-                subeventSuffix = "_CAST_START",
+                unit = "player",
+                names = {},
+                debuffType = "HELPFUL",
                 use_absorbMode = true,
                 customStacks = [[function() return aura_env.count end]],
             },
@@ -138,13 +138,13 @@ end]],
             },
             single = "WARRIOR",
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
         spec = {
             multi = {},
         },
-        zoneIds = "",
+        size = {
+            multi = {},
+        },
     },
     animation = {
         start = {

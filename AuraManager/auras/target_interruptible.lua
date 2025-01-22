@@ -37,21 +37,21 @@ ns.auras["target_interruptible"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "unit",
-                unit = "target",
-                subeventPrefix = "SPELL",
-                event = "Cast",
-                names = {},
-                spellIds = {},
-                use_unit = true,
                 subeventSuffix = "_CAST_START",
+                event = "Cast",
+                subeventPrefix = "SPELL",
+                use_unit = true,
+                spellIds = {},
+                unit = "target",
+                names = {},
+                debuffType = "HELPFUL",
                 use_castType = false,
+                use_remaining = false,
                 remaining_operator = ">",
                 remaining = "1",
                 use_interruptible = true,
                 use_destUnit = false,
-                use_remaining = false,
             },
             untrigger = {},
         },
@@ -64,10 +64,10 @@ ns.auras["target_interruptible"] = {
         class = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },
