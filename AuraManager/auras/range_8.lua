@@ -8,7 +8,7 @@ ns.auras["range_8"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 100,
+    xOffset = 156,
     yOffset = 84,
     width = 3,
     height = 3,
@@ -37,15 +37,15 @@ ns.auras["range_8"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "unit",
-                subeventSuffix = "_CAST_START",
-                event = "Range Check",
-                subeventPrefix = "SPELL",
-                use_unit = true,
-                spellIds = {},
-                unit = "target",
-                names = {},
                 debuffType = "HELPFUL",
+                type = "unit",
+                unit = "target",
+                subeventSuffix = "_CAST_START",
+                subeventPrefix = "SPELL",
+                event = "Range Check",
+                names = {},
+                spellIds = {},
+                use_unit = true,
                 use_power = false,
                 use_showCost = true,
                 powertype = 3,
@@ -56,9 +56,9 @@ ns.auras["range_8"] = {
                 },
                 use_percentpower = false,
                 range_operator = "<=",
-                use_absorbMode = true,
-                use_range = true,
                 range = "8",
+                use_range = true,
+                use_absorbMode = true,
                 use_percenthealth = true,
                 percenthealth_operator = {
                     "<",
@@ -78,10 +78,10 @@ ns.auras["range_8"] = {
             },
             single = "ROGUE",
         },
-        spec = {
+        size = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
     },

@@ -8,7 +8,7 @@ ns.auras["player_not_behind_target"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 120,
+    xOffset = 164,
     yOffset = 88,
     width = 3,
     height = 3,
@@ -37,14 +37,15 @@ ns.auras["player_not_behind_target"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                custom_hide = "timed",
+                debuffType = "HELPFUL",
                 type = "custom",
+                unit = "target",
                 subeventSuffix = "_CAST_START",
+                subeventPrefix = "SPELL",
                 duration = ".5",
                 event = "Crowd Controlled",
-                subeventPrefix = "SPELL",
+                names = {},
                 custom_type = "event",
-                use_unit = true,
                 spellIds = {},
                 custom = [[function(event, arg1, arg2)
     if event == "UI_ERROR_MESSAGE" and string.find(arg2, "be behind your") then
@@ -52,30 +53,29 @@ ns.auras["player_not_behind_target"] = {
     end
     return false
 end]],
-                unit = "target",
-                names = {},
-                debuffType = "HELPFUL",
+                use_unit = true,
+                custom_hide = "timed",
                 use_inverse = false,
                 auranames = {
                     "Quick Flame Ward",
                 },
                 unitExists = false,
+                useRem = false,
                 matchesShowOn = "showOnActive",
                 use_debuffClass = false,
                 useName = true,
-                useRem = false,
                 debuffClass = {
                     magic = true,
                 },
-                interruptSchool = 16,
-                useExactSpellId = false,
                 use_controlType = true,
                 use_interruptSchool = true,
-                events = "UI_ERROR_MESSAGE",
-                controlType = "ROOT",
                 auraspellids = {
                     "116",
                 },
+                controlType = "ROOT",
+                useExactSpellId = false,
+                interruptSchool = 16,
+                events = "UI_ERROR_MESSAGE",
             },
             untrigger = {},
         },
@@ -92,10 +92,10 @@ end]],
             },
             single = "MAGE",
         },
-        spec = {
+        size = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
     },

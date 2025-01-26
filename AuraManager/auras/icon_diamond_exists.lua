@@ -8,7 +8,7 @@ ns.auras["icon_diamond_exists"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 128,
+    xOffset = 156,
     yOffset = 96,
     width = 3,
     height = 3,
@@ -37,17 +37,15 @@ ns.auras["icon_diamond_exists"] = {
         activeTriggerMode = -10,
         {
             trigger = {
+                debuffType = "HELPFUL",
                 type = "custom",
-                unevent = "auto",
+                unit = "player",
                 subeventSuffix = "_CAST_START",
-                customVariables = [[{
-  stacks = true,
-}]],
+                subeventPrefix = "SPELL",
                 duration = "1",
                 event = "Health",
-                subeventPrefix = "SPELL",
+                names = {},
                 custom_type = "stateupdate",
-                use_unit = true,
                 spellIds = {},
                 custom = [[function(allstates)
     -- Throttle the check for perf?  What is config?
@@ -81,10 +79,12 @@ ns.auras["icon_diamond_exists"] = {
         return true
     end
 end]],
+                use_unit = true,
                 check = "update",
-                unit = "player",
-                names = {},
-                debuffType = "HELPFUL",
+                customVariables = [[{
+  stacks = true,
+}]],
+                unevent = "auto",
                 use_absorbMode = true,
                 customStacks = [[function() return aura_env.count end]],
             },
@@ -103,13 +103,13 @@ end]],
             },
             single = "WARRIOR",
         },
-        zoneIds = "",
-        spec = {
-            multi = {},
-        },
         size = {
             multi = {},
         },
+        spec = {
+            multi = {},
+        },
+        zoneIds = "",
     },
     animation = {
         start = {

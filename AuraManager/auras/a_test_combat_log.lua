@@ -37,11 +37,13 @@ ns.auras["a_test_combat_log"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                custom_hide = "custom",
+                debuffType = "BOTH",
                 type = "custom",
+                unit = "player",
                 subeventSuffix = "_CAST_START",
-                event = "Health",
                 subeventPrefix = "SPELL",
+                event = "Health",
+                names = {},
                 custom_type = "event",
                 spellIds = {},
                 custom = [[function(event, ...)
@@ -64,16 +66,14 @@ ns.auras["a_test_combat_log"] = {
     return false
 end]],
                 check = "update",
-                unit = "player",
-                names = {},
-                debuffType = "BOTH",
+                custom_hide = "custom",
                 auranames = {
                     "Amplify Magic",
                 },
                 unitExists = false,
+                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
-                useRem = false,
                 ownOnly = true,
                 events = "PLAYER_REGEN_DISABLED PLAYER_REGEN_ENABLED",
             },
@@ -94,10 +94,10 @@ end]],
             },
             single = "MAGE",
         },
-        spec = {
+        size = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
     },

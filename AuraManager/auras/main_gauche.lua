@@ -8,7 +8,7 @@ ns.auras["main_gauche"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 160,
+    xOffset = 188,
     yOffset = 96,
     width = 3,
     height = 3,
@@ -37,20 +37,20 @@ ns.auras["main_gauche"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "spell",
-                subeventSuffix = "_CAST_START",
-                event = "Action Usable",
-                subeventPrefix = "SPELL",
-                spellIds = {},
-                unit = "player",
-                names = {},
                 debuffType = "HELPFUL",
+                type = "spell",
+                unit = "player",
+                subeventSuffix = "_CAST_START",
+                subeventPrefix = "SPELL",
+                event = "Action Usable",
+                names = {},
+                spellIds = {},
                 spellName = 424919,
-                use_inverse = false,
+                use_genericShowOn = true,
                 realSpellName = "Arcane Blast",
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
-                use_genericShowOn = true,
+                use_inverse = false,
                 use_track = true,
             },
             untrigger = {},
@@ -68,10 +68,10 @@ ns.auras["main_gauche"] = {
             },
             single = "MAGE",
         },
-        spec = {
+        size = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
         race = {

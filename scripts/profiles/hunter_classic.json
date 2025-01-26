@@ -1,0 +1,138 @@
+{
+    "name": "Hunter Hardcore",
+    "actions": [
+        {
+            "group": "START GROUP: CC COUNTERS",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+        
+        
+        {
+            "group": "START GROUP: EMERGENCY ACTIONS WHEN LOW HEALTH",
+            "name": "use potion at 50% health",
+            "key": "n",
+            "conditions": ["potion_in_inventory", "combat", "health_under_50", "!potion_cooldown"]
+        },
+        {
+            "name": "use bandage at 50% health",
+            "key": "b",
+            "conditions": ["bandage_in_inventory", "health_under_50", "!recently_bandaged_debuff", "!target_aggro", "!player_moving"]
+        },
+
+        
+        {
+            "group": "START GROUP: PET HEALS",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+
+        {
+            "group": "START GROUP: OOC BUFFS",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+
+        {
+            "group": "START GROUP: SCANNING",
+            "name": "CC Target Cross: /targetenemy",
+            "key": "i",
+            "conditions": ["icon_cross_exists", "!target_cross", "serpent_sting_debuff_cross", "!range_8_cross", "range_35_cross", "power_15"]
+        },
+        {
+            "name": "CC Cross",
+            "key": "0",
+            "conditions": ["target_cross", "serpent_sting_debuff_cross", "!range_8_cross", "range_35_cross", "power_15"]
+        },
+        {
+            "name": "CC Target Circle: /targetenemy",
+            "key": "i",
+            "conditions": ["icon_circle_exists", "!target_circle", "serpent_sting_debuff_circle", "!range_8_circle", "range_35_circle", "power_15"]
+        },
+        {
+            "name": "CC Circle",
+            "key": "0",
+            "conditions": ["target_circle", "serpent_sting_debuff_circle", "!range_8_circle", "range_35_circle", "power_15"]
+        },
+        {
+            "name": "CC Target Square: /targetenemy",
+            "key": "i",
+            "conditions": ["icon_square_exists", "!target_square", "serpent_sting_debuff_square", "!range_8_square", "range_35_square", "power_15"]
+        },
+        {
+            "name": "CC Square",
+            "key": "0",
+            "conditions": ["target_square", "serpent_sting_debuff_square", "!range_8_square", "range_35_square", "power_15"]
+        },
+        {
+            "name": "Interrupt Target Diamond: /targetenemy",
+            "key": "i",
+            "conditions": ["icon_diamond_exists", "can_interrupt_diamond", "!target_diamond", "kick", "power_25"]
+        },
+        {
+            "name": "Interrupt Diamond",
+            "key": "f",
+            "conditions": ["target_diamond", "can_interrupt_diamond", "kick", "power_25"]
+        },
+        {
+            "name": "Target Skull: /targetenemy", 
+            "key": "i",
+            "conditions": ["icon_skull_exists", "!target_skull"]
+        },
+
+
+        {
+            "group": "START GROUP: DEBUFFS",
+            "name": "Hunters Mark",
+            "key": ".",
+            "conditions": ["hunters_mark", "!hunters_mark_debuff", "range_40", "power_25"]
+        },
+
+
+        {
+            "group": "START GROUP: COMBAT BUFFS",
+            "name": "Aspect of the Hawk",
+            "key": ".",
+            "conditions": ["aspect_of_the_hawk", "!aspect_of_the_hawk_buff", "!range_8", "!range_8_2+", "power_25"]
+        },
+        {
+            "group": "START GROUP: COMBAT BUFFS",
+            "name": "Aspect of the Monkey",
+            "key": "z",
+            "conditions": ["!aspect_of_the_monkey_buff", "range_8", "power_15", "combat"]
+        },
+
+
+        {
+            "group": "START GROUP: SINGLE TARGET ROTATION",
+            "name": "Serpent Sting",
+            "key": "5",
+            "conditions": ["!serpent_sting_debuff", "!range_8", "range_35", "power_10", "!leaving_combat"]
+        },
+        {
+            "name": "Arcane Shot",
+            "key": ".",
+            "conditions": ["arcane_shot", "!range_8", "range_30", "power_40"]
+        },
+        {
+            "name": "Raptor Strike in Melee Range",
+            "key": "e",
+            "conditions": ["raptor_strike", "range_8", "power_10"]
+        },
+        {
+            "name": "cast auto shoot",
+            "key": "t",
+            "conditions": ["!player_shooting", "!range_8", "range_30", "!leaving_combat"]
+        },
+        {
+            "name": "cast auto attack",
+            "key": "r",
+            "conditions": ["!player_attacking", "range_8", "combat"]
+        }
+    ]
+}

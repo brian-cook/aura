@@ -8,7 +8,7 @@ ns.auras["gouge"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 100,
+    xOffset = 124,
     yOffset = 96,
     width = 3,
     height = 3,
@@ -37,19 +37,19 @@ ns.auras["gouge"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "spell",
-                subeventSuffix = "_CAST_START",
-                event = "Action Usable",
-                subeventPrefix = "SPELL",
-                spellIds = {},
-                unit = "player",
-                names = {},
                 debuffType = "HELPFUL",
+                type = "spell",
+                unit = "player",
+                subeventSuffix = "_CAST_START",
+                subeventPrefix = "SPELL",
+                event = "Action Usable",
+                names = {},
+                spellIds = {},
                 spellName = 1776,
+                use_genericShowOn = true,
                 realSpellName = "Gouge",
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
-                use_genericShowOn = true,
                 use_track = true,
             },
             untrigger = {},
@@ -66,13 +66,12 @@ ns.auras["gouge"] = {
             },
             single = "ROGUE",
         },
-        spec = {
-            multi = {},
-        },
         size = {
             multi = {},
         },
-        use_class = true,
+        spec = {
+            multi = {},
+        },
     },
     animation = {
         start = {

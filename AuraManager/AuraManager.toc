@@ -11,6 +11,9 @@ aura_list.lua
 # Auras
 auras/a_test.lua
 auras/a_test_combat_log.lua
+auras/arcane_shot.lua
+auras/aspect_of_the_hawk_buff.lua
+auras/aspect_of_the_monkey_buff.lua
 auras/bandage_in_inventory.lua
 auras/between_the_eyes.lua
 auras/blade_dance.lua
@@ -25,6 +28,7 @@ auras/can_cc_moon.lua
 auras/can_cc_square.lua
 auras/can_cc_star.lua
 auras/can_cc_triangle.lua
+auras/can_interrupt_diamond.lua
 auras/combat.lua
 auras/combat_start.lua
 auras/combo_points_1.lua
@@ -32,6 +36,8 @@ auras/combo_points_2.lua
 auras/combo_points_3.lua
 auras/combo_points_4.lua
 auras/combo_points_5.lua
+auras/concussive_shot_cooldown.lua
+auras/distracting_shot.lua
 auras/enemy_loose.lua
 auras/envenom.lua
 auras/evasion.lua
@@ -44,6 +50,7 @@ auras/gouge_debuff.lua
 auras/health_under_20.lua
 auras/health_under_50.lua
 auras/health_under_75.lua
+auras/hunter's_mark_debuff.lua
 auras/icon_circle_exists.lua
 auras/icon_cross_exists.lua
 auras/icon_diamond_exists.lua
@@ -66,6 +73,7 @@ auras/mana_70.lua
 auras/mana_80.lua
 auras/mana_90.lua
 auras/mike_health_under_50.lua
+auras/mongoose_bite.lua
 auras/mutilate.lua
 auras/party_1_health_under_70.lua
 auras/party_1_range_35.lua
@@ -73,10 +81,12 @@ auras/party_1_sacred_shield_buff.lua
 auras/party_2_health_under_70.lua
 auras/party_3_health_under_70.lua
 auras/party_4_health_under_70.lua
+auras/pet_bite.lua
 auras/pet_combat.lua
 auras/pet_focus_15.lua
 auras/pet_focus_40.lua
 auras/pet_focus_50.lua
+auras/pet_growl.lua
 auras/pet_health_under_20.lua
 auras/pet_health_under_50.lua
 auras/pet_health_under_75.lua
@@ -100,6 +110,7 @@ auras/player_moving.lua
 auras/player_not_behind_target.lua
 auras/player_poisoned.lua
 auras/player_rooted.lua
+auras/player_shooting.lua
 auras/player_silenced.lua
 auras/player_slowed.lua
 auras/player_stunned.lua
@@ -128,17 +139,32 @@ auras/range_15.lua
 auras/range_25.lua
 auras/range_30.lua
 auras/range_35.lua
+auras/range_35_circle.lua
+auras/range_35_cross.lua
+auras/range_35_square.lua
 auras/range_40.lua
 auras/range_8.lua
 auras/range_8_2+.lua
 auras/range_8_3+.lua
+auras/range_8_circle.lua
+auras/range_8_cross.lua
+auras/range_8_square.lua
+auras/raptor_strike.lua
 auras/recently_bandaged_debuff.lua
+auras/redirect.lua
 auras/role_toggle.lua
 auras/saber_slash.lua
 auras/sap.lua
 auras/sap_debuff.lua
+auras/scan_timeout.lua
 auras/scanner.lua
 auras/scanner_test.lua
+auras/scanner_test_2.lua
+auras/scanning.lua
+auras/serpent_sting_debuff.lua
+auras/serpent_sting_debuff_circle.lua
+auras/serpent_sting_debuff_cross.lua
+auras/serpent_sting_debuff_square.lua
 auras/shadowstep.lua
 auras/shadowstrike.lua
 auras/sinister_strike.lua

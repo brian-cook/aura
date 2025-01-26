@@ -8,8 +8,8 @@ ns.auras["shadowstep"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 140,
-    yOffset = 84,
+    xOffset = 124,
+    yOffset = 80,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,20 +37,20 @@ ns.auras["shadowstep"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "spell",
-                subeventSuffix = "_CAST_START",
-                event = "Action Usable",
-                subeventPrefix = "SPELL",
-                spellIds = {},
-                unit = "player",
-                names = {},
                 debuffType = "HELPFUL",
+                type = "spell",
+                unit = "player",
+                subeventSuffix = "_CAST_START",
+                subeventPrefix = "SPELL",
+                event = "Action Usable",
+                names = {},
+                spellIds = {},
                 spellName = 400029,
-                use_inverse = false,
+                use_genericShowOn = true,
                 realSpellName = "Arcane Blast",
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
-                use_genericShowOn = true,
+                use_inverse = false,
                 use_track = true,
             },
             untrigger = {},
@@ -68,10 +68,10 @@ ns.auras["shadowstep"] = {
             },
             single = "MAGE",
         },
-        spec = {
+        size = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
         race = {

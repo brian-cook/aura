@@ -8,8 +8,8 @@ ns.auras["sinister_strike"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 148,
-    yOffset = 84,
+    xOffset = 132,
+    yOffset = 80,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,20 +37,20 @@ ns.auras["sinister_strike"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "spell",
-                subeventSuffix = "_CAST_START",
-                event = "Action Usable",
-                subeventPrefix = "SPELL",
-                spellIds = {},
-                unit = "player",
-                names = {},
                 debuffType = "HELPFUL",
+                type = "spell",
+                unit = "player",
+                subeventSuffix = "_CAST_START",
+                subeventPrefix = "SPELL",
+                event = "Action Usable",
+                names = {},
+                spellIds = {},
                 spellName = 1752,
-                use_inverse = false,
+                use_genericShowOn = true,
                 realSpellName = "Arcane Blast",
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
-                use_genericShowOn = true,
+                use_inverse = false,
                 use_track = true,
             },
             untrigger = {},
@@ -68,10 +68,10 @@ ns.auras["sinister_strike"] = {
             },
             single = "MAGE",
         },
-        spec = {
+        size = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
         race = {

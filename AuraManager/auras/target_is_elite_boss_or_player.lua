@@ -8,8 +8,8 @@ ns.auras["target_is_elite_boss_or_player"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 136,
-    yOffset = 80,
+    xOffset = 120,
+    yOffset = 76,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -38,15 +38,15 @@ ns.auras["target_is_elite_boss_or_player"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "unit",
-                subeventSuffix = "_CAST_START",
-                event = "Unit Characteristics",
-                subeventPrefix = "SPELL",
-                use_unit = true,
-                spellIds = {},
-                unit = "target",
-                names = {},
                 debuffType = "HELPFUL",
+                type = "unit",
+                unit = "target",
+                subeventSuffix = "_CAST_START",
+                subeventPrefix = "SPELL",
+                event = "Unit Characteristics",
+                names = {},
+                spellIds = {},
+                use_unit = true,
                 use_unitisunit = false,
                 use_character = false,
                 unitisunit = "Quinik",
@@ -91,10 +91,10 @@ ns.auras["target_is_elite_boss_or_player"] = {
             },
             single = "ROGUE",
         },
-        spec = {
+        size = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
     },

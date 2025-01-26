@@ -8,7 +8,7 @@ ns.auras["role_toggle"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 116,
+    xOffset = 192,
     yOffset = 84,
     width = 3,
     height = 3,
@@ -37,10 +37,13 @@ ns.auras["role_toggle"] = {
         activeTriggerMode = -10,
         {
             trigger = {
+                debuffType = "HELPFUL",
                 type = "custom",
+                unit = "player",
                 subeventSuffix = "_CAST_START",
-                event = "Health",
                 subeventPrefix = "SPELL",
+                event = "Health",
+                names = {},
                 custom_type = "status",
                 spellIds = {},
                 custom = [[function(event,glStr,value)
@@ -52,9 +55,6 @@ ns.auras["role_toggle"] = {
     end
 end]],
                 check = "event",
-                unit = "player",
-                names = {},
-                debuffType = "HELPFUL",
                 events = "CVAR_UPDATE",
             },
             untrigger = {
@@ -76,13 +76,13 @@ end]],
         class = {
             multi = {},
         },
-        zoneIds = "",
-        spec = {
-            multi = {},
-        },
         size = {
             multi = {},
         },
+        spec = {
+            multi = {},
+        },
+        zoneIds = "",
         role = {
             multi = {},
         },

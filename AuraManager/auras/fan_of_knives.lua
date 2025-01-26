@@ -8,8 +8,8 @@ ns.auras["fan_of_knives"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 208,
-    yOffset = 100,
+    xOffset = 112,
+    yOffset = 96,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,19 +37,19 @@ ns.auras["fan_of_knives"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "spell",
-                subeventSuffix = "_CAST_START",
-                event = "Action Usable",
-                subeventPrefix = "SPELL",
-                spellIds = {},
-                unit = "player",
-                names = {},
                 debuffType = "HELPFUL",
+                type = "spell",
+                unit = "player",
+                subeventSuffix = "_CAST_START",
+                subeventPrefix = "SPELL",
+                event = "Action Usable",
+                names = {},
+                spellIds = {},
                 spellName = 409240,
+                use_genericShowOn = true,
                 realSpellName = "Counterspell",
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
-                use_genericShowOn = true,
                 use_track = true,
             },
             untrigger = {},
@@ -67,10 +67,10 @@ ns.auras["fan_of_knives"] = {
             },
             single = "MAGE",
         },
-        spec = {
+        size = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
         race = {

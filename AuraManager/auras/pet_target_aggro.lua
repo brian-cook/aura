@@ -8,7 +8,7 @@ ns.auras["pet_target_aggro"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 156,
+    xOffset = 196,
     yOffset = 92,
     width = 3,
     height = 3,
@@ -37,13 +37,14 @@ ns.auras["pet_target_aggro"] = {
         activeTriggerMode = -10,
         {
             trigger = {
+                debuffType = "HELPFUL",
                 type = "custom",
+                unit = "target",
                 subeventSuffix = "_CAST_START",
-                customVariables = "{}",
-                event = "Conditions",
                 subeventPrefix = "SPELL",
+                event = "Conditions",
+                names = {},
                 custom_type = "stateupdate",
-                use_unit = true,
                 spellIds = {},
                 custom = [[function(allstates)
     if not UnitAffectingCombat("pet") then
@@ -71,26 +72,25 @@ ns.auras["pet_target_aggro"] = {
     
     return true
 end]],
+                use_unit = true,
                 check = "update",
-                unit = "target",
-                names = {},
-                debuffType = "HELPFUL",
+                customVariables = "{}",
                 spellName = 5176,
-                use_inverse = false,
+                use_genericShowOn = true,
                 realSpellName = "Wrath",
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
-                use_genericShowOn = true,
+                use_inverse = false,
                 use_track = true,
                 itemName = 0,
                 use_itemName = true,
                 use_messageType = false,
-                use_message = false,
-                instance_size = {},
                 use_sourceName = false,
+                use_ismoving = true,
+                instance_size = {},
                 use_targetRequired = false,
                 use_moveSpeed = false,
-                use_ismoving = true,
+                use_message = false,
                 use_spec = true,
             },
             untrigger = {},
@@ -105,10 +105,10 @@ end]],
         class = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
     },

@@ -8,7 +8,7 @@ ns.auras["combo_points_5"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 188,
+    xOffset = 204,
     yOffset = 100,
     width = 3,
     height = 3,
@@ -37,15 +37,15 @@ ns.auras["combo_points_5"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "unit",
-                subeventSuffix = "_CAST_START",
-                event = "Power",
-                subeventPrefix = "SPELL",
-                use_unit = true,
-                spellIds = {},
-                unit = "player",
-                names = {},
                 debuffType = "HELPFUL",
+                type = "unit",
+                unit = "player",
+                subeventSuffix = "_CAST_START",
+                subeventPrefix = "SPELL",
+                event = "Power",
+                names = {},
+                spellIds = {},
+                use_unit = true,
                 use_power = true,
                 use_showCost = false,
                 powertype = 4,
@@ -78,10 +78,10 @@ ns.auras["combo_points_5"] = {
             },
             single = "ROGUE",
         },
-        spec = {
+        size = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
     },

@@ -8,7 +8,7 @@ ns.auras["kick"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 152,
+    xOffset = 180,
     yOffset = 96,
     width = 3,
     height = 3,
@@ -37,19 +37,19 @@ ns.auras["kick"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "spell",
-                subeventSuffix = "_CAST_START",
-                event = "Action Usable",
-                subeventPrefix = "SPELL",
-                spellIds = {},
-                unit = "player",
-                names = {},
                 debuffType = "HELPFUL",
+                type = "spell",
+                unit = "player",
+                subeventSuffix = "_CAST_START",
+                subeventPrefix = "SPELL",
+                event = "Action Usable",
+                names = {},
+                spellIds = {},
                 spellName = 1766,
+                use_genericShowOn = true,
                 realSpellName = "Kick",
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
-                use_genericShowOn = true,
                 use_track = true,
             },
             untrigger = {},
@@ -66,13 +66,12 @@ ns.auras["kick"] = {
             },
             single = "ROGUE",
         },
-        spec = {
-            multi = {},
-        },
         size = {
             multi = {},
         },
-        use_class = true,
+        spec = {
+            multi = {},
+        },
     },
     animation = {
         start = {

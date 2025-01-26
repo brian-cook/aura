@@ -8,8 +8,8 @@ ns.auras["focus_equals_target"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 216,
-    yOffset = 100,
+    xOffset = 120,
+    yOffset = 96,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,15 +37,15 @@ ns.auras["focus_equals_target"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "unit",
-                subeventSuffix = "_CAST_START",
-                event = "Unit Characteristics",
-                subeventPrefix = "SPELL",
-                use_unit = true,
-                spellIds = {},
-                unit = "focus",
-                names = {},
                 debuffType = "HELPFUL",
+                type = "unit",
+                unit = "focus",
+                subeventSuffix = "_CAST_START",
+                subeventPrefix = "SPELL",
+                event = "Unit Characteristics",
+                names = {},
+                spellIds = {},
+                use_unit = true,
                 use_unitisunit = true,
                 use_character = false,
                 use_class = false,
@@ -81,10 +81,10 @@ ns.auras["focus_equals_target"] = {
             },
             single = "ROGUE",
         },
-        spec = {
+        size = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
     },

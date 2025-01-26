@@ -1737,6 +1737,17 @@ This example demonstrates how to:
 
 ## 9. Resources and References
 
+-- Common API patterns and gotchas
+local function CommonAPIPatterns()
+    -- Unit handling
+    local guid = UnitGUID("unit")  -- Can return nil
+    local exists = UnitExists("unit")  -- Always returns boolean
+    
+    -- Spell information
+    local name, _, _, startTime, endTime, _, _, notInterruptible = UnitCastingInfo("unit")
+    -- Handle nil returns and cast updates
+end
+
 ### 9.1 Essential WoW API Functions
 - UnitExists(unit): Check if unit exists
 - UnitGUID(unit): Get unit's GUID
@@ -1840,3 +1851,465 @@ For additional resources and updates, refer to:
 - WoW API Documentation
 - WeakAuras Wiki
 - Community Forums
+
+-- For complex state management
+local StateMachine = {
+    STATES = {
+        IDLE = 1,
+        SCANNING = 2,
+        MARKING = 3,
+        UPDATING = 4
+    },
+    transitions = {
+        [STATES.IDLE] = {STATES.SCANNING},
+        [STATES.SCANNING] = {STATES.MARKING, STATES.IDLE},
+        -- etc.
+    }
+}
+
+local PerformanceMonitor = {
+    timestamps = {},
+    counters = {},
+    
+    start = function(key)
+        timestamps[key] = GetTime()
+    end,
+    
+    stop = function(key)
+        local duration = GetTime() - timestamps[key]
+        -- Log and analyze performance
+    end
+}
+
+-- Complex State Management Example
+function(allstates, event)
+    -- Persistent state initialization
+    aura_env.state = aura_env.state or {
+        last = 0,
+        tracking = {},
+        history = {}
+    }
+    
+    -- State cleanup pattern
+    local function cleanupState(currentTime)
+        for guid, timestamp in pairs(aura_env.state.history) do
+            if currentTime - timestamp > 30 then  -- 30 second timeout
+                aura_env.state.history[guid] = nil
+                aura_env.state.tracking[guid] = nil
+            end
+        end
+    end
+    
+    -- State update pattern
+    local function updateState(guid, data)
+        aura_env.state.tracking[guid] = data
+        aura_env.state.history[guid] = GetTime()
+    end
+end
+
+### Unit Scanning and Classification
+
+#### Nameplate Scanning Pattern
+```lua
+-- Efficient nameplate scanning
+local function ScanNameplates()
+    local units = {}
+    for i = 1, 40 do
+        local unit = "nameplate"..i
+        if UnitExists(unit) and UnitCanAttack("player", unit) then
+            local guid = UnitGUID(unit)
+            if guid then
+                units[guid] = {
+                    unit = unit,
+                    guid = guid,
+                    name = UnitName(unit),
+                    classification = UnitClassification(unit)
+                }
+            end
+        end
+    end
+    return units
+end
+```
+
+#### Unit Classification System
+```lua
+local UnitClassifier = {
+    CATEGORIES = {
+        HEALER = {
+            spells = {2050, 2054, 2060, 596},  -- Healing spells
+            priority = 4
+        },
+        CASTER = {
+            spells = {686, 695, 705, 421},     -- Casting spells
+            priority = 3
+        },
+        ELITE = {
+            check = function(unit) 
+                return UnitClassification(unit) == "elite"
+            end,
+            priority = 2
+        }
+    },
+    
+    classify = function(self, unit)
+        local classification = {
+            priority = 1,
+            categories = {}
+        }
+        
+        for category, data in pairs(self.CATEGORIES) do
+            if data.check and data.check(unit) then
+                classification.categories[category] = true
+                classification.priority = math.max(classification.priority, data.priority)
+            end
+        end
+        
+        return classification
+    end
+}
+```
+
+#### Cast Detection and Tracking
+```lua
+local CastTracker = {
+    active_casts = {},
+    
+    update = function(self, unit)
+        local guid = UnitGUID(unit)
+        if not guid then return end
+        
+        local name, _, _, _, endTime, _, _, notInterruptible = UnitCastingInfo(unit)
+        if not name then
+            name, _, _, _, endTime, _, notInterruptible = UnitChannelInfo(unit)
+        end
+        
+        if name then
+            self.active_casts[guid] = {
+                spell = name,
+                endTime = endTime and (endTime/1000) or 0,
+                interruptible = not notInterruptible
+            }
+        else
+            self.active_casts[guid] = nil
+        end
+    end,
+    
+    cleanup = function(self)
+        local currentTime = GetTime()
+        for guid, cast in pairs(self.active_casts) do
+            if currentTime > cast.endTime then
+                self.active_casts[guid] = nil
+            end
+        end
+    end
+}
+```
+
+### State Management Patterns
+
+#### Multi-State Tracking
+```lua
+-- Example of managing multiple states
+function(allstates, event)
+    -- Initialize state categories
+    aura_env.states = aura_env.states or {
+        marks = {},      -- Track marked units
+        casts = {},      -- Track casting units
+        priorities = {}  -- Track unit priorities
+    }
+    
+    -- State update functions
+    local function updateMarkState(guid, mark)
+        aura_env.states.marks[guid] = {
+            mark = mark,
+            timestamp = GetTime()
+        }
+    end
+    
+    local function updateCastState(guid, castInfo)
+        aura_env.states.casts[guid] = {
+            spell = castInfo.spell,
+            endTime = castInfo.endTime,
+            priority = castInfo.priority
+        }
+    end
+    
+    -- Cleanup old states
+    local function cleanupStates()
+        local currentTime = GetTime()
+        for guid, data in pairs(aura_env.states.casts) do
+            if currentTime > data.endTime then
+                aura_env.states.casts[guid] = nil
+            end
+        end
+    end
+end
+```
+
+### Debug and Testing Tools
+
+#### Debug Logging System
+```lua
+local DebugLogger = {
+    enabled = false,
+    level = 1,  -- 1=ERROR, 2=WARN, 3=INFO, 4=DEBUG
+    
+    log = function(self, level, ...)
+        if not self.enabled or level > self.level then return end
+        
+        local prefix = {
+            [1] = "ERROR",
+            [2] = "WARN",
+            [3] = "INFO",
+            [4] = "DEBUG"
+        }
+        
+        local message = string.format("[%s] ", prefix[level] or "UNKNOWN")
+        print(message, ...)
+    end,
+    
+    -- Usage examples
+    error = function(self, ...) self:log(1, ...) end,
+    warn = function(self, ...) self:log(2, ...) end,
+    info = function(self, ...) self:log(3, ...) end,
+    debug = function(self, ...) self:log(4, ...) end
+}
+```
+
+#### Performance Testing Framework
+```lua
+local PerformanceTester = {
+    samples = {},
+    
+    start = function(self, key)
+        self.samples[key] = self.samples[key] or {
+            times = {},
+            count = 0,
+            total = 0
+        }
+        self.samples[key].startTime = debugprofilestop()
+    end,
+    
+    stop = function(self, key)
+        local sample = self.samples[key]
+        if not sample or not sample.startTime then return end
+        
+        local duration = debugprofilestop() - sample.startTime
+        sample.count = sample.count + 1
+        sample.total = sample.total + duration
+        table.insert(sample.times, duration)
+        
+        -- Keep only last 100 samples
+        if #sample.times > 100 then
+            table.remove(sample.times, 1)
+        end
+    end,
+    
+    report = function(self, key)
+        local sample = self.samples[key]
+        if not sample then return end
+        
+        local avg = sample.total / sample.count
+        local min = math.huge
+        local max = 0
+        
+        for _, time in ipairs(sample.times) do
+            min = math.min(min, time)
+            max = math.max(max, time)
+        end
+        
+        print(string.format("%s: avg=%.2fms min=%.2fms max=%.2fms count=%d",
+            key, avg, min, max, sample.count))
+    end
+}
+
+
+
+## 2. Core API Functions
+```lua
+-- Verified Core WoW API Functions
+UnitExists(unit)          -- Returns boolean, checks if unit exists
+UnitGUID(unit)           -- Returns string or nil, gets unique identifier
+GetTime()                -- Returns number, gets server time
+UnitCastingInfo(unit)    -- Returns cast information or nil
+UnitChannelInfo(unit)    -- Returns channel information or nil
+GetSpellInfo(spellID)    -- Returns spell information
+CheckInteractDistance(unit, distanceIndex) -- Returns boolean, checks range
+SetRaidTarget(unit, index) -- Sets raid marker (1-8)
+GetRaidTargetIndex(unit)   -- Returns current raid marker
+AuraUtil.FindAuraByName(name, unit, filter) -- Returns aura information
+```
+
+## 3. State Management
+
+### 3.1 Basic State Pattern
+```lua
+function(allstates, event)
+    -- Initialize state
+    allstates[""] = allstates[""] or {
+        show = false,
+        changed = true
+    }
+    
+    -- Update state
+    allstates[""].show = true
+    allstates[""].changed = true
+    
+    return true
+end
+```
+
+### 3.2 Complex State Management
+```lua
+function(allstates, event)
+    -- Persistent state initialization
+    aura_env.state = aura_env.state or {
+        last = 0,
+        tracking = {},
+        history = {}
+    }
+    
+    -- State cleanup pattern
+    local function cleanupState(currentTime)
+        for guid, timestamp in pairs(aura_env.state.history) do
+            if currentTime - timestamp > 30 then
+                aura_env.state.history[guid] = nil
+                aura_env.state.tracking[guid] = nil
+            end
+        end
+    end
+end
+```
+
+## 4. Performance Optimization
+
+### 4.1 Throttling Pattern
+```lua
+function(allstates, event)
+    aura_env.last = aura_env.last or 0
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
+        aura_env.last = GetTime()
+        -- Main logic here
+        return true
+    end
+    return false
+end
+```
+
+### 4.2 Performance Monitoring
+```lua
+local PerformanceMonitor = {
+    trackExecution = function(funcName, func, ...)
+        local startTime = debugprofilestop()
+        local result = {func(...)}
+        local endTime = debugprofilestop()
+        
+        if WeakAuras.IsOptionsOpen() then
+            print(string.format("%s: %.2fms", funcName, endTime - startTime))
+        end
+        
+        return unpack(result)
+    end
+}
+```
+
+## 5. Unit Scanning and Classification
+
+### 5.1 Nameplate Scanning
+```lua
+local function ScanNameplates()
+    local units = {}
+    for i = 1, 40 do
+        local unit = "nameplate"..i
+        if UnitExists(unit) and UnitCanAttack("player", unit) then
+            local guid = UnitGUID(unit)
+            if guid then
+                units[guid] = {
+                    unit = unit,
+                    guid = guid,
+                    name = UnitName(unit),
+                    classification = UnitClassification(unit)
+                }
+            end
+        end
+    end
+    return units
+end
+```
+
+### 5.2 Cast Detection
+```lua
+local CastTracker = {
+    active_casts = {},
+    
+    update = function(self, unit)
+        local guid = UnitGUID(unit)
+        if not guid then return end
+        
+        local name, _, _, _, endTime, _, _, notInterruptible = UnitCastingInfo(unit)
+        if not name then
+            name, _, _, _, endTime, _, notInterruptible = UnitChannelInfo(unit)
+        end
+        
+        if name then
+            self.active_casts[guid] = {
+                spell = name,
+                endTime = endTime and (endTime/1000) or 0,
+                interruptible = not notInterruptible
+            }
+        else
+            self.active_casts[guid] = nil
+        end
+    end
+}
+```
+
+## 6. Debug Tools
+
+### 6.1 Debug Logger
+```lua
+local DebugLogger = {
+    enabled = false,
+    level = 1,  -- 1=ERROR, 2=WARN, 3=INFO, 4=DEBUG
+    
+    log = function(self, level, ...)
+        if not self.enabled or level > self.level then return end
+        local prefix = {[1]="ERROR", [2]="WARN", [3]="INFO", [4]="DEBUG"}
+        print(string.format("[%s] ", prefix[level] or "UNKNOWN"), ...)
+    end
+}
+```
+
+## 7. Best Practices
+
+### 7.1 State Management
+- Always initialize states before use
+- Clean up unused states
+- Use changed flag for updates
+- Handle nil cases
+
+### 7.2 Performance
+- Implement throttling for frequent updates
+- Use local variables for API calls
+- Clean up tables periodically
+- Minimize string operations
+
+### 7.3 Error Handling
+- Check for nil returns from API calls
+- Validate unit existence
+- Handle combat state changes
+- Verify GUID availability
+
+## 8. Testing Checklist
+- [ ] Verify state initialization
+- [ ] Test performance with many units
+- [ ] Check memory usage
+- [ ] Verify cleanup on disable
+- [ ] Test error conditions
+- [ ] Validate load conditions
+
+## 9. References
+1. [World of Warcraft API](https://wowpedia.fandom.com/wiki/World_of_Warcraft_API)
+2. [WeakAuras Documentation](https://github.com/WeakAuras/WeakAuras2/wiki)
+3. [Combat Log Events](https://wowpedia.fandom.com/wiki/COMBAT_LOG_EVENT)

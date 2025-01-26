@@ -46,10 +46,21 @@
             "conditions": ["target_circle", "can_cc_circle", "gouge", "power_45"]
         },
         {
+            "name": "Kick Target Diamond: /targetenemy",
+            "key": "i",
+            "conditions": ["icon_diamond_exists", "can_interrupt_diamond", "!target_diamond", "kick", "power_25"]
+        },
+        {
+            "name": "Kick Diamond",
+            "key": "f",
+            "conditions": ["target_diamond", "can_interrupt_diamond", "kick", "power_25"]
+        },
+        {
             "name": "Target Skull: /targetenemy", 
             "key": "i",
-            "conditions": ["icon_skull_exists", "!target_skull", "!can_cc_cross"]
+            "conditions": ["icon_skull_exists", "!target_skull", "!can_cc_cross", "!can_cc_circle", "!can_cc_diamond"]
         },
+
 
         {
             "group": "START GROUP: STEALTH ACTIONS",
@@ -60,16 +71,8 @@
 
 
         {
-            "group": "START GROUP: INTERRUPTS ON TARGET",
-            "name": "Kick",
-            "key": "f",
-            "conditions": ["kick", "target_interruptible", "power_25", "range_8"]
-        },
-
-
-        {
             "group": "START GROUP: RANGED ATTACKS: PRIORITY OVER MELEE",
-            "name": "Throw",
+            "name": "Throw or Shoot",
             "key": "=",
             "conditions": ["!stealth_buff", "!range_8", "range_30", "!player_moving"]
         },
