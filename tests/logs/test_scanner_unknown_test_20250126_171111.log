@@ -1,0 +1,11 @@
+
+=== DEBUG ===
+Scanner environment initialized
+=== STATE ===
+lua_env_check: {'ns_exists': True, 'aura_env_exists': True, 'weakauras_exists': True}
+=== DEBUG ===
+Loaded scanner code from AuraManager/auras/scanner_test.lua
+=== DEBUG ===
+message: Loaded scanner code from AuraManager/auras/scanner_test.lua
+=== DEBUG ===
+event: MARK_CHECK_DETAILSunit_exists: Truetarget_exists: Trueunit_guid: test_mob_1target_guid: test_mob_1is_enemy: Truecan_attack: Truecurrent_mark: 8expected_mark: 8seen_targets: {'test_mob_1': 3}skull_guid: test_mob_1target_seen_count: 3raid_targets: {'test_mob_1': 8}
