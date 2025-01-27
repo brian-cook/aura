@@ -119,4 +119,35 @@ class TestingLogger:
 
     def __del__(self):
         """Ensure logger is closed on deletion"""
-        self.close() 
+        self.close()
+
+    def log_scanner_state(self, scanner_test, event_name=None):
+        """Log detailed scanner state for debugging"""
+        try:
+            state = {
+                "timestamp": time.time(),
+                "event": event_name,
+                "marks": scanner_test.lua.eval("aura_env.marks"),
+                "seen_targets": scanner_test.lua.eval("aura_env.seenTargets"),
+                "skull_guid": scanner_test.lua.eval("aura_env.skullGUID"),
+                "last_scan": scanner_test.lua.eval("aura_env.last"),
+                "current_target": scanner_test.lua.eval("UnitGUID('target')"),
+                "throttle_active": scanner_test.lua.eval("GetTime() - (aura_env.last or 0) <= 0.2"),
+                "lua_globals": {
+                    "ns": scanner_test.lua.eval("type(ns)"),
+                    "aura_env": scanner_test.lua.eval("type(aura_env)"),
+                    "WeakAuras": scanner_test.lua.eval("type(WeakAuras)")
+                },
+                "profile_state": {
+                    "combat": scanner_test.lua.eval("InCombatLockdown()"),
+                    "targeting": scanner_test.lua.eval("UnitExists('target')")
+                }
+            }
+            
+            self.write_section("SCANNER STATE", state)
+            
+        except Exception as e:
+            self.log_error("Failed to log scanner state", error=e, context={
+                "event": event_name,
+                "lua_state": "Failed to evaluate"
+            }) 
