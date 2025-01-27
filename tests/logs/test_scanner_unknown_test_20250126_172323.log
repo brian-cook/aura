@@ -1,7 +1,0 @@
-
-=== DEBUG ===
-Scanner environment initialized
-=== STATE ===
-lua_env_check: {'ns_exists': True, 'aura_env_exists': True, 'weakauras_exists': True}
-=== STATE ===
-event: PRIORITY_CHECKcasting_units: set()marked_enemies: {}skull_guid: None

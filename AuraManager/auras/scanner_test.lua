@@ -1,15 +1,14 @@
-
 local ADDON_NAME, ns = ...
 ns.auras = ns.auras or {}
 ns.auras["scanner_test"] = {
     id = "Scanner Test",
-    uid = "udV)olhWRPM",
+    uid = "RmdkUoznpBf",
     internalVersion = 78,
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 216,
-    yOffset = 84,
+    xOffset = 100,
+    yOffset = 80,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -47,7 +46,7 @@ ns.auras["scanner_test"] = {
                 names = {},
                 custom_type = "stateupdate",
                 spellIds = {},
-                custom = [[function(allstates)
+                custom = [[function(allstates, event)
     -- Initialize aura environment variables if not exists
     aura_env.last = aura_env.last or 0
     aura_env.marks = aura_env.marks or {}
@@ -64,17 +63,22 @@ ns.auras["scanner_test"] = {
     if not aura_env.SPELL_CATEGORIES then
         aura_env.SPELL_CATEGORIES = {
             HEALING_SPELLS = {
-                [2050] = true, [2052] = true, [2053] = true,  -- Lesser Heal Series
-                [2054] = true, [2055] = true, [6063] = true, [6064] = true,  -- Heal Series
-                [2060] = true, [10963] = true,  -- Greater Heal Series
+                [2050] = true, [2054] = true, [2060] = true,  -- Heal Series
+                [596] = true, [996] = true,  -- Prayer of Healing
+                [2061] = true, [9472] = true, -- Flash Heal
+                [740] = true,  -- Tranquility
             },
             CC_SPELLS = {
-                [118] = true, [12824] = true, [12825] = true,  -- Polymorph Series
-                [9484] = true, [9485] = true,  -- Shackle Undead Series
+                [118] = true, [12824] = true,  -- Polymorph
+                [9484] = true, [9485] = true,  -- Shackle Undead
+                [5782] = true, [6213] = true,  -- Fear
+                [2637] = true, [18657] = true, -- Hibernate
             },
             DAMAGE_SPELLS = {
-                [686] = true, [695] = true, [705] = true,  -- Shadowbolt Series
-                [421] = true, [930] = true,  -- Chain Lightning Series
+                [686] = true, [695] = true, [705] = true,  -- Shadow Bolt
+                [421] = true, [930] = true,  -- Chain Lightning
+                [116] = true, [205] = true,  -- Frostbolt
+                [348] = true, [707] = true,  -- Immolate
             }
         }
     end
@@ -88,9 +92,9 @@ ns.auras["scanner_test"] = {
     }
     
     -- Performance throttling (0.2s)
-    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
-        aura_env.last = GetTime()
-        local currentTime = GetTime()
+    local currentTime = GetTime()
+    if not aura_env.last or currentTime - aura_env.last > 0.2 then
+        aura_env.last = currentTime
         
         -- Check if player can mark (including solo players)
         if IsInGroup() and not (UnitIsGroupLeader("player") or UnitIsGroupAssistant("player")) then
@@ -101,7 +105,6 @@ ns.auras["scanner_test"] = {
         local currentEnemies = {}
         local markedEnemies = {}
         local unmarkedEnemies = {}
-        local castingEnemies = {}
         local castingUnits = {}
         
         -- Helper Functions
@@ -141,12 +144,11 @@ ns.auras["scanner_test"] = {
             return SPELL_PRIORITY.UNCATEGORIZED, spellName, endTime/1000
         end
         
-        -- SECTION 1: TARGET-BASED SKULL MARKING AND MAINTENANCE
+        -- SECTION 1: TARGET-BASED SKULL MARKING
         local targetGUID = UnitGUID("target")
-        
-        -- Record target if it's attackable
         if targetGUID and UnitCanAttack("player", "target") then
             if aura_env.seenTargets[targetGUID] then
+                -- Target seen twice within 5s window gets skull
                 if not aura_env.skullGUID and not GetRaidTargetIndex("target") then
                     SetRaidTarget("target", 8)
                     aura_env.skullGUID = targetGUID
@@ -154,43 +156,26 @@ ns.auras["scanner_test"] = {
                     aura_env.skullTimestamp = currentTime
                 end
             else
+                -- First time seeing target
                 aura_env.seenTargets[targetGUID] = currentTime
             end
         end
         
-        -- Clean up old seen targets (after 5 seconds)
+        -- Clean seen targets after 5s
         for guid, timestamp in pairs(aura_env.seenTargets) do
             if currentTime - timestamp > 5 then
                 aura_env.seenTargets[guid] = nil
             end
         end
         
-        -- Clear skull GUID if timeout exceeded (30 seconds)
+        -- Skull GUID Management
         if aura_env.skullGUID and (currentTime - aura_env.skullTimestamp > 30) then
             local oldGUID = aura_env.skullGUID
             aura_env.skullGUID = nil
             aura_env.marks[oldGUID] = nil
         end
         
-        -- Clear skull GUID if current target is dead or doesn't exist
-        if aura_env.skullGUID and targetGUID == aura_env.skullGUID then
-            if not UnitExists("target") or UnitIsDeadOrGhost("target") then
-                local oldGUID = aura_env.skullGUID
-                aura_env.skullGUID = nil
-                aura_env.marks[oldGUID] = nil
-            else
-                aura_env.skullTimestamp = currentTime
-            end
-        end
-        
-        -- Clean up expired casts
-        for guid, endTime in pairs(aura_env.castEndTimes) do
-            if currentTime > endTime then
-                aura_env.castEndTimes[guid] = nil
-            end
-        end
-        
-        -- SECTION 2: NAMEPLATE SCANNING AND PROCESSING
+        -- SECTION 2: NAMEPLATE PROCESSING
         for i = 1, 40 do
             local unit = "nameplate"..i
             if UnitExists(unit) and UnitCanAttack("player", unit) and UnitAffectingCombat(unit) then
@@ -199,19 +184,18 @@ ns.auras["scanner_test"] = {
                     local currentMark = GetRaidTargetIndex(unit)
                     currentEnemies[guid] = unit
                     
-                    -- Get spell priority and info
+                    -- Process casting units
                     local priority, spellName, endTime = getSpellPriority(unit)
                     if priority > 0 then
                         castingUnits[guid] = {
                             unit = unit,
                             guid = guid,
                             priority = priority,
-                            spellName = spellName,
+                            spell = spellName,
                             endTime = endTime,
-                            distance = CheckInteractDistance(unit, 3) and 1 or 2,
-                            currentMark = currentMark
+                            currentMark = currentMark,
+                            distance = CheckInteractDistance(unit, 3) and 1 or 2
                         }
-                        castingEnemies[guid] = true
                         aura_env.castEndTimes[guid] = endTime
                     elseif currentMark == DIAMOND then
                         -- Remove diamond from units that are no longer casting
@@ -274,7 +258,7 @@ ns.auras["scanner_test"] = {
                     local lowerMark = MARKS[j]
                     if markedEnemies[lowerMark] then
                         local target = markedEnemies[lowerMark]
-                        if not castingEnemies[target.guid] then
+                        if not castingUnits[target.guid] then
                             SetRaidTarget(target.unit, highMark)
                             markedEnemies[highMark] = target
                             markedEnemies[lowerMark] = nil
@@ -290,7 +274,7 @@ ns.auras["scanner_test"] = {
         for _, mark in ipairs(MARKS) do
             if not markedEnemies[mark] and #unmarkedEnemies > 0 then
                 local target = table.remove(unmarkedEnemies, 1)
-                if not castingEnemies[target.guid] then
+                if not castingUnits[target.guid] then
                     SetRaidTarget(target.unit, mark)
                     aura_env.marks[target.guid] = mark
                 end
@@ -302,7 +286,8 @@ ns.auras["scanner_test"] = {
             changed = true,
             show = true,
             activeMarks = aura_env.marks,
-            skullGUID = aura_env.skullGUID
+            skullGUID = aura_env.skullGUID,
+            seenTargets = aura_env.seenTargets
         }
         
         return true
@@ -315,16 +300,17 @@ end]],
   stacks = true,
 }]],
                 unevent = "auto",
+                custom_hide = "timed",
                 use_absorbMode = true,
                 customStacks = [[function() return aura_env.count end]],
-                events = "PLAYER_TARGET_CHANGED UNIT_TARGET NAME_PLATE_UNIT_ADDED NAME_PLATE_UNIT_REMOVED",
+                events = "PLAYER_TARGET_CHANGED",
             },
             untrigger = {},
         },
     },
     conditions = {},
     load = {
-        use_never = true,
+        use_never = false,
         talent = {
             multi = {},
         },
@@ -341,12 +327,6 @@ end]],
             multi = {},
         },
         zoneIds = "",
-        group_leader = {
-            multi = {
-                LEADER = true,
-            },
-            single = "LEADER",
-        },
     },
     animation = {
         start = {

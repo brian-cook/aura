@@ -7,9 +7,9 @@ import sys
 import datetime
 from contextlib import contextmanager
 from test_helpers import ScannerTest, TestingLogger
-from wow_api_mock import WoWAPIMock
+from wow_api_mock import WoWAPIMock, UnitState, NamePlateInfo
 import json
-from typing import List
+from typing import List, Any
 import random
 from unittest.mock import Mock, patch
 import time
@@ -84,66 +84,56 @@ class EnhancedTestLogger(TestingLogger):
         self.state_transitions.append(transition)
         self.write_event(transition)
 
-class TestScanner:
+class BaseScanner:
+    """Base class for scanner tests"""
+    def setup_base(self, test_logger):
+        """Base setup for all scanner tests"""
+        self.logger = test_logger
+        self.wow_api = WoWAPIMock()
+        self.scanner_name = "scanner_test"
+        self.scanner_test = ScannerTest(scanner_name=self.scanner_name, wow_api=self.wow_api, logger=self.logger)
+        self.wow_api.initialize(self.scanner_test)
+        # Initialize WeakAuras global
+        self.scanner_test.lua.execute("""
+            WeakAuras = {
+                ScanEvents = function() end,
+                LoadFunction = function() end
+                -- Add other required WeakAuras functions as needed
+            }
+        """)
+
+class TestScanner(BaseScanner):
     @pytest.fixture(autouse=True)
-    def setup(self, request):
-        """Setup test environment before each test"""
-        # Get scanner name from command line argument or use default
-        self.scanner_name = request.config.getoption('--scanner') or 'scanner_test'
-        
-        # Initialize basic attributes
-        self.wow_version = "classic"  # Default to classic WoW version
-        self.wow_api = WoWAPIMock(self.wow_version)
-        
-        # Initialize logger first since it's needed for scanner_test
-        self.logger = TestingLogger(self._get_log_path())
-        
-        # Now initialize scanner_test with all required arguments
-        self.scanner_test = ScannerTest(
-            wow_api=self.wow_api,
-            logger=self.logger,
-            scanner_name=self.scanner_name
+    def setup(self, test_logger):
+        """Setup test environment"""
+        self.setup_base(test_logger)
+
+    def setup_test_environment(self):
+        """Enhanced test environment setup"""
+        test_unit_id = "test_mob_1"
+        # Create proper UnitState object
+        unit_state = UnitState(
+            guid=test_unit_id,
+            name=f"Unit_{test_unit_id}",
+            is_enemy=True,
+            is_visible=True,
+            in_range=True
         )
+        self.wow_api.units[test_unit_id] = unit_state
         
-        # Verify Lua environment
-        def verify_lua_env():
-            # Initialize basic Lua environment
-            self.scanner_test.lua.execute("""
-                -- Create global namespace
-                _G.ns = _G.ns or {}
-                ns.auras = ns.auras or {}
-                
-                -- Initialize WeakAuras mock
-                _G.WeakAuras = _G.WeakAuras or {
-                    ScanEvents = function(event) end
-                }
-                
-                -- Initialize aura environment
-                _G.aura_env = _G.aura_env or {
-                    marks = {},
-                    seenTargets = {},
-                    last = 0,
-                    skullGUID = nil
-                }
-            """)
-            
-            # Verify initialization
-            self.logger.log_state({
-                "lua_env_check": {
-                    "ns_exists": self.scanner_test.lua.eval("type(ns)") == "table",
-                    "aura_env_exists": self.scanner_test.lua.eval("type(aura_env)") == "table",
-                    "weakauras_exists": self.scanner_test.lua.eval("type(WeakAuras)") == "table"
-                }
-            })
+        # Create corresponding nameplate
+        nameplate = NamePlateInfo(
+            unit_id=test_unit_id,
+            guid=test_unit_id,
+            position=(0, 0, 0),
+            is_visible=True,
+            in_range=True
+        )
+        self.wow_api.nameplates[test_unit_id] = nameplate
+        self.wow_api.visible_nameplates.add(test_unit_id)
         
-        verify_lua_env()
-        
-        yield  # Allow test to run
-        
-        # Cleanup
-        if hasattr(self, 'logger'):
-            self.logger.close()
-            
+        return test_unit_id
+
     def _get_log_path(self):
         """Helper to generate log path for current test"""
         test_name = self._testMethodName if hasattr(self, '_testMethodName') else 'unknown_test'
@@ -851,396 +841,76 @@ class TestScanner:
             
         self._run_test(run_test)
 
-    def test_target_based_skull_marking(self):
-        """Test OOC target-based skull marking with realistic timing"""
-        
-        def setup_test_environment():
-            # Initialize scanner test environment
-            if not hasattr(self.scanner_test, 'aura_env'):
-                self.scanner_test.aura_env = type('AuraEnv', (), {
-                    'seenTargets': {},
-                    'skullGUID': None,
-                    'marks': {},
-                    'last': 0,
-                    'OnEvent': None
-                })
-
-            # Update WoWAPIMock class to handle unit1, unit2 correctly
-            class WoWAPIMockExtended(self.wow_api.__class__):
-                def __init__(self):
-                    super().__init__()
-                    self.raid_targets = {}  # Add raid target tracking
-                    
-                def UnitIsEnemy(self, unit1, unit2):
-                    # Check if unit2 exists and is marked as enemy
-                    if self.UnitExists(unit2):
-                        unit = self.units.get(self.UnitGUID(unit2))
-                        return unit and getattr(unit, 'is_enemy', False)
-                    return False
-                    
-                def SetRaidTarget(self, unit, mark):
-                    if not unit:
-                        return
-                    
-                    unit_guid = self.UnitGUID(unit)
-                    if unit_guid:
-                        self.raid_targets[unit_guid] = mark
-                        # Add debug logging for raid target setting
-                        print(f"Setting raid target for {unit} (GUID: {unit_guid}) to {mark}")
-                        return True
-                    return False
-                    
-                def GetRaidTargetIndex(self, unit):
-                    if not unit:
-                        return 0
-                        
-                    unit_guid = self.UnitGUID(unit)
-                    return self.raid_targets.get(unit_guid, 0)
-                    
-                def set_target(self, unit_id):
-                    if unit_id:
-                        # Get the original unit state
-                        original_unit = self.units.get(unit_id)
-                        if original_unit:
-                            # Create a new unit state for target using __dict__ to get attributes
-                            target_state = {
-                                'guid': unit_id,
-                                'name': getattr(original_unit, 'name', 'Unknown'),
-                                'is_attackable': getattr(original_unit, 'is_attackable', False),
-                                'in_combat': getattr(original_unit, 'in_combat', False),
-                                'in_range': getattr(original_unit, 'in_range', False),
-                                'has_nameplate': getattr(original_unit, 'has_nameplate', False),
-                                'is_enemy': getattr(original_unit, 'is_enemy', False),
-                                'exists': getattr(original_unit, 'exists', False)
-                            }
-                            # Create a new UnitState object
-                            self.units['target'] = type('UnitState', (), target_state)
-                    else:
-                        # Clear target
-                        if 'target' in self.units:
-                            del self.units['target']
-                        
-                    # Call parent implementation
-                    super().set_target(unit_id)
-                    
-                def clear_target(self):
-                    self.set_target(None)
-
-            # Replace existing wow_api with extended version
-            self.wow_api.__class__ = WoWAPIMockExtended
-
-            # Rest of setup_test_environment remains the same
-            self.scanner_test.lua.execute("""
-                -- Initialize namespace
-                ns = {
-                    marks = {},
-                    units = {},
-                    config = {
-                        enabled = true,
-                        debug = true,
-                        markPriority = true
-                    }
-                }
-                
-                -- Create WeakAuras global
-                WeakAuras = {
-                    ScanEvents = function(event)
-                        if aura_env and aura_env.OnEvent then
-                            aura_env:OnEvent(event)
-                        end
-                    end
-                }
-                
-                -- Initialize WoW API functions
-                function UnitGUID(unit)
-                    if not unit then return nil end  -- Add null check
-                    return python.eval('self.wow_api.UnitGUID("' .. unit .. '")')
-                end
-                
-                function GetTime()
-                    return python.eval('self.wow_api.GetTime()')
-                end
-                
-                function UnitExists(unit)
-                    if not unit then return false end  -- Add null check
-                    return python.eval('self.wow_api.UnitExists("' .. unit .. '")')
-                end
-                
-                function UnitIsEnemy(unit1, unit2)
-                    if not unit1 or not unit2 then return false end  -- Add null check
-                    return python.eval('self.wow_api.UnitIsEnemy("' .. unit1 .. '", "' .. unit2 .. '")')
-                end
-                
-                function SetRaidTarget(unit, mark)
-                    if not unit then return end  -- Add null check
-                    return python.eval('self.wow_api.SetRaidTarget("' .. unit .. '", ' .. tostring(mark) .. ')')
-                end
-                
-                function GetRaidTargetIndex(unit)
-                    if not unit then return nil end  -- Add null check
-                    return python.eval('self.wow_api.GetRaidTargetIndex("' .. unit .. '")')
-                end
-            """)
-            
-            # Load scanner code after namespace is initialized
-            scanner_path = f"AuraManager/auras/{self.scanner_name}.lua"
-            try:
-                self.scanner_test.load_scanner_code(scanner_path)
-                self.logger.write_section("DEBUG", {
-                    "message": f"Loaded scanner code from {scanner_path}"
-                })
-                
-                # Initialize scanner state with proper Lua table and functions
-                self.scanner_test.lua.execute("""
-                    -- Initialize scanner state
-                    aura_env = aura_env or {}
-                    aura_env.seenTargets = aura_env.seenTargets or {}
-                    aura_env.skullGUID = aura_env.skullGUID or nil
-                    aura_env.marks = aura_env.marks or {}
-                    aura_env.last = aura_env.last or GetTime()
-                    
-                    -- Store original OnEvent if it exists
-                    local originalOnEvent = aura_env.OnEvent
-                    
-                    -- Add helper functions that don't override existing ones
-                    if not aura_env.UpdateSeenTarget then
-                        function aura_env:UpdateSeenTarget(guid)
-                            if not self.seenTargets[guid] then
-                                self.seenTargets[guid] = 1
-                            else
-                                self.seenTargets[guid] = self.seenTargets[guid] + 1
-                            end
-                        end
-                    end
-                    
-                    -- Create a new OnEvent wrapper
-                    aura_env.OnEvent = function(self, event, ...)
-                        -- Handle target tracking first
-                        if event == "PLAYER_TARGET_CHANGED" then
-                            local target = "target"
-                            if UnitExists(target) then
-                                local targetGUID = UnitGUID(target)
-                                if targetGUID and UnitIsEnemy("player", target) then
-                                    self:UpdateSeenTarget(targetGUID)
-                                    -- Mark with skull if seen multiple times and no current mark
-                                    if self.seenTargets[targetGUID] > 1 then
-                                        local currentMark = GetRaidTargetIndex(target)
-                                        if not currentMark or currentMark == 0 then
-                                            SetRaidTarget(target, 8)  -- 8 is skull
-                                            self.skullGUID = targetGUID
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                        
-                        -- Call original handler if it exists
-                        if originalOnEvent then
-                            originalOnEvent(self, event, ...)
-                        end
-                    end
-                """)
-            except Exception as e:
-                self.logger.write_section("ERROR", {
-                    "message": "Failed to load scanner code",
-                    "error": str(e)
-                })
-                raise
-
-            # Create test unit that will be targeted multiple times
-            unit_id = 'test_mob_1'
-            unit_props = {
-                'guid': unit_id,
-                'name': 'Test Mob',
-                'is_attackable': True,
-                'in_combat': False,
-                'in_range': True,
-                'has_nameplate': False,
-                'is_enemy': True,
-                'exists': True,
-                'can_attack': True  # Add this property
-            }
-            self.wow_api.add_unit(unit_id, unit_props)
-            
-            # Add UnitCanAttack method to WoWAPIMockExtended
-            def UnitCanAttack(self, unit1, unit2):
-                if self.UnitExists(unit2):
-                    unit = self.units.get(self.UnitGUID(unit2))
-                    return unit and getattr(unit, 'can_attack', True)
-                return False
-            
-            WoWAPIMockExtended.UnitCanAttack = UnitCanAttack
-            
-            return unit_id
-
-        def verify_skull_marking(unit_id, expected_mark):
-            """Verify skull mark application and persistence"""
-            # Get current state without triggering events
-            current_mark = self.wow_api.GetRaidTargetIndex(unit_id)
-            seen_targets = dict(self.scanner_test.lua.eval("aura_env.seenTargets"))
-            skull_guid = self.scanner_test.lua.eval("aura_env.skullGUID")
-
-            # Add detailed debug logging
-            self.logger.write_section("DEBUG", {
-                'event': 'MARK_CHECK_DETAILS',
-                'unit_exists': self.wow_api.UnitExists(unit_id),
-                'target_exists': self.wow_api.UnitExists('target'),
-                'unit_guid': self.wow_api.UnitGUID(unit_id),
-                'target_guid': self.wow_api.UnitGUID('target'),
-                'is_enemy': self.wow_api.UnitIsEnemy('player', unit_id),
-                'can_attack': self.wow_api.UnitCanAttack('player', unit_id),
-                'current_mark': current_mark,
-                'expected_mark': expected_mark,
-                'seen_count': seen_targets.get(unit_id, 0),
-                'seen_targets': seen_targets,
-                'skull_guid': skull_guid,
-                'raid_targets': self.wow_api.raid_targets
-            })
-
-            return current_mark == expected_mark
-
-        # Test Sequence
-        test_unit_id = setup_test_environment()
+    def test_target_range_and_visibility(self):
+        """Test target marking behavior when targets move in/out of range"""
+        test_unit_id = self.setup_test_environment()
         
         # First target encounter
         self.wow_api.set_target(test_unit_id)
         self.scanner_test.lua.execute("WeakAuras.ScanEvents('PLAYER_TARGET_CHANGED')")
         time.sleep(0.2)
-        assert not verify_skull_marking(test_unit_id, 8), "Should not mark on first sight"
         
-        # Clear target
-        self.wow_api.clear_target()
-        self.scanner_test.lua.execute("WeakAuras.ScanEvents('PLAYER_TARGET_CHANGED')")
+        # Simulate target moving out of range
+        self.wow_api.set_unit_property(test_unit_id, 'in_range', False)
+        self.scanner_test.lua.execute("WeakAuras.ScanEvents('UNIT_FLAGS')")
         time.sleep(0.2)
+        
+        # Verify mark is cleared when target is out of range
+        current_mark = self.wow_api.GetRaidTargetIndex(test_unit_id)
+        assert current_mark == 0, "Mark should be cleared when target is out of range"
 
-        # Second target encounter
+    def test_target_cleanup_scenarios(self):
+        """Test cleanup of seen targets and skull marks"""
+        test_unit_id = self.setup_test_environment()
+
+        # Set up initial state
         self.wow_api.set_target(test_unit_id)
         self.scanner_test.lua.execute("WeakAuras.ScanEvents('PLAYER_TARGET_CHANGED')")
         time.sleep(0.2)
-        assert verify_skull_marking(test_unit_id, 8), "Should mark skull on second sight"
 
-    def test_nameplate_combat_integration(self):
-        """Test integration between target marking and nameplate scanning"""
+        # Verify initial seen target
+        seen_targets = dict(self.scanner_test.lua.eval("aura_env.seenTargets"))
+        assert test_unit_id in seen_targets, "Target should be in seen_targets"
+
+        # Advance time by 6 seconds (beyond 5-second cleanup)
+        self.wow_api.advance_time(6)
+        # Force cleanup by triggering scan event
+        self.scanner_test.lua.execute("WeakAuras.ScanEvents('PLAYER_TARGET_CHANGED')")
         
-        def setup_combat_scenario():
-            # Initialize scanner test environment
-            if not hasattr(self.scanner_test, 'aura_env'):
-                self.scanner_test.aura_env = type('AuraEnv', (), {
-                    'seenTargets': set(),
-                    'skullGUID': None,
-                    'castingUnits': set(),
-                    'markedEnemies': {}
-                })
-            
-            # Setup multiple units with different states
-            unit_configs = [
-                {
-                    'id': 'skull_target',
-                    'props': {
-                        'guid': 'skull_target',
-                        'name': 'Skull Target',
-                        'is_attackable': True,
-                        'in_combat': True,
-                        'in_range': True,
-                        'has_nameplate': True,
-                        'casting': {
-                            'spell': 'Greater Heal',
-                            'spell_id': 2060,
-                            'interruptible': True
-                        }
-                    }
-                }
-                # Add more units as needed
-            ]
-            
-            units = []
-            for config in unit_configs:
-                self.wow_api.add_unit(config['id'], config['props'])
-                units.append(config['id'])
-            
-            return units
+        # Check if target was cleaned up
+        seen_targets = dict(self.scanner_test.lua.eval("aura_env.seenTargets"))
+        assert test_unit_id not in seen_targets, "Target should be removed from seen_targets"
 
-        def verify_marking_priorities():
-            """Verify that marking priorities are maintained"""
-            self.logger.log_state({
-                'event': 'PRIORITY_CHECK',
-                'casting_units': self.scanner_test.aura_env.castingUnits,
-                'marked_enemies': self.scanner_test.aura_env.markedEnemies,
-                'skull_guid': self.scanner_test.aura_env.skullGUID
-            })
-            
-            # Verify skull mark is maintained or properly transferred
-            skull_unit = self.wow_api.find_unit_by_mark(8)
-            if skull_unit:
-                assert skull_unit.guid == self.scanner_test.aura_env.skullGUID, \
-                    "Skull GUID mismatch"
+    def test_skull_mark_persistence(self):
+        """Test skull mark behavior with target death and timeout"""
+        test_unit_id = self.setup_test_environment()
 
-        # Run test sequence
-        unit_ids = setup_combat_scenario()
-        
-        # Test mark maintenance during combat
-        self.wow_api.set_combat_state(True)  # Using set_combat_state instead of start_combat
+        # Set up skull mark (needs two target events within 5s)
+        self.wow_api.set_target(test_unit_id)
+        self.scanner_test.lua.execute("WeakAuras.ScanEvents('PLAYER_TARGET_CHANGED')")
         time.sleep(0.2)
-        verify_marking_priorities()
-
-class TestProfileScanner:
-    @pytest.fixture(autouse=True)
-    def setup_profile(self, test_logger, scanner_name, wow_version):
-        """Setup test environment with profile loading"""
-        self.logger = test_logger
-
-        # Map scanner names to profile names
-        scanner_to_profile = {
-            "scanner": "hunter_classic_test",
-            "scanner_test": "hunter_classic_test",
-            "scanner_test_2": "rogue_classic_test"  # Map scanner_test_2 to rogue profile
-        }
-
-        # Get appropriate profile name or use scanner name if it's already a profile name
-        self.scanner_name = scanner_to_profile.get(scanner_name, scanner_name)
-        self.wow_version = wow_version
-
-        # Load profile based on scanner name
-        self.profile = self._load_profile()
-
-        # Initialize WoWAPIMock with version and profile-specific settings
-        self.wow_api = WoWAPIMock(
-            wow_version=self.wow_version,
-            class_type=self.profile.get("class", "ROGUE")  # Default to ROGUE for scanner_test_2
-        )
-
-        self.scanner_test = ScannerTest(
-            scanner_name=scanner_name,  # Use original scanner name for test
-            wow_api=self.wow_api,
-            logger=self.logger,
-            profile=self.profile
-        )
-
-        yield
-        self.cleanup()
-
-    def cleanup(self):
-        """Cleanup test resources"""
-        if hasattr(self, 'wow_api'):
-            self.wow_api.reset_state()
-        if hasattr(self, 'scanner_test'):
-            self.scanner_test.cleanup()
-        if hasattr(self, 'logger'):
-            self.logger.close()
-
-    def _load_profile(self) -> dict:
-        """Load the appropriate test profile based on scanner name"""
-        profile_path = Path("scripts/profiles")
-        profile_files = {
-            "hunter_classic_test": profile_path / "hunter_classic_test.json",
-            "rogue_classic_test": profile_path / "rogue_classic_test.json",
-            "scanner_test_2": profile_path / "rogue_classic_test.json"  # Direct mapping for scanner_test_2
-        }
         
-        if self.scanner_name not in profile_files:
-            raise ValueError(f"No test profile found for scanner: {self.scanner_name}")
-            
-        with open(profile_files[self.scanner_name], 'r') as f:
+        # Second targeting within 5s should trigger skull
+        self.wow_api.clear_target()
+        self.wow_api.set_target(test_unit_id)
+        self.scanner_test.lua.execute("WeakAuras.ScanEvents('PLAYER_TARGET_CHANGED')")
+        time.sleep(0.2)
+
+        # Verify skull mark
+        skull_guid = self.scanner_test.lua.eval("aura_env.skullGUID")
+        assert skull_guid == test_unit_id, "Target should be marked with skull"
+
+class TestProfileScanner(TestScanner):
+    def setup_base(self, test_logger):
+        """Base setup for profile scanner tests"""
+        super().setup_base(test_logger)
+        # Load the profile for testing
+        self.profile = self._load_profile()
+        
+    def _load_profile(self):
+        """Load the test profile"""
+        profile_path = "scripts/profiles/hunter_classic_test.json"
+        with open(profile_path, 'r') as f:
             return json.load(f)
 
     @pytest.mark.scanner

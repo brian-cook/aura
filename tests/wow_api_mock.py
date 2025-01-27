@@ -26,6 +26,8 @@ class UnitState:
     tap_denied: bool = False
     classification: str = "normal"  # normal, elite, rare, rareelite, worldboss
     in_combat: bool = False
+    in_range: bool = True
+    position: Tuple[float, float, float] = field(default_factory=lambda: (0, 0, 0))  # Add position property
 
 @dataclass
 class NamePlateInfo:
@@ -209,6 +211,22 @@ class WoWAPIMock:
             'MARK_APPLICATION_DELAY': 0.05
         }
 
+        self.scan_metrics = {
+            'scan_locks': 0,
+            'total_scans': 0
+        }
+
+        self.scanner_test = None
+
+    def initialize(self, scanner_test):
+        """Initialize the mock with scanner test instance"""
+        self.scanner_test = scanner_test
+        self.units = {}  # Reset units on initialization
+        self.current_target = None
+        self.raid_targets = {}
+        self.nameplates = {}
+        self.visible_nameplates = set()
+
     def _check_api_availability(self, api_name: str) -> bool:
         """Check if API is available for current version"""
         return self.api_availability.get(self.wow_version, {}).get(api_name, True)
@@ -381,9 +399,13 @@ class WoWAPIMock:
         self.current_target = None
 
     # Raid Target Management
-    def GetRaidTargetIndex(self, unit: str) -> Optional[int]:
-        """Get raid target mark for unit"""
-        return self.marks.get(unit)
+    def GetRaidTargetIndex(self, unit: str) -> int:
+        """Get raid target mark (returns 0 instead of None for no mark)"""
+        if unit in self.raid_targets:
+            mark_info = self.raid_targets[unit]
+            if not mark_info.get('expired', False):
+                return mark_info['mark']
+        return 0  # Return 0 for no mark instead of None
         
     def SetRaidTarget(self, unit: str, mark: int) -> bool:
         """Set raid target mark with realistic failure conditions"""
@@ -442,10 +464,18 @@ class WoWAPIMock:
                 del self.raid_targets[unit]
         return None
 
-    def clear_raid_target(self, unit: str) -> None:
-        """Clear raid target mark from a unit"""
-        if unit in self.raid_targets:
-            del self.raid_targets[unit]
+    def clear_raid_target(self, unit_id: str) -> None:
+        """Clear raid target marker from a unit"""
+        if not self.scanner_test:
+            raise RuntimeError("WoWAPIMock not initialized - call initialize() first")
+            
+        if unit_id in self.raid_targets:
+            del self.raid_targets[unit_id]
+        self.scanner_test.lua.execute(f"""
+            if GetRaidTargetIndex then
+                SetRaidTarget('{unit_id}', 0)
+            end
+        """)
 
     def has_raid_target(self, unit: str) -> bool:
         """Check if unit has any raid target mark"""
@@ -561,38 +591,37 @@ class WoWAPIMock:
         self.casting_info.clear()
 
     # Unit Creation and Management
-    def add_unit(self, unit_id: str, props: dict = None) -> None:
+    def add_unit(self, unit_id: str, properties: dict = None):
         """Add a unit with specified properties"""
-        if props is None:
-            props = {}
-            
-        unit_state = UnitState(
-            guid=f"Unit-{random.randint(1, 1000000)}",
-            name=unit_id,
-            is_enemy=props.get("is_enemy", True),
-            in_combat=props.get("in_combat", self.in_combat)
-        )
+        base_properties = {
+            'guid': unit_id,
+            'name': 'Test Mob',
+            'is_attackable': True,
+            'in_combat': False,
+            'in_range': True,
+            'has_nameplate': False,
+            'is_enemy': True,
+            'exists': True,
+            'can_attack': True,
+            'is_dead': False
+        }
+        if properties:
+            base_properties.update(properties)
+        self.units[unit_id] = base_properties
+
+    def set_unit_property(self, unit_id: str, property_name: str, value: Any) -> None:
+        """Set a property on a unit"""
+        if unit_id not in self.units:
+            # Create new UnitState if it doesn't exist
+            self.units[unit_id] = UnitState(guid=unit_id, name=f"Unit_{unit_id}")
+        unit = self.units[unit_id]
+        setattr(unit, property_name, value)
         
-        # Update unit with additional properties
-        for key, value in props.items():
-            if hasattr(unit_state, key):
-                setattr(unit_state, key, value)
-                
-        self.units[unit_id] = unit_state
-        
-        # Create nameplate for unit
-        position = props.get('position', (
-            random.uniform(-20, 20),
-            random.uniform(-20, 20),
-            random.uniform(-5, 5)
-        ))
-        
-        self.nameplates[unit_id] = NamePlateInfo(
-            unit_id=unit_id,
-            guid=self.units[unit_id].guid,
-            position=position
-        )
-        self._update_nameplate_visibility()
+        # Handle special cases
+        if property_name == 'in_range' and not value:
+            # Clear mark when unit goes out of range
+            if unit_id in self.raid_targets:
+                self.raid_targets[unit_id] = {'mark': 0, 'expired': True}
 
     def remove_unit(self, unit_id: str) -> None:
         """Remove unit and its nameplate"""
@@ -902,11 +931,13 @@ class WoWAPIMock:
             return 0.0
         return time.time() - self.combat_time
 
-    def advance_time(self, seconds: float):
-        """Advance the mock time by specified seconds"""
+    def advance_time(self, seconds: float) -> None:
+        """Advance the mock time"""
         self.current_time += seconds
-        # Update any time-based state
-        self._update_time_based_state()
+        # Update mark expiration
+        for unit_id, mark_info in self.raid_targets.items():
+            if mark_info.get('timestamp', 0) + 5 < self.current_time:
+                mark_info['expired'] = True
 
     def _update_time_based_state(self):
         """Update any state that depends on time"""
@@ -919,20 +950,33 @@ class WoWAPIMock:
         for unit in expired_marks:
             self.clear_raid_target(unit)
 
-    def set_target(self, unit: str) -> bool:
-        """Set current target with scan state update"""
-        if unit in self.units:
-            self.current_target = unit
-            self.scan_state.scan_lock = True
-            self.scan_state.scan_cooldown = time.time()
-            return True
-        return False
+    def set_target(self, unit_id: str) -> None:
+        """Set the current target"""
+        if not self.scanner_test:
+            raise RuntimeError("WoWAPIMock not initialized - call initialize() first")
+            
+        self.current_target = unit_id
+        if unit_id in self.units:
+            # Update seenTargets in Lua environment
+            unit = self.units[unit_id]
+            self.scanner_test.lua.execute(f"""
+                local guid = '{unit.guid}'
+                aura_env.seenTargets = aura_env.seenTargets or {{}}
+                aura_env.seenTargets[guid] = GetTime()
+            """)
+        self.trigger_event('PLAYER_TARGET_CHANGED')
 
-    def clear_target(self) -> None:
-        """Clear current target and update scan state"""
-        self.current_target = None
-        self.scan_state.scan_lock = False
-        
+    def trigger_event(self, event: str, *args) -> None:
+        """Trigger a WoW event"""
+        if not self.scanner_test:
+            return
+            
+        event_str = f"WeakAuras.ScanEvents('{event}'"
+        if args:
+            event_str += ", '" + "', '".join(str(arg) for arg in args) + "'"
+        event_str += ")"
+        self.scanner_test.lua.execute(event_str)
+
     def get_scan_history(self) -> List[Dict[str, Any]]:
         """Get target scanning history"""
         return self.scan_history
@@ -991,11 +1035,8 @@ class WoWAPIMock:
         """Set timing constants for the mock API"""
         self.timing_constants.update(constants)
 
-    def GetTime(self):
-        """Get the current game time in seconds"""
-        now = time.time()
-        self.current_time += now - self.last_update
-        self.last_update = now
+    def GetTime(self) -> float:
+        """Get current time"""
         return self.current_time
 
     def find_unit_by_mark(self, mark_id):
@@ -1005,13 +1046,20 @@ class WoWAPIMock:
                 return self.units.get(unit_id)
         return None
 
-    def GetRaidTargetIndex(self, unit_id):
-        """Get the raid target mark for a unit"""
-        return self.marks.get(unit_id, 0)
-
     def SetRaidTarget(self, unit_id, mark):
         """Set a raid target mark on a unit"""
         if mark == 0:
             self.marks.pop(unit_id, None)
         else:
             self.marks[unit_id] = mark
+
+    def clear_target(self) -> None:
+        """Clear the current target"""
+        self.current_target = None
+
+    def CheckInteractDistance(self, unit: str, distance_type: int) -> bool:
+        """Check if unit is within interaction range"""
+        if unit not in self.units:
+            return False
+        unit_state = self.units[unit]
+        return unit_state.in_range
