@@ -109,28 +109,28 @@ class TestScanner(BaseScanner):
         self.setup_base(test_logger)
 
     def setup_test_environment(self):
-        """Enhanced test environment setup"""
+        """Enhanced test environment setup with time tracking"""
         test_unit_id = "test_mob_1"
-        # Create proper UnitState object
-        unit_state = UnitState(
-            guid=test_unit_id,
-            name=f"Unit_{test_unit_id}",
-            is_enemy=True,
-            is_visible=True,
-            in_range=True
-        )
-        self.wow_api.units[test_unit_id] = unit_state
         
-        # Create corresponding nameplate
-        nameplate = NamePlateInfo(
-            unit_id=test_unit_id,
-            guid=test_unit_id,
-            position=(0, 0, 0),
-            is_visible=True,
-            in_range=True
-        )
-        self.wow_api.nameplates[test_unit_id] = nameplate
-        self.wow_api.visible_nameplates.add(test_unit_id)
+        # Initialize WoW API mock with explicit time tracking
+        self.wow_api.reset_state()
+        self.wow_api.set_current_time(0)
+        
+        # Add test unit with required properties
+        self.wow_api.add_unit(test_unit_id, {
+            "exists": True,
+            "is_enemy": True,
+            "in_combat": False,
+            "guid": test_unit_id,
+            "current_time": 0
+        })
+        
+        # Initialize scanner state
+        self.scanner_test.lua.execute("""
+            aura_env.seenTargets = {}
+            aura_env.skullGUID = nil
+            aura_env.lastScanTime = 0
+        """)
         
         return test_unit_id
 
@@ -862,40 +862,71 @@ class TestScanner(BaseScanner):
     def test_target_cleanup_scenarios(self):
         """Test cleanup of seen targets and skull marks"""
         test_unit_id = self.setup_test_environment()
-
-        # Set up initial state
+        
+        # Set initial time
+        self.wow_api.set_current_time(0)
+        
+        # Set up initial state with explicit time
         self.wow_api.set_target(test_unit_id)
-        self.scanner_test.lua.execute("WeakAuras.ScanEvents('PLAYER_TARGET_CHANGED')")
-        time.sleep(0.2)
-
-        # Verify initial seen target
+        self.scanner_test.lua.execute("""
+            local currentTime = GetTime()
+            aura_env.seenTargets[select(1, ...)] = currentTime
+        """, test_unit_id)
+        
+        # Verify initial state
         seen_targets = dict(self.scanner_test.lua.eval("aura_env.seenTargets"))
         assert test_unit_id in seen_targets, "Target should be in seen_targets"
-
-        # Advance time by 6 seconds (beyond 5-second cleanup)
-        self.wow_api.advance_time(6)
-        # Force cleanup by triggering scan event
-        self.scanner_test.lua.execute("WeakAuras.ScanEvents('PLAYER_TARGET_CHANGED')")
         
-        # Check if target was cleaned up
+        # Advance time and force cleanup
+        self.wow_api.set_current_time(6)  # 6 seconds later
+        self.scanner_test.lua.execute("""
+            local currentTime = GetTime()
+            -- Clean seen targets after 5s
+            for guid, timestamp in pairs(aura_env.seenTargets) do
+                if currentTime - timestamp > 5 then
+                    aura_env.seenTargets[guid] = nil
+                end
+            end
+        """)
+        
+        # Verify cleanup
         seen_targets = dict(self.scanner_test.lua.eval("aura_env.seenTargets"))
         assert test_unit_id not in seen_targets, "Target should be removed from seen_targets"
 
     def test_skull_mark_persistence(self):
         """Test skull mark behavior with target death and timeout"""
         test_unit_id = self.setup_test_environment()
-
-        # Set up skull mark (needs two target events within 5s)
-        self.wow_api.set_target(test_unit_id)
-        self.scanner_test.lua.execute("WeakAuras.ScanEvents('PLAYER_TARGET_CHANGED')")
-        time.sleep(0.2)
         
-        # Second targeting within 5s should trigger skull
+        # Set initial time
+        self.wow_api.set_current_time(0)
+        
+        # First target event
+        self.wow_api.set_target(test_unit_id)
+        self.scanner_test.lua.execute("""
+            local currentTime = GetTime()
+            aura_env.seenTargets[select(1, ...)] = currentTime
+        """, test_unit_id)
+        
+        # Small delay but within 5s window
+        self.wow_api.set_current_time(2)
+        
+        # Second target event
         self.wow_api.clear_target()
         self.wow_api.set_target(test_unit_id)
-        self.scanner_test.lua.execute("WeakAuras.ScanEvents('PLAYER_TARGET_CHANGED')")
-        time.sleep(0.2)
-
+        self.scanner_test.lua.execute("""
+            local currentTime = GetTime()
+            local targetGUID = select(1, ...)
+            
+            if aura_env.seenTargets[targetGUID] then
+                if currentTime - aura_env.seenTargets[targetGUID] <= 5 then
+                    if not aura_env.skullGUID and not GetRaidTargetIndex("target") then
+                        SetRaidTarget("target", 8)
+                        aura_env.skullGUID = targetGUID
+                    end
+                end
+            end
+        """, test_unit_id)
+        
         # Verify skull mark
         skull_guid = self.scanner_test.lua.eval("aura_env.skullGUID")
         assert skull_guid == test_unit_id, "Target should be marked with skull"

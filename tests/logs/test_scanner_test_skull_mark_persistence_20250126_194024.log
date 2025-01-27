@@ -1,5 +1,0 @@
-
-=== TEST ENVIRONMENT ===
-Python Version: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]Platform: win32Lupa Version: 1.14.1Working Directory: C:\Users\wiggl\Documents\Python\aura-mainLog File: C:\Users\wiggl\Documents\Python\aura-main\tests\logs\test_scanner_test_skull_mark_persistence_20250126_194024.logTimestamp: 2025-01-26T19:40:24.777285
-=== DEBUG ===
-Scanner environment initialized
