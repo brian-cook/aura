@@ -186,7 +186,9 @@ class WoWAPIMock:
         }
 
         # Core state
-        self.current_time: float = time.time()
+        self.current_time = 0.0
+        self.last_update = time.time()
+        self.current_time = time.time()
         
         # Nameplate specific state
         self.nameplate_distance: float = self.version_config["max_nameplate_distance"]
@@ -200,6 +202,12 @@ class WoWAPIMock:
         self.scan_history = []
 
         self.marking_state = MarkingState()
+
+        self.timing_constants = {
+            'NAMEPLATE_UPDATE_DELAY': 0.1,
+            'TARGET_CHANGE_DELAY': 0.2,
+            'MARK_APPLICATION_DELAY': 0.05
+        }
 
     def _check_api_availability(self, api_name: str) -> bool:
         """Check if API is available for current version"""
@@ -978,3 +986,32 @@ class WoWAPIMock:
             mark = mark_info['mark']
             mark_counts[mark] = mark_counts.get(mark, 0) + 1
         return sum(count - 1 for count in mark_counts.values() if count > 1)
+
+    def set_timing_constants(self, constants):
+        """Set timing constants for the mock API"""
+        self.timing_constants.update(constants)
+
+    def GetTime(self):
+        """Get the current game time in seconds"""
+        now = time.time()
+        self.current_time += now - self.last_update
+        self.last_update = now
+        return self.current_time
+
+    def find_unit_by_mark(self, mark_id):
+        """Find a unit by their raid target mark"""
+        for unit_id, unit_mark in self.marks.items():
+            if unit_mark == mark_id:
+                return self.units.get(unit_id)
+        return None
+
+    def GetRaidTargetIndex(self, unit_id):
+        """Get the raid target mark for a unit"""
+        return self.marks.get(unit_id, 0)
+
+    def SetRaidTarget(self, unit_id, mark):
+        """Set a raid target mark on a unit"""
+        if mark == 0:
+            self.marks.pop(unit_id, None)
+        else:
+            self.marks[unit_id] = mark

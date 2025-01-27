@@ -1,0 +1,13 @@
+
+=== DEBUG ===
+Scanner environment initialized
+=== STATE ===
+lua_env_check: {'ns_exists': True, 'aura_env_exists': True, 'weakauras_exists': True}
+=== ERROR ===
+Failed to initialize Lua environment: 'ScannerTest' object has no attribute 'lua_code'
+=== DEBUG ===
+Loaded scanner code from AuraManager/auras/scanner_test.lua
+=== STATE ===
+event: MARK_CHECKunit_guid: test_mob_1current_mark: 0expected_mark: 8seen_count: 0skull_guid: Nonetimestamp: 1737938230.0706835
+=== STATE ===
+event: MARK_CHECKunit_guid: test_mob_1current_mark: 0expected_mark: 8seen_count: 0skull_guid: Nonetimestamp: 1737938230.3718135

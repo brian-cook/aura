@@ -55,6 +55,35 @@ def with_logging(func):
         return result
     return wrapper
 
+class EnhancedTestLogger(TestingLogger):
+    def __init__(self, log_path):
+        super().__init__(log_path)
+        self.mark_history = []
+        self.state_transitions = []
+        
+    def log_mark_attempt(self, unit_guid, mark, success):
+        event = {
+            'timestamp': time.time(),
+            'event': 'MARK_ATTEMPT',
+            'unit_guid': unit_guid,
+            'mark': mark,
+            'success': success,
+            'current_state': self.get_current_state()
+        }
+        self.mark_history.append(event)
+        self.write_event(event)
+    
+    def log_state_transition(self, old_state, new_state):
+        transition = {
+            'timestamp': time.time(),
+            'event': 'STATE_TRANSITION',
+            'old_state': old_state,
+            'new_state': new_state,
+            'delta': self.compute_state_delta(old_state, new_state)
+        }
+        self.state_transitions.append(transition)
+        self.write_event(transition)
+
 class TestScanner:
     @pytest.fixture(autouse=True)
     def setup(self, request):
@@ -821,6 +850,171 @@ class TestScanner:
             assert not self.scanner_test.verify_action("i"), "Target cycling macro should not be available in combat"
             
         self._run_test(run_test)
+
+    def test_target_based_skull_marking(self):
+        """Test OOC target-based skull marking with realistic timing"""
+        
+        def setup_test_environment():
+            # Initialize scanner test environment
+            if not hasattr(self.scanner_test, 'aura_env'):
+                self.scanner_test.aura_env = type('AuraEnv', (), {
+                    'seenTargets': {},  # Changed to dict to match Lua table
+                    'skullGUID': None,
+                    'marks': {},
+                    'last': 0
+                })
+            
+            # Initialize with realistic timing constants
+            self.wow_api.set_timing_constants({
+                'NAMEPLATE_UPDATE_DELAY': 0.05,  # 50ms
+                'TARGET_CHANGE_DELAY': 0.1,      # 100ms
+                'MARK_APPLICATION_DELAY': 0.02    # 20ms
+            })
+            
+            # Create test unit that will be targeted multiple times
+            unit_id = 'test_mob_1'
+            unit_props = {
+                'guid': unit_id,
+                'name': 'Test Mob',
+                'is_attackable': True,
+                'in_combat': False,
+                'in_range': True,
+                'has_nameplate': False  # Start without nameplate
+            }
+            self.wow_api.add_unit(unit_id, unit_props)
+            
+            # Initialize Lua environment first
+            self.scanner_test.init_lua_env()
+            
+            # Then initialize WeakAuras environment
+            self.scanner_test.lua.execute("""
+                -- Create WeakAuras global
+                WeakAuras = {
+                    ScanEvents = function(event)
+                        -- Call the event handler directly
+                        if aura_env and aura_env.OnEvent then
+                            aura_env:OnEvent(event)
+                        end
+                    end
+                }
+                
+                -- Initialize namespace if not exists
+                if not ns then
+                    ns = {
+                        marks = {},
+                        units = {},
+                        config = {
+                            enabled = true,
+                            debug = true
+                        }
+                    }
+                end
+            """)
+            
+            # Finally load scanner code
+            scanner_path = f"AuraManager/auras/{self.scanner_name}.lua"
+            self.scanner_test.load_scanner_code(scanner_path)
+            
+            return unit_id
+
+        def verify_skull_marking(unit_id, expected_mark):
+            """Verify skull mark application and persistence"""
+            # Force scanner update
+            self.scanner_test.lua.execute("WeakAuras.ScanEvents('PLAYER_TARGET_CHANGED')")
+            
+            current_mark = self.wow_api.GetRaidTargetIndex(unit_id)
+            self.logger.log_state({
+                'event': 'MARK_CHECK',
+                'unit_guid': unit_id,
+                'current_mark': current_mark,
+                'expected_mark': expected_mark,
+                'seen_count': len(self.scanner_test.aura_env.seenTargets),
+                'skull_guid': self.scanner_test.aura_env.skullGUID,
+                'timestamp': self.wow_api.GetTime()
+            })
+            return current_mark == expected_mark
+
+        # Test Sequence
+        test_unit_id = setup_test_environment()
+        
+        # First target encounter
+        self.wow_api.set_target(test_unit_id)
+        self.scanner_test.lua.execute("WeakAuras.ScanEvents('PLAYER_TARGET_CHANGED')")
+        time.sleep(0.2)
+        assert not verify_skull_marking(test_unit_id, 8), "Should not mark on first sight"
+        
+        # Second target encounter
+        self.wow_api.clear_target()
+        self.scanner_test.lua.execute("WeakAuras.ScanEvents('PLAYER_TARGET_CHANGED')")
+        time.sleep(0.1)
+        self.wow_api.set_target(test_unit_id)
+        self.scanner_test.lua.execute("WeakAuras.ScanEvents('PLAYER_TARGET_CHANGED')")
+        time.sleep(0.2)
+        assert verify_skull_marking(test_unit_id, 8), "Should mark skull on second sight"
+
+    def test_nameplate_combat_integration(self):
+        """Test integration between target marking and nameplate scanning"""
+        
+        def setup_combat_scenario():
+            # Initialize scanner test environment
+            if not hasattr(self.scanner_test, 'aura_env'):
+                self.scanner_test.aura_env = type('AuraEnv', (), {
+                    'seenTargets': set(),
+                    'skullGUID': None,
+                    'castingUnits': set(),
+                    'markedEnemies': {}
+                })
+            
+            # Setup multiple units with different states
+            unit_configs = [
+                {
+                    'id': 'skull_target',
+                    'props': {
+                        'guid': 'skull_target',
+                        'name': 'Skull Target',
+                        'is_attackable': True,
+                        'in_combat': True,
+                        'in_range': True,
+                        'has_nameplate': True,
+                        'casting': {
+                            'spell': 'Greater Heal',
+                            'spell_id': 2060,
+                            'interruptible': True
+                        }
+                    }
+                }
+                # Add more units as needed
+            ]
+            
+            units = []
+            for config in unit_configs:
+                self.wow_api.add_unit(config['id'], config['props'])
+                units.append(config['id'])
+            
+            return units
+
+        def verify_marking_priorities():
+            """Verify that marking priorities are maintained"""
+            self.logger.log_state({
+                'event': 'PRIORITY_CHECK',
+                'casting_units': self.scanner_test.aura_env.castingUnits,
+                'marked_enemies': self.scanner_test.aura_env.markedEnemies,
+                'skull_guid': self.scanner_test.aura_env.skullGUID
+            })
+            
+            # Verify skull mark is maintained or properly transferred
+            skull_unit = self.wow_api.find_unit_by_mark(8)
+            if skull_unit:
+                assert skull_unit.guid == self.scanner_test.aura_env.skullGUID, \
+                    "Skull GUID mismatch"
+
+        # Run test sequence
+        unit_ids = setup_combat_scenario()
+        
+        # Test mark maintenance during combat
+        self.wow_api.set_combat_state(True)  # Using set_combat_state instead of start_combat
+        time.sleep(0.2)
+        verify_marking_priorities()
 
 class TestProfileScanner:
     @pytest.fixture(autouse=True)
