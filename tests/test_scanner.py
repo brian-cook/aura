@@ -1075,28 +1075,12 @@ class TestScanner:
 
         def verify_skull_marking(unit_id, expected_mark):
             """Verify skull mark application and persistence"""
-            # Force scanner update with proper event sequence
-            self.scanner_test.lua.execute("""
-                if aura_env and aura_env.OnEvent then
-                    -- Update seen targets count
-                    local targetGUID = UnitGUID("target")
-                    if targetGUID then
-                        aura_env:UpdateSeenTarget(targetGUID)
-                        -- Add debug print for target update
-                        print("Updating seen target: " .. targetGUID)
-                    end
-                    -- Add debug print for event trigger
-                    print("Triggering PLAYER_TARGET_CHANGED event")
-                    aura_env:OnEvent('PLAYER_TARGET_CHANGED')
-                end
-            """)
-
-            # Get current state
+            # Get current state without triggering events
             current_mark = self.wow_api.GetRaidTargetIndex(unit_id)
             seen_targets = dict(self.scanner_test.lua.eval("aura_env.seenTargets"))
             skull_guid = self.scanner_test.lua.eval("aura_env.skullGUID")
 
-            # Add debug logging
+            # Add detailed debug logging
             self.logger.write_section("DEBUG", {
                 'event': 'MARK_CHECK_DETAILS',
                 'unit_exists': self.wow_api.UnitExists(unit_id),
@@ -1107,10 +1091,10 @@ class TestScanner:
                 'can_attack': self.wow_api.UnitCanAttack('player', unit_id),
                 'current_mark': current_mark,
                 'expected_mark': expected_mark,
+                'seen_count': seen_targets.get(unit_id, 0),
                 'seen_targets': seen_targets,
                 'skull_guid': skull_guid,
-                'target_seen_count': seen_targets.get(unit_id, 0),
-                'raid_targets': self.wow_api.raid_targets  # Add raid targets state
+                'raid_targets': self.wow_api.raid_targets
             })
 
             return current_mark == expected_mark
@@ -1124,10 +1108,12 @@ class TestScanner:
         time.sleep(0.2)
         assert not verify_skull_marking(test_unit_id, 8), "Should not mark on first sight"
         
-        # Second target encounter
+        # Clear target
         self.wow_api.clear_target()
         self.scanner_test.lua.execute("WeakAuras.ScanEvents('PLAYER_TARGET_CHANGED')")
-        time.sleep(0.1)
+        time.sleep(0.2)
+
+        # Second target encounter
         self.wow_api.set_target(test_unit_id)
         self.scanner_test.lua.execute("WeakAuras.ScanEvents('PLAYER_TARGET_CHANGED')")
         time.sleep(0.2)
