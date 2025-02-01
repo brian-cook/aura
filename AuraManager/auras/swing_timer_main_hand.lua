@@ -1,14 +1,14 @@
 
 local ADDON_NAME, ns = ...
 ns.auras = ns.auras or {}
-ns.auras["scanning"] = {
-    id = "Scanning",
-    uid = "OOxT7UpjMVd",
+ns.auras["swing_timer_main_hand"] = {
+    id = "Swing Timer Main Hand",
+    uid = "2rRokZiNId7",
     internalVersion = 78,
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 104,
+    xOffset = 204,
     yOffset = 80,
     width = 3,
     height = 3,
@@ -38,35 +38,25 @@ ns.auras["scanning"] = {
         {
             trigger = {
                 debuffType = "HELPFUL",
-                type = "custom",
-                unit = "player",
-                subeventSuffix = "_CAST_START",
+                type = "unit",
                 subeventPrefix = "SPELL",
-                event = "Health",
                 names = {},
-                custom_type = "status",
+                event = "Swing Timer",
+                unit = "player",
                 spellIds = {},
-                custom = [[function(event, glStr, value)
-    local cvar = "WeakAurasScannerToggle"
-    if glStr and value and glStr == cvar then
-        -- Return true if the CVar exists and has any value
-        return value ~= "NO_TARGET" and value ~= ""
-    elseif not glStr and not value then
-        -- Register the CVar if it doesn't exist
-        RegisterCVar(cvar, "NO_TARGET")
-    end
-end]],
-                check = "event",
-                events = "CVAR_UPDATE",
+                use_unit = true,
+                subeventSuffix = "_CAST_START",
+                remaining_operator = "<",
+                use_remaining = true,
+                remaining = "1",
+                use_hand = true,
+                hand = "main",
             },
-            untrigger = {
-                custom = "",
-            },
+            untrigger = {},
         },
     },
     conditions = {},
     load = {
-        use_never = true,
         talent = {
             multi = {},
         },
@@ -77,10 +67,6 @@ end]],
             multi = {},
         },
         spec = {
-            multi = {},
-        },
-        zoneIds = "",
-        role = {
             multi = {},
         },
     },

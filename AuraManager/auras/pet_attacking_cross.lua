@@ -1,15 +1,15 @@
 
 local ADDON_NAME, ns = ...
 ns.auras = ns.auras or {}
-ns.auras["scan_timeout"] = {
-    id = "Scan Timeout",
-    uid = "w(vA4)2g1PK",
+ns.auras["pet_attacking_cross"] = {
+    id = "Pet Attacking Cross",
+    uid = "4d2LyZmn(bG",
     internalVersion = 78,
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 208,
-    yOffset = 84,
+    xOffset = 180,
+    yOffset = 92,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -34,72 +34,89 @@ ns.auras["scan_timeout"] = {
     texture = "Solid",
     textureSource = "LSM",
     triggers = {
-        activeTriggerMode = -10,
+        disjunctive = "all",
+        activeTriggerMode = 1,
         {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "custom",
-                unit = "player",
-                subeventSuffix = "_CAST_START",
                 subeventPrefix = "SPELL",
-                event = "Chat Message",
+                unevent = "auto",
                 names = {},
+                duration = "1",
+                event = "Health",
+                unit = "player",
                 custom_type = "stateupdate",
-                spellIds = {},
                 custom = [[function(allstates)
-    -- Throttle the check for perf
-    if not aura_env.last or GetTime() - aura_env.last > 0.1 then
-        -- Set the last time
+    -- Initialize state if needed
+    aura_env.last = aura_env.last or 0
+    
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
         aura_env.last = GetTime()
-        local scanStart = aura_env.scanStart or 0
-        local scanningGUID = GetCVar("WeakAurasScannerToggle")
         
-        if scanningGUID ~= "NO_TARGET" and scanStart == 0 then
-            print("setting scan start")
-            aura_env.scanStart = GetTime()
-        elseif scanningGUID ~= "NO_TARGET" and scanStart ~= 0 then
-            if (GetTime() - scanStart) > 0.5 then
-                print("turning off")
-                print(scanningGUID)
-                
-                aura_env.scanStart = 0
-                SetCVar("WeakAurasScannerToggle", "NO_TARGET")
-            end
+        -- Check if pet exists and has a target
+        local hasPet = UnitExists("pet")
+        local petTarget = UnitExists("pettarget")
+        local isPetAttacking = hasPet and petTarget and IsPetAttackActive()
+        
+        -- Check if pet's target is marked with cross (mark 7)
+        local isTargetCross = false
+        if isPetAttacking then
+            local mark = GetRaidTargetIndex("pettarget")
+            isTargetCross = (mark == 7)  -- 7 is cross
         end
+        
+        -- Update state
+        allstates[""] = allstates[""] or {show = false}
+        allstates[""].show = isTargetCross
+        allstates[""].changed = true
         
         return true
     end
     return false
 end]],
+                spellIds = {},
                 use_unit = true,
                 check = "update",
+                customVariables = "{}",
+                subeventSuffix = "_CAST_START",
                 custom_hide = "timed",
-                events = "CVAR_UPDATE",
+                events = "UNIT_PET, PET_ATTACK_START PET_ATTACK_STOP RAID_TARGET_UPDATE",
             },
             untrigger = {
-                custom = "",
+                custom = [[function()
+    return not aura_env.isTriggered
+end]],
             },
         },
     },
     conditions = {},
     load = {
-        use_never = true,
+        use_never = false,
         talent = {
             multi = {},
         },
         class = {
-            multi = {},
+            multi = {
+                WARLOCK = true,
+            },
+            single = "WARLOCK",
         },
+        use_spellknown = false,
         size = {
             multi = {},
         },
         spec = {
             multi = {},
         },
-        zoneIds = "",
-        role = {
-            multi = {},
+        level_operator = {
+            "~=",
         },
+        level = {
+            "120",
+        },
+        use_level = false,
+        zoneIds = "",
     },
     animation = {
         start = {

@@ -1,14 +1,14 @@
 
 local ADDON_NAME, ns = ...
 ns.auras = ns.auras or {}
-ns.auras["swing_timer_test"] = {
-    id = "Swing Timer Test",
-    uid = "2rRokZiNId7",
+ns.auras["swing_timer_ranged"] = {
+    id = "Swing Timer Ranged",
+    uid = "gpO80VTBfU0",
     internalVersion = 78,
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 148,
+    xOffset = 208,
     yOffset = 80,
     width = 3,
     height = 3,
@@ -37,20 +37,30 @@ ns.auras["swing_timer_test"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
+                debuffType = "BOTH",
                 type = "unit",
-                unit = "player",
-                subeventSuffix = "_CAST_START",
                 subeventPrefix = "SPELL",
-                event = "Swing Timer",
                 names = {},
+                event = "Swing Timer",
+                unit = "player",
                 spellIds = {},
                 use_unit = true,
+                subeventSuffix = "_CAST_START",
+                use_inverse = false,
+                auranames = {
+                    "Demon Skin",
+                },
+                unitExists = false,
+                useRem = false,
+                useName = true,
+                matchesShowOn = "showOnActive",
+                ownOnly = true,
+                use_incombat = true,
+                remaining_operator = ">=",
                 use_remaining = true,
-                remaining_operator = "<",
-                remaining = "1",
+                remaining = ".5",
                 use_hand = true,
-                hand = "main",
+                hand = "ranged",
             },
             untrigger = {},
         },
@@ -61,7 +71,10 @@ ns.auras["swing_timer_test"] = {
             multi = {},
         },
         class = {
-            multi = {},
+            multi = {
+                DRUID = true,
+            },
+            single = "DRUID",
         },
         size = {
             multi = {},

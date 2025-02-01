@@ -8,8 +8,8 @@ ns.auras["player_attacking"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 204,
-    yOffset = 92,
+    xOffset = 132,
+    yOffset = 88,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -40,38 +40,46 @@ ns.auras["player_attacking"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "custom",
-                unit = "player",
-                subeventSuffix = "_CAST_START",
                 subeventPrefix = "SPELL",
+                unevent = "auto",
+                names = {},
                 duration = "1",
                 event = "Health",
-                names = {},
+                unit = "player",
                 custom_type = "stateupdate",
-                spellIds = {},
                 custom = [[function(allstates)
-    if not aura_env.last or GetTime() - aura_env.last > 0.5 then
+    -- Initialize state if needed
+    aura_env.last = aura_env.last or 0
+    aura_env.attacking = aura_env.attacking or false
+    
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
         aura_env.last = GetTime()
         
-        local playerAttacking = IsCurrentSpell(6603)
+        -- Check both auto attack spell and combat status
+        local isAutoAttackOn = IsCurrentSpell(6603)  -- 6603 is Auto Attack
+        local inMeleeRange = CheckInteractDistance("target", 3)  -- Range check (about 10 yards)
+        local hasTarget = UnitExists("target")
+        local canAttack = hasTarget and UnitCanAttack("player", "target")
         
-        if playerAttacking then
-            allstates[""] = allstates[""] or {show = true}
-            allstates[""].show = true
-            allstates[""].changed = true
-            return true
-        else
-            allstates[""] = allstates[""] or {show = false}
-            allstates[""].show = false
-            allstates[""].changed = true
-            return true
-        end
+        -- Update attacking state
+        aura_env.attacking = isAutoAttackOn and (inMeleeRange or not hasTarget) and (canAttack or not hasTarget)
+        
+        -- Update state display
+        allstates[""] = allstates[""] or {show = false}
+        allstates[""].show = aura_env.attacking
+        allstates[""].changed = true
+        
+        return true
     end
+    return false
 end]],
+                spellIds = {},
                 use_unit = true,
                 check = "update",
                 customVariables = "{}",
-                unevent = "auto",
+                subeventSuffix = "_CAST_START",
                 custom_hide = "timed",
+                events = "PLAYER_TARGET_CHANGED PLAYER_ENTER_COMBAT PLAYER_LEAVE_COMBAT ATTACK_START ATTACK_STOP",
             },
             untrigger = {
                 custom = [[function()

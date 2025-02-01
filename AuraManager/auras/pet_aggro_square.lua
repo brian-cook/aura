@@ -1,15 +1,15 @@
 
 local ADDON_NAME, ns = ...
 ns.auras = ns.auras or {}
-ns.auras["a_test_combat_log"] = {
-    id = "A test combat log",
-    uid = "xsXUqTEAqZJ",
+ns.auras["pet_aggro_square"] = {
+    id = "Pet Aggro Square",
+    uid = "3yp6XBMyAHN",
     internalVersion = 78,
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 104,
-    yOffset = 100,
+    xOffset = 164,
+    yOffset = 92,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,62 +37,69 @@ ns.auras["a_test_combat_log"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "BOTH",
+                debuffType = "HELPFUL",
                 type = "custom",
-                unit = "player",
-                subeventSuffix = "_CAST_START",
                 subeventPrefix = "SPELL",
-                event = "Health",
+                unevent = "auto",
                 names = {},
-                custom_type = "event",
-                spellIds = {},
-                custom = [[function(event, ...)
-    -- Check if the player is in combat
-    local inCombat = UnitAffectingCombat("player")
-    
-    -- Check if the player is auto-attacking
-    local isAutoAttacking = false
-    for i = 1, 120 do -- Check all action slots for auto-attack
-        if IsAutoRepeatAction(i) then
-            isAutoAttacking = true
-            break
+                duration = "1",
+                event = "Health",
+                unit = "player",
+                custom_type = "stateupdate",
+                custom = [[function(allstates)
+    -- Throttle the check for perf?  What is config?
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
+        -- Set the last time
+        aura_env.last = GetTime()
+        local isTanking = false
+        
+        -- Iterate 40 times
+        for i = 1, 40 do
+            -- Concat string with index
+            local unit = "nameplate"..i
+            
+            if UnitExists(unit) and GetRaidTargetIndex(unit) == 6 then
+                isTanking = UnitDetailedThreatSituation("pet", unit)  
+            end
         end
-    end
-    
-    -- Display the aura if in combat and auto-attacking
-    if inCombat and isAutoAttacking then
+        
+        if isTanking then
+            allstates[""] = allstates[""] or {show = true}
+            allstates[""].show = true
+            allstates[""].changed = true
+        else
+            allstates[""] = allstates[""] or {show = false}
+            allstates[""].show = false
+            allstates[""].changed = true
+        end
+        
         return true
     end
-    return false
 end]],
+                spellIds = {},
+                use_unit = true,
                 check = "update",
-                custom_hide = "custom",
-                auranames = {
-                    "Amplify Magic",
-                },
-                unitExists = false,
-                useRem = false,
-                matchesShowOn = "showOnActive",
-                useName = true,
-                ownOnly = true,
-                events = "PLAYER_REGEN_DISABLED PLAYER_REGEN_ENABLED",
+                customVariables = [[{
+  stacks = true,
+}]],
+                subeventSuffix = "_CAST_START",
+                use_absorbMode = true,
+                customStacks = [[function() return aura_env.count end]],
             },
-            untrigger = {
-                custom = "",
-            },
+            untrigger = {},
         },
     },
     conditions = {},
     load = {
+        use_never = false,
         talent = {
             multi = {},
         },
         class = {
             multi = {
-                MAGE = true,
-                DRUID = true,
+                WARRIOR = true,
             },
-            single = "MAGE",
+            single = "WARRIOR",
         },
         size = {
             multi = {},
@@ -100,6 +107,7 @@ end]],
         spec = {
             multi = {},
         },
+        zoneIds = "",
     },
     animation = {
         start = {

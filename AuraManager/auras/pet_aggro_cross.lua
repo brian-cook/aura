@@ -1,15 +1,15 @@
 
 local ADDON_NAME, ns = ...
 ns.auras = ns.auras or {}
-ns.auras["threat_under_80"] = {
-    id = "Threat Under 80",
-    uid = "Y(dm9NUYegG",
+ns.auras["pet_aggro_cross"] = {
+    id = "Pet Aggro Cross",
+    uid = "JWdnUFIdbgX",
     internalVersion = 78,
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 132,
-    yOffset = 76,
+    xOffset = 156,
+    yOffset = 92,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -38,24 +38,53 @@ ns.auras["threat_under_80"] = {
         {
             trigger = {
                 debuffType = "HELPFUL",
-                type = "unit",
-                unit = "target",
-                subeventSuffix = "_CAST_START",
+                type = "custom",
                 subeventPrefix = "SPELL",
-                event = "Threat Situation",
+                unevent = "auto",
                 names = {},
+                duration = "1",
+                event = "Health",
+                unit = "player",
+                custom_type = "stateupdate",
+                custom = [[function(allstates)
+    -- Throttle the check for perf?  What is config?
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
+        -- Set the last time
+        aura_env.last = GetTime()
+        local isTanking = false
+        
+        -- Iterate 40 times
+        for i = 1, 40 do
+            -- Concat string with index
+            local unit = "nameplate"..i
+            
+            if UnitExists(unit) and GetRaidTargetIndex(unit) == 7 then
+                isTanking = UnitDetailedThreatSituation("pet", unit)  
+            end
+        end
+        
+        if isTanking then
+            allstates[""] = allstates[""] or {show = true}
+            allstates[""].show = true
+            allstates[""].changed = true
+        else
+            allstates[""] = allstates[""] or {show = false}
+            allstates[""].show = false
+            allstates[""].changed = true
+        end
+        
+        return true
+    end
+end]],
                 spellIds = {},
                 use_unit = true,
-                use_showCost = true,
-                powertype = 0,
-                use_powertype = true,
-                threatpct_operator = {
-                    "<",
-                },
-                threatpct = {
-                    "80",
-                },
-                use_threatpct = true,
+                check = "update",
+                customVariables = [[{
+  stacks = true,
+}]],
+                subeventSuffix = "_CAST_START",
+                use_absorbMode = true,
+                customStacks = [[function() return aura_env.count end]],
             },
             untrigger = {},
         },
@@ -68,9 +97,9 @@ ns.auras["threat_under_80"] = {
         },
         class = {
             multi = {
-                ROGUE = true,
+                WARRIOR = true,
             },
-            single = "ROGUE",
+            single = "WARRIOR",
         },
         size = {
             multi = {},
@@ -78,6 +107,7 @@ ns.auras["threat_under_80"] = {
         spec = {
             multi = {},
         },
+        zoneIds = "",
     },
     animation = {
         start = {

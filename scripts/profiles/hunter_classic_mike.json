@@ -1,0 +1,136 @@
+{
+    "name": "Hunter Hardcore",
+    "actions": [
+        {
+            "group": "OOC Scan",
+            "name": "OOC Scan targetenemy",
+            "key": "q",
+            "conditions": ["!combat", "!target_skull"]
+        },       
+        {
+            "name": "use potion at 50% health",
+            "key": "n",
+            "conditions": ["potion_in_inventory", "combat", "health_under_50", "!potion_cooldown"]
+        },
+        {
+            "name": "use bandage at 50% health",
+            "key": "b",
+            "conditions": ["bandage_in_inventory", "health_under_50", "!recently_bandaged_debuff", "!target_aggro", "!player_moving"]
+        },   
+        {
+            "name": "Call/Revive Pet uses macro",
+            "key": ",",
+            "conditions": ["!player_has_pet"]
+        },
+        {
+            "name": "Target Cross for SS: /targetenemy",
+            "key": "q",
+            "conditions": ["icon_cross_exists", "!target_cross", "serpent_sting_debuff_cross", "!range_8_cross", "range_35_cross", "power_15"]
+        },
+        {
+            "name": "SS Cross",
+            "key": "0",
+            "conditions": ["!target_is_ooc","target_cross", "serpent_sting_debuff_cross", "!range_8_cross", "range_35_cross", "power_15", "!leaving_combat"]
+        },
+        {
+            "name": "Target Circle for SS: /targetenemy",
+            "key": "q",
+            "conditions": ["icon_circle_exists", "!target_circle", "serpent_sting_debuff_circle", "!range_8_circle", "range_35_circle", "power_15"]
+        },
+        {
+            "name": "SS Circle",
+            "key": "0",
+            "conditions": ["!target_is_ooc", "target_circle", "serpent_sting_debuff_circle", "!range_8_circle", "range_35_circle", "power_15", "!leaving_combat"]
+        },
+        {
+            "name": "Target Square for SS: /targetenemy",
+            "key": "q",
+            "conditions": ["icon_square_exists", "!target_square", "serpent_sting_debuff_square", "!range_8_square", "range_35_square", "power_15"]
+        },
+        {
+            "name": "SS Square",
+            "key": "0",
+            "conditions": ["!target_is_ooc","target_square", "serpent_sting_debuff_square", "!range_8_square", "range_35_square", "power_15", "!leaving_combat"]
+        },
+        {
+            "name": "Interrupt Target Diamond: /targetenemy",
+            "key": "q",
+            "conditions": ["inactive", "icon_diamond_exists", "can_interrupt_diamond", "!target_diamond", "power_25"]
+        },
+        {
+            "name": "Interrupt Diamond",
+            "key": "f",
+            "conditions": ["inactive", "!target_is_ooc", "target_diamond", "can_interrupt_diamond", "power_25"]
+        },
+        {
+            "name": "Target Triangle for Pet Attack if not attacking and not aggro: /targetenemy",
+            "key": "q",
+            "conditions": ["player_has_pet", "icon_triangle_exists", "!target_triangle", "!pet_attacking_triangle"]
+        },
+        {
+            "name": "Pet Attack Triangle if not attacking and not aggro",
+            "key": "'",
+            "conditions": ["player_has_pet", "!pet_attacking_triangle", "target_triangle"]
+        },
+        {
+            "name": "Target Skull: /targetenemy", 
+            "key": "q", 
+            "conditions": ["!target_skull"]
+        },
+        {
+            "name": "Hunters Mark",
+            "key": "h",
+            "conditions": ["inactive", "!hunter's_mark_debuff", "!range_15", "range_40", "power_10", "!target_health_under_50"]
+        },
+        {
+            "name": "Aspect of the Hawk",
+            "key": "l",
+            "conditions": ["!aspect_of_the_hawk_buff", "!range_8", "power_20"]
+        },
+        {
+            "name": "Aspect of the Monkey",
+            "key": "z",
+            "conditions": ["!aspect_of_the_monkey_buff", "range_8", "power_15", "combat"]
+        },
+        {
+            "name": "Pet Attack on player target only if NOT attacking already",
+            "key": "'",
+            "conditions": ["player_has_pet","!pet_attacking", "range_35", "!leaving_combat"]
+        },
+        {
+            "name": "Pet Attack on skull",
+            "key": "'",
+            "conditions": ["player_has_pet", "range_35", "!icon_triangle_exists", "!pet_attacking_skull", "target_skull"]
+        },
+        {
+            "name": "Concussive Shot",
+            "key": "7",
+            "conditions": ["!concussive_shot_debuff", "concussive_shot_cooldown", "!range_8", "range_35", "power_10", "!leaving_combat"]
+        },
+        {
+            "name": "Arcane Shot",
+            "key": "6",
+            "conditions": ["arcane_shot", "!range_8", "range_30", "power_15"]
+        },
+        {
+            "name": "Serpent Sting",
+            "key": "5",
+            "conditions": ["!serpent_sting_debuff", "!range_8", "range_35", "power_10", "!leaving_combat"]
+        },
+        {
+            "name": "Raptor Strike in Melee Range",
+            "key": "e",
+            "conditions": ["raptor_strike", "range_8", "power_10"]
+        },
+        {
+            "name": "cast auto shoot",
+            "key": "t",
+            "conditions": ["!player_shooting", "!range_8", "range_30", "!leaving_combat"]
+        },
+        {
+            "name": "cast auto attack",
+            "key": "r",
+            "conditions": ["!player_attacking", "range_8"]
+        }
+    ]
+}   

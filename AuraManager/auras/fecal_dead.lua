@@ -8,7 +8,7 @@ ns.auras["fecal_dead"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 116,
+    xOffset = 120,
     yOffset = 96,
     width = 3,
     height = 3,
@@ -40,14 +40,13 @@ ns.auras["fecal_dead"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "custom",
-                unit = "player",
-                subeventSuffix = "_CAST_START",
                 subeventPrefix = "SPELL",
+                unevent = "auto",
+                names = {},
                 duration = "1",
                 event = "Health",
-                names = {},
+                unit = "player",
                 custom_type = "stateupdate",
-                spellIds = {},
                 custom = [[function(allstates)
     if not aura_env.last or GetTime() - aura_env.last > 0.5 then
         aura_env.last = GetTime()
@@ -70,10 +69,11 @@ ns.auras["fecal_dead"] = {
         end
     end
 end]],
+                spellIds = {},
                 use_unit = true,
                 check = "update",
                 customVariables = "{}",
-                unevent = "auto",
+                subeventSuffix = "_CAST_START",
                 custom_hide = "timed",
             },
             untrigger = {

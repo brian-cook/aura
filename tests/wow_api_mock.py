@@ -3,6 +3,8 @@ from dataclasses import dataclass, field
 import random
 import time
 import math
+import lupa
+import logging
 
 if TYPE_CHECKING:
     from test_helpers import TestLogger
@@ -28,6 +30,7 @@ class UnitState:
     in_combat: bool = False
     in_range: bool = True
     position: Tuple[float, float, float] = field(default_factory=lambda: (0, 0, 0))  # Add position property
+    raid_target_index: Optional[int] = None
 
 @dataclass
 class NamePlateInfo:
@@ -99,133 +102,103 @@ class MarkingState:
 
 class WoWAPIMock:
     """Enhanced WoW API Mock with version-specific behavior"""
-    def __init__(self, wow_version: str = "classic", class_type: str = "WARRIOR"):
-        """Initialize WoW API Mock with version and class settings"""
-        self.wow_version = wow_version
-        self.class_type = class_type.upper()
-        
-        # Initialize combat state
-        self.in_combat = False
-        self.combat_time = 0.0
-        self.combat_log = []
-        
-        # Initialize raid target marks
-        self.raid_targets = {}
-        
-        # Version-specific configuration
-        self.version_config = {
-            "classic": {
-                "has_focus": False,
-                "max_nameplate_distance": float('inf'),
-                "threat_levels": [0, 1, 2, 3],
-                "has_warmode": False,
-                "has_mythic_plus": False
-            },
-            "retail": {
-                "has_focus": True,
-                "max_nameplate_distance": 60,
-                "threat_range": (0, 100),
-                "has_warmode": True,
-                "has_mythic_plus": True
-            }
-        }[wow_version]
-
-        # Class-specific configuration
-        self.class_config = {
-            "HUNTER": {
-                "power_type": "mana",
-                "has_pet": True,
-                "can_feign_death": True
-            },
-            "ROGUE": {
-                "power_type": "energy",
-                "has_stealth": True,
-                "can_pick_pocket": True
-            },
-            "WARRIOR": {
-                "power_type": "rage",
-                "can_charge": True,
-                "can_intercept": True
-            }
-        }.get(self.class_type, {})
-
-        # Initialize state containers
+    def __init__(self):
+        """Initialize WoW API mock"""
+        # Initialize basic attributes first
+        self.current_time = 0
         self.units = {}
-        self.target_state = TargetState()
-        self.frame_time = 0.0
-        self.global_cooldown = 0.0
-        self.movement = {}
         self.marks = {}
-        self.current_target = None
-        self.current_focus = None
-        self.combat_state = False
-        self.combat_units = set()
+        self.combat_log = []
+        self.casting_info = {}  # Add casting info dictionary
+        self.raid_targets = {}
         self.nameplates = {}
         self.visible_nameplates = set()
-        self.casting_info = {}
-        self.logger = None
+        self.current_target = None
         
-        # Version-specific API availability
-        self.api_availability = {
-            "classic": {
-                "UnitPhaseReason": False,
-                "UnitThreatSituation": True,
-                "SetFocus": False,
-                "GetFocus": False,
-                "IsInPersonalLoot": False,
-                "IsWarModeDesired": False,
-                "IsMythicPlusActive": False
-            },
-            "retail": {
-                "UnitPhaseReason": True,
-                "UnitThreatSituation": True,
-                "SetFocus": True,
-                "GetFocus": True,
-                "IsInPersonalLoot": True,
-                "IsWarModeDesired": True,
-                "IsMythicPlusActive": True
-            }
+        # Add version configuration
+        self.wow_version = "classic"  # Default to classic
+        self.version_config = {
+            "has_focus": True,
+            "has_warmode": False,
+            "has_mythic_plus": False,
+            "threat_api": "classic",  # classic or retail
+            "max_nameplate_distance": 20  # Classic has 20 yard limit
         }
-
-        # Core state
-        self.current_time = 0.0
-        self.last_update = time.time()
-        self.current_time = time.time()
         
-        # Nameplate specific state
-        self.nameplate_distance: float = self.version_config["max_nameplate_distance"]
-        self.player_position: Tuple[float, float, float] = (0.0, 0.0, 0.0)
+        # Create Lua runtime and initialize it immediately
+        self.lua = lupa.LuaRuntime(unpack_returned_tuples=True)
         
-        # Add to existing init
-        self.last_action_time: float = 0.0
+        # Initialize global Lua state
+        self.lua.execute("""
+            -- Initialize global environment
+            _G = _G or {}
+            ns = ns or {}  -- Add ns initialization
+            _G.ns = ns    -- Add ns to global environment
+            -- Add has_focus function globally
+            function has_focus()
+                return true
+            end
+        """)
+        
+        # Initialize other required globals
+        self.lua.globals()._G = self.lua.globals()
+        self.lua.globals().raid_targets = {}
 
-        # Add scan state tracking
-        self.scan_state = ScanState()
-        self.scan_history = []
+    def set_raid_target(self, unit, index):
+        """Set raid target index for a unit"""
+        self.lua.globals().raid_targets[unit] = index
+        self.marks[unit] = index  # Update Python-side marks as well
 
-        self.marking_state = MarkingState()
+    def get_raid_target(self, unit):
+        """Get raid target index for a unit"""
+        return self.lua.globals().raid_targets.get(unit, 0)
 
-        self.timing_constants = {
-            'NAMEPLATE_UPDATE_DELAY': 0.1,
-            'TARGET_CHANGE_DELAY': 0.2,
-            'MARK_APPLICATION_DELAY': 0.05
-        }
-
-        self.scan_metrics = {
-            'scan_locks': 0,
-            'total_scans': 0
-        }
-
-        self.scanner_test = None
+    def log_combat_event(self, event):
+        """Add event to combat log"""
+        self.combat_log.append(event)
 
     def initialize(self, scanner_test):
         """Initialize the mock with scanner test instance"""
+        if not self.lua:
+            raise RuntimeError("Cannot initialize - Lua runtime not available")
+            
         self.scanner_test = scanner_test
         self.units = {}  # Reset units on initialization
         self.current_target = None
         self.raid_targets = {}
         self.nameplates = {}
         self.visible_nameplates = set()
+
+        # Add WoW API functions to Lua environment
+        self.lua.execute("""
+            -- Initialize global environment and namespace
+            _G = _G or {}
+            ns = ns or {}
+            _G.ns = ns
+            
+            -- Initialize global raid target storage
+            _G.raid_targets = {}
+            
+            -- Initialize ns fields
+            ns.marks = {}
+            ns.seen_targets = {}
+            ns.current_target = nil
+            ns.skull_guid = nil
+            ns.last_scan = nil
+            
+            -- Add raid target functions
+            function GetRaidTargetIndex(unit)
+                return _G.raid_targets[unit] or 0
+            end
+            
+            function SetRaidTarget(unit, index)
+                _G.raid_targets[unit] = index
+            end
+        """)
+        
+        # Initialize other required globals
+        self.lua.globals()._G = self.lua.globals()
+        self.lua.globals().raid_targets = {}
 
     def _check_api_availability(self, api_name: str) -> bool:
         """Check if API is available for current version"""
@@ -589,30 +562,18 @@ class WoWAPIMock:
         self.player_position = (0.0, 0.0, 0.0)
         self.nameplate_distance = self.version_config["max_nameplate_distance"]
         self.casting_info.clear()
+        self.current_time = 0.0
 
     # Unit Creation and Management
-    def add_unit(self, unit_id: str, properties: dict = None):
-        """Add a unit with specified properties"""
-        base_properties = {
-            'guid': unit_id,
-            'name': 'Test Mob',
-            'is_attackable': True,
-            'in_combat': False,
-            'in_range': True,
-            'has_nameplate': False,
-            'is_enemy': True,
-            'exists': True,
-            'can_attack': True,
-            'is_dead': False
-        }
-        if properties:
-            base_properties.update(properties)
-        self.units[unit_id] = base_properties
-
+    def add_unit(self, unit_id: str, unit_data: dict) -> None:
+        """Add a unit to the mock environment"""
+        guid = unit_data.get('guid', f"guid-{unit_id}")
+        name = unit_data.get('name', f"Unit_{unit_id}")
+        self.units[unit_id] = UnitState(guid=guid, name=name)
+        
     def set_unit_property(self, unit_id: str, property_name: str, value: Any) -> None:
         """Set a property on a unit"""
         if unit_id not in self.units:
-            # Create new UnitState if it doesn't exist
             self.units[unit_id] = UnitState(guid=unit_id, name=f"Unit_{unit_id}")
         unit = self.units[unit_id]
         setattr(unit, property_name, value)
@@ -931,9 +892,9 @@ class WoWAPIMock:
             return 0.0
         return time.time() - self.combat_time
 
-    def advance_time(self, seconds: float) -> None:
-        """Advance the mock time"""
-        self.current_time += seconds
+    def advance_time(self, delta: float) -> None:
+        """Advance the current time by delta seconds"""
+        self.current_time += delta
         # Update mark expiration
         for unit_id, mark_info in self.raid_targets.items():
             if mark_info.get('timestamp', 0) + 5 < self.current_time:
@@ -949,87 +910,6 @@ class WoWAPIMock:
         
         for unit in expired_marks:
             self.clear_raid_target(unit)
-
-    def set_target(self, unit_id: str) -> None:
-        """Set the current target"""
-        if not self.scanner_test:
-            raise RuntimeError("WoWAPIMock not initialized - call initialize() first")
-            
-        self.current_target = unit_id
-        if unit_id in self.units:
-            # Update seenTargets in Lua environment
-            unit = self.units[unit_id]
-            self.scanner_test.lua.execute(f"""
-                local guid = '{unit.guid}'
-                aura_env.seenTargets = aura_env.seenTargets or {{}}
-                aura_env.seenTargets[guid] = GetTime()
-            """)
-        self.trigger_event('PLAYER_TARGET_CHANGED')
-
-    def trigger_event(self, event: str, *args) -> None:
-        """Trigger a WoW event"""
-        if not self.scanner_test:
-            return
-            
-        event_str = f"WeakAuras.ScanEvents('{event}'"
-        if args:
-            event_str += ", '" + "', '".join(str(arg) for arg in args) + "'"
-        event_str += ")"
-        self.scanner_test.lua.execute(event_str)
-
-    def get_scan_history(self) -> List[Dict[str, Any]]:
-        """Get target scanning history"""
-        return self.scan_history
-
-    def verify_scan_sequence(self, expected_sequence: List[str]) -> bool:
-        """Verify target scanning followed expected sequence"""
-        actual_sequence = [entry['target'] for entry in self.scan_history]
-        return actual_sequence == expected_sequence
-        
-    def get_scan_metrics(self) -> Dict[str, Any]:
-        """Get metrics about scanning behavior"""
-        return {
-            'total_scans': self.scan_state.scan_attempts,
-            'unique_targets': len(set(entry['guid'] for entry in self.scan_history)),
-            'average_time_between_scans': self._calculate_scan_timing(),
-            'scan_locks': sum(1 for entry in self.scan_history if entry.get('locked', False))
-        }
-        
-    def _calculate_scan_timing(self) -> float:
-        """Calculate average time between scans"""
-        if len(self.scan_history) < 2:
-            return 0.0
-            
-        times = [entry['time'] for entry in self.scan_history]
-        intervals = [times[i+1] - times[i] for i in range(len(times)-1)]
-        return sum(intervals) / len(intervals)
-
-    def get_marking_metrics(self) -> Dict[str, Any]:
-        """Get detailed metrics about marking behavior"""
-        return {
-            'total_attempts': self.marking_state.mark_attempts,
-            'failures': self.marking_state.mark_failures,
-            'success_rate': 1 - (self.marking_state.mark_failures / max(1, self.marking_state.mark_attempts)),
-            'average_time_between_marks': self._calculate_mark_timing(),
-            'duplicate_marks': self._count_duplicate_marks()
-        }
-        
-    def _calculate_mark_timing(self) -> float:
-        """Calculate average time between marks"""
-        if len(self.marking_state.mark_history) < 2:
-            return 0.0
-            
-        times = [entry['time'] for entry in self.marking_state.mark_history]
-        intervals = [times[i+1] - times[i] for i in range(len(times)-1)]
-        return sum(intervals) / len(intervals)
-
-    def _count_duplicate_marks(self) -> int:
-        """Count instances of duplicate marks"""
-        mark_counts = {}
-        for unit, mark_info in self.marks.items():
-            mark = mark_info['mark']
-            mark_counts[mark] = mark_counts.get(mark, 0) + 1
-        return sum(count - 1 for count in mark_counts.values() if count > 1)
 
     def set_timing_constants(self, constants):
         """Set timing constants for the mock API"""
@@ -1063,3 +943,68 @@ class WoWAPIMock:
             return False
         unit_state = self.units[unit]
         return unit_state.in_range
+
+    def set_current_time(self, time_value: float) -> None:
+        """Set the current time in the mock environment"""
+        self.current_time = time_value
+        
+    def get_time(self):
+        """Get the current time"""
+        return self.current_time
+
+    def advance_time(self, delta):
+        """Advance the current time by delta seconds"""
+        self.current_time += delta
+
+    def setup_lua_functions(self, lua):
+        """Set up WoW API functions in the Lua environment"""
+        self.lua = lua
+        
+        # Time functions
+        lua.globals()["GetTime"] = lambda: self.current_time
+        
+        # Unit functions
+        lua.globals()["UnitGUID"] = self.unit_guid
+        lua.globals()["GetRaidTargetIndex"] = self.get_raid_target_index
+        lua.globals()["SetRaidTarget"] = self.set_raid_target
+        
+        # Initialize global tables
+        lua.execute("""
+            _G = _G or {}
+            _G.raid_targets = _G.raid_targets or {}
+        """)
+
+        # Add has_focus function
+        lua.globals()["has_focus"] = lambda: True  # Mock implementation
+
+    def get_raid_target_index(self, unit_id: str) -> Optional[int]:
+        """Get the raid target index for a unit"""
+        if unit_id == "target" and self.current_target:
+            unit = self.units.get(self.current_target)
+            return unit.raid_target_index if unit else None
+        unit = self.units.get(unit_id)
+        return unit.raid_target_index if unit else None
+
+    def set_raid_target(self, unit_id: str, index: int) -> None:
+        """Set the raid target index for a unit"""
+        if unit_id == "target" and self.current_target:
+            unit = self.units.get(self.current_target)
+            if unit:
+                unit.raid_target_index = index
+        elif unit_id in self.units:
+            self.units[unit_id].raid_target_index = index
+
+    def unit_guid(self, unit_id: str) -> Optional[str]:
+        """Get the GUID for a unit"""
+        if unit_id == "target" and self.current_target:
+            unit = self.units.get(self.current_target)
+            return unit.guid if unit else None
+        unit = self.units.get(unit_id)
+        return unit.guid if unit else None
+
+    def set_target(self, unit_id):
+        """Set the current target to the specified unit"""
+        if unit_id in self.units:
+            self.current_target = unit_id
+            return True
+        return False

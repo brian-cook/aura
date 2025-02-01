@@ -10,7 +10,6 @@ aura_list.lua
 
 # Auras
 auras/a_test.lua
-auras/a_test_combat_log.lua
 auras/arcane_shot.lua
 auras/aspect_of_the_hawk_buff.lua
 auras/aspect_of_the_monkey_buff.lua
@@ -37,8 +36,10 @@ auras/combo_points_3.lua
 auras/combo_points_4.lua
 auras/combo_points_5.lua
 auras/concussive_shot_cooldown.lua
+auras/concussive_shot_debuff.lua
 auras/distracting_shot.lua
 auras/enemy_loose.lua
+auras/entering_combat.lua
 auras/envenom.lua
 auras/evasion.lua
 auras/eviscerate.lua
@@ -81,6 +82,17 @@ auras/party_1_sacred_shield_buff.lua
 auras/party_2_health_under_70.lua
 auras/party_3_health_under_70.lua
 auras/party_4_health_under_70.lua
+auras/pet_aggro_cross.lua
+auras/pet_aggro_skull.lua
+auras/pet_aggro_square.lua
+auras/pet_aggro_triangle.lua
+auras/pet_attacking.lua
+auras/pet_attacking_circle.lua
+auras/pet_attacking_cross.lua
+auras/pet_attacking_diamond.lua
+auras/pet_attacking_skull.lua
+auras/pet_attacking_square.lua
+auras/pet_attacking_triangle.lua
 auras/pet_bite.lua
 auras/pet_combat.lua
 auras/pet_focus_15.lua
@@ -144,6 +156,7 @@ auras/range_35_cross.lua
 auras/range_35_square.lua
 auras/range_40.lua
 auras/range_8.lua
+auras/range_8_1+.lua
 auras/range_8_2+.lua
 auras/range_8_3+.lua
 auras/range_8_circle.lua
@@ -156,11 +169,12 @@ auras/role_toggle.lua
 auras/saber_slash.lua
 auras/sap.lua
 auras/sap_debuff.lua
-auras/scan_timeout.lua
-auras/scanner.lua
-auras/scanner_test.lua
-auras/scanner_test_2.lua
-auras/scanning.lua
+auras/scanner_all_in_one_v1.lua
+auras/scanner_all_in_one_v2_triangle.lua
+auras/scanner_skull.lua
+auras/scanner_test_no_load.lua
+auras/scanner_test_no_load_2.lua
+auras/scanner_triangle.lua
 auras/serpent_sting_debuff.lua
 auras/serpent_sting_debuff_circle.lua
 auras/serpent_sting_debuff_cross.lua
@@ -171,8 +185,8 @@ auras/sinister_strike.lua
 auras/slice_and_dice_buff.lua
 auras/sprint.lua
 auras/stealth_buff.lua
-auras/swing_timer_at_max.lua
-auras/swing_timer_test.lua
+auras/swing_timer_main_hand.lua
+auras/swing_timer_ranged.lua
 auras/target_aggro.lua
 auras/target_casting.lua
 auras/target_circle.lua
@@ -189,6 +203,7 @@ auras/target_interruptible_range_15.lua
 auras/target_interruptible_range_30.lua
 auras/target_is_elite_boss_or_player.lua
 auras/target_is_humanoid.lua
+auras/target_is_ooc.lua
 auras/target_is_player.lua
 auras/target_moon.lua
 auras/target_moving.lua
@@ -197,7 +212,6 @@ auras/target_square.lua
 auras/target_star.lua
 auras/target_triangle.lua
 auras/theiranus_dead.lua
-auras/threat_under_80.lua
 auras/throw.lua
 auras/undead_or_mechanical.lua
 auras/vanish.lua

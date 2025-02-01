@@ -864,24 +864,27 @@ class TestScanner(BaseScanner):
         test_unit_id = self.setup_test_environment()
         
         # Set initial time
-        self.wow_api.set_current_time(0)
+        initial_time = 0
+        self.wow_api.set_current_time(initial_time)
         
         # Set up initial state with explicit time
         self.wow_api.set_target(test_unit_id)
         self.scanner_test.lua.execute("""
-            local currentTime = GetTime()
-            aura_env.seenTargets[select(1, ...)] = currentTime
+            aura_env = aura_env or {}
+            aura_env.seenTargets = aura_env.seenTargets or {}
+            aura_env.seenTargets[select(1, ...)] = GetTime()
         """, test_unit_id)
         
         # Verify initial state
         seen_targets = dict(self.scanner_test.lua.eval("aura_env.seenTargets"))
         assert test_unit_id in seen_targets, "Target should be in seen_targets"
         
-        # Advance time and force cleanup
-        self.wow_api.set_current_time(6)  # 6 seconds later
+        # Advance time past the cleanup threshold (5 seconds)
+        self.wow_api.set_current_time(initial_time + 6)
+        
+        # Force cleanup
         self.scanner_test.lua.execute("""
             local currentTime = GetTime()
-            -- Clean seen targets after 5s
             for guid, timestamp in pairs(aura_env.seenTargets) do
                 if currentTime - timestamp > 5 then
                     aura_env.seenTargets[guid] = nil
@@ -891,7 +894,7 @@ class TestScanner(BaseScanner):
         
         # Verify cleanup
         seen_targets = dict(self.scanner_test.lua.eval("aura_env.seenTargets"))
-        assert test_unit_id not in seen_targets, "Target should be removed from seen_targets"
+        assert test_unit_id not in seen_targets, "Target should be removed from seen_targets after timeout"
 
     def test_skull_mark_persistence(self):
         """Test skull mark behavior with target death and timeout"""

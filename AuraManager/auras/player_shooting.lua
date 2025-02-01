@@ -8,7 +8,7 @@ ns.auras["player_shooting"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 140,
+    xOffset = 188,
     yOffset = 88,
     width = 3,
     height = 3,
@@ -40,38 +40,44 @@ ns.auras["player_shooting"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "custom",
-                unit = "player",
-                subeventSuffix = "_CAST_START",
                 subeventPrefix = "SPELL",
+                unevent = "auto",
+                names = {},
                 duration = "1",
                 event = "Health",
-                names = {},
+                unit = "player",
                 custom_type = "stateupdate",
-                spellIds = {},
                 custom = [[function(allstates)
-    if not aura_env.last or GetTime() - aura_env.last > 0.5 then
+    -- Initialize state if needed
+    aura_env.last = aura_env.last or 0
+    aura_env.shooting = aura_env.shooting or false
+    
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
         aura_env.last = GetTime()
         
-        local playerAttacking = IsCurrentSpell(75)
+        -- Check auto shot status
+        local isAutoShotOn = IsAutoRepeatSpell(GetSpellInfo(75))  -- 75 is Auto Shot
+        local hasRangedWeapon = IsEquippedItemType("Bow") or IsEquippedItemType("Gun") or IsEquippedItemType("Crossbow")
         
-        if playerAttacking then
-            allstates[""] = allstates[""] or {show = true}
-            allstates[""].show = true
-            allstates[""].changed = true
-            return true
-        else
-            allstates[""] = allstates[""] or {show = false}
-            allstates[""].show = false
-            allstates[""].changed = true
-            return true
-        end
+        -- Update shooting state
+        aura_env.shooting = isAutoShotOn and hasRangedWeapon
+        
+        -- Update state display
+        allstates[""] = allstates[""] or {show = false}
+        allstates[""].show = aura_env.shooting
+        allstates[""].changed = true
+        
+        return true
     end
+    return false
 end]],
+                spellIds = {},
                 use_unit = true,
                 check = "update",
                 customVariables = "{}",
-                unevent = "auto",
+                subeventSuffix = "_CAST_START",
                 custom_hide = "timed",
+                events = "PLAYER_TARGET_CHANGED START_AUTOREPEAT_SPELL STOP_AUTOREPEAT_SPELL",
             },
             untrigger = {
                 custom = [[function()

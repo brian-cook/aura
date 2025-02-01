@@ -1,15 +1,15 @@
 
 local ADDON_NAME, ns = ...
 ns.auras = ns.auras or {}
-ns.auras["swing_timer_at_max"] = {
-    id = "Swing Timer at Max",
-    uid = "gpO80VTBfU0",
+ns.auras["target_is_ooc"] = {
+    id = "Target is OOC",
+    uid = "2SSXF2)C(Mh",
     internalVersion = 78,
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 152,
-    yOffset = 80,
+    xOffset = 184,
+    yOffset = 76,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -34,47 +34,49 @@ ns.auras["swing_timer_at_max"] = {
     texture = "Solid",
     textureSource = "LSM",
     triggers = {
-        activeTriggerMode = -10,
+        disjunctive = "all",
+        activeTriggerMode = 1,
         {
             trigger = {
-                debuffType = "BOTH",
+                debuffType = "HELPFUL",
                 type = "unit",
-                unit = "player",
-                subeventSuffix = "_CAST_START",
                 subeventPrefix = "SPELL",
-                event = "Swing Timer",
+                unevent = "auto",
                 names = {},
+                duration = "1",
+                event = "Unit Characteristics",
+                unit = "target",
+                custom_type = "stateupdate",
                 spellIds = {},
                 use_unit = true,
-                use_inverse = false,
-                auranames = {
-                    "Demon Skin",
-                },
-                unitExists = false,
-                useRem = false,
-                matchesShowOn = "showOnActive",
-                useName = true,
-                ownOnly = true,
-                use_remaining = true,
-                remaining_operator = "<",
-                remaining = "1",
-                use_hand = true,
-                hand = "ranged",
-                use_incombat = true,
+                check = "update",
+                customVariables = "{}",
+                subeventSuffix = "_CAST_START",
+                custom_hide = "timed",
+                use_unitisunit = false,
+                use_character = false,
+                use_class = false,
+                character = "player",
+                use_raidMarkIndex = false,
+                unitisunit = "player",
+                raidMarkIndex = 8,
+                use_inCombat = false,
+                use_attackable = true,
             },
             untrigger = {},
         },
     },
     conditions = {},
     load = {
+        use_never = false,
         talent = {
             multi = {},
         },
         class = {
             multi = {
-                DRUID = true,
+                WARLOCK = true,
             },
-            single = "DRUID",
+            single = "WARLOCK",
         },
         size = {
             multi = {},
@@ -82,6 +84,14 @@ ns.auras["swing_timer_at_max"] = {
         spec = {
             multi = {},
         },
+        level_operator = {
+            "~=",
+        },
+        level = {
+            "120",
+        },
+        use_level = false,
+        zoneIds = "",
     },
     animation = {
         start = {

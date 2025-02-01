@@ -2,6 +2,14 @@
     "name": "Hunter Hardcore",
     "actions": [
         {
+            "group": "OOC Scan",
+            "name": "OOC Scan targetenemy",
+            "key": "q",
+            "conditions": ["!combat", "!target_skull"]
+        },
+
+        
+        {
             "group": "START GROUP: CC COUNTERS",
             "name": "NA",
             "key": ".",
@@ -23,10 +31,10 @@
 
         
         {
-            "group": "START GROUP: PET HEALS",
-            "name": "NA",
-            "key": ".",
-            "conditions": ["NA"]
+            "group": "START GROUP: PET",
+            "name": "Call/Revive Pet uses macro",
+            "key": ",",
+            "conditions": ["!player_has_pet"]
         },
 
 
@@ -39,85 +47,157 @@
 
 
         {
-            "group": "START GROUP: SCANNING",
-            "name": "CC Target Cross: /targetenemy",
-            "key": "i",
+            "group": "START GROUP: Player Reactions",
+            "name": "Target Cross for SS: /targetenemy",
+            "key": "q",
             "conditions": ["icon_cross_exists", "!target_cross", "serpent_sting_debuff_cross", "!range_8_cross", "range_35_cross", "power_15"]
         },
         {
-            "name": "CC Cross",
+            "name": "SS Cross",
             "key": "0",
-            "conditions": ["target_cross", "serpent_sting_debuff_cross", "!range_8_cross", "range_35_cross", "power_15"]
+            "conditions": ["!target_is_ooc", "target_cross", "serpent_sting_debuff_cross", "!range_8_cross", "range_35_cross", "power_15", "!leaving_combat"]
         },
         {
-            "name": "CC Target Circle: /targetenemy",
-            "key": "i",
+            "name": "Target Circle for SS: /targetenemy",
+            "key": "q",
             "conditions": ["icon_circle_exists", "!target_circle", "serpent_sting_debuff_circle", "!range_8_circle", "range_35_circle", "power_15"]
         },
         {
-            "name": "CC Circle",
+            "name": "SS Circle",
             "key": "0",
-            "conditions": ["target_circle", "serpent_sting_debuff_circle", "!range_8_circle", "range_35_circle", "power_15"]
+            "conditions": ["!target_is_ooc", "target_circle", "serpent_sting_debuff_circle", "!range_8_circle", "range_35_circle", "power_15", "!leaving_combat"]
         },
         {
-            "name": "CC Target Square: /targetenemy",
-            "key": "i",
+            "name": "Target Square for SS: /targetenemy",
+            "key": "q",
             "conditions": ["icon_square_exists", "!target_square", "serpent_sting_debuff_square", "!range_8_square", "range_35_square", "power_15"]
         },
         {
-            "name": "CC Square",
+            "name": "SS Square",
             "key": "0",
-            "conditions": ["target_square", "serpent_sting_debuff_square", "!range_8_square", "range_35_square", "power_15"]
+            "conditions": ["!target_is_ooc","target_square", "serpent_sting_debuff_square", "!range_8_square", "range_35_square", "power_15", "!leaving_combat"]
         },
         {
             "name": "Interrupt Target Diamond: /targetenemy",
-            "key": "i",
-            "conditions": ["icon_diamond_exists", "can_interrupt_diamond", "!target_diamond", "kick", "power_25"]
+            "key": "q",
+            "conditions": ["inactive", "icon_diamond_exists", "can_interrupt_diamond", "!target_diamond", "power_25"]
         },
         {
             "name": "Interrupt Diamond",
             "key": "f",
-            "conditions": ["target_diamond", "can_interrupt_diamond", "kick", "power_25"]
+            "conditions": ["inactive", "!target_is_ooc", "target_diamond", "can_interrupt_diamond", "power_25"]
+        },
+
+
+        {
+            "group": "START GROUP: PET AGGRO",
+            "name": "Target Cross for Pet Attack: /targetenemy",
+            "key": "q",
+            "conditions": ["icon_cross_exists", "!target_cross", "!pet_attacking_cross", "!pet_aggro_cross"]
+        },
+        {
+            "name": "Pet Attack Cross",
+            "key": "'",
+            "conditions": ["icon_cross_exists","!pet_attacking_cross", "target_cross", "!pet_aggro_cross"]
+        },
+        {
+            "name": "Target Circle for Pet Attack: /targetenemy",
+            "key": "q",
+            "conditions": ["icon_circle_exists", "!target_circle", "!pet_attacking_circle", "!pet_aggro_circle", "pet_aggro_cross"]
+        },
+        {
+            "name": "Pet Attack Circle", 
+            "key": "'",
+            "conditions": ["icon_circle_exists", "!pet_attacking_circle", "target_circle", "!pet_aggro_circle", "pet_aggro_cross"]
+        },
+        {
+            "name": "Target Square for Pet Attack: /targetenemy",
+            "key": "q",
+            "conditions": ["icon_square_exists", "!target_square", "!pet_attacking_square", "!pet_aggro_square", "pet_aggro_cross", "pet_aggro_circle"]
+        },
+        {
+            "name": "Pet Attack Square", 
+            "key": "'",
+            "conditions": ["icon_square_exists", "!pet_attacking_square", "target_square", "!pet_aggro_square", "pet_aggro_cross", "pet_aggro_circle"]
+        },
+        {
+            "name": "Interrupt Target Diamond: /targetenemy",
+            "key": "q",
+            "conditions": ["inactive", "icon_diamond_exists", "!target_diamond"]
+        },
+        {
+            "name": "Interrupt Diamond",
+            "key": "f",
+            "conditions": ["inactive", "icon_diamond_exists", "!pet_attacking_diamond", "target_diamond"]
         },
         {
             "name": "Target Skull: /targetenemy", 
-            "key": "i",
-            "conditions": ["icon_skull_exists", "!target_skull"]
+            "key": "q",
+            "conditions": ["!target_skull", "icon_skull_exists", "combat"]
         },
 
 
         {
             "group": "START GROUP: DEBUFFS",
             "name": "Hunters Mark",
-            "key": ".",
-            "conditions": ["hunters_mark", "!hunters_mark_debuff", "range_40", "power_25"]
+            "key": "h",
+            "conditions": ["inactive", "!hunter's_mark_debuff", "!range_15", "range_40", "power_10", "!target_health_under_50"]
         },
 
 
         {
             "group": "START GROUP: COMBAT BUFFS",
             "name": "Aspect of the Hawk",
-            "key": ".",
-            "conditions": ["aspect_of_the_hawk", "!aspect_of_the_hawk_buff", "!range_8", "!range_8_2+", "power_25"]
+            "key": "l",
+            "conditions": ["!aspect_of_the_hawk_buff", "!range_8", "power_20"]
         },
         {
             "group": "START GROUP: COMBAT BUFFS",
             "name": "Aspect of the Monkey",
             "key": "z",
-            "conditions": ["!aspect_of_the_monkey_buff", "range_8", "power_15", "combat"]
+            "conditions": ["!aspect_of_the_monkey_buff", "range_8", "power_15", "combat", "target_aggro"]
+        },
+
+
+        {
+            "group": "START GROUP: PET ATTACK",
+            "name": "Pet Attack on player target only if NOT attacking already",
+            "key": "'",
+            "conditions": ["!pet_attacking", "range_35", "!leaving_combat"]
+
+        },
+        {
+            "name": "Pet Attack on skull only if aggro on cross",
+            "key": "'",
+            "conditions": ["icon_cross_exists", "pet_attacking", "!pet_attacking_skull", "range_35", "pet_target_cross", "pet_aggro_cross", "target_skull"]
+        },
+        {
+            "name": "Pet Attack on skull only if aggro on cross and circle",
+            "key": "'",
+            "conditions": ["icon_cross_exists", "icon_circle_exists", "pet_attacking", "!pet_attacking_skull", "range_35", "pet_target_circle", "pet_aggro_circle", "pet_aggro_cross", "target_skull"]
+        },
+        {
+            "name": "Pet Attack on skull only if aggro on cross, circle and square",
+            "key": "'",
+            "conditions": ["icon_cross_exists", "icon_circle_exists", "icon_square_exists", "pet_attacking", "!pet_attacking_skull", "range_35", "pet_target_square", "pet_aggro_square", "pet_aggro_circle", "pet_aggro_cross", "target_skull"]
         },
 
 
         {
             "group": "START GROUP: SINGLE TARGET ROTATION",
-            "name": "Serpent Sting",
-            "key": "5",
-            "conditions": ["!serpent_sting_debuff", "!range_8", "range_35", "power_10", "!leaving_combat"]
+            "name": "Concussive Shot",
+            "key": "7",
+            "conditions": ["!concussive_shot_debuff", "concussive_shot_cooldown", "!range_8", "range_35", "power_10", "!leaving_combat"]
         },
         {
             "name": "Arcane Shot",
-            "key": ".",
-            "conditions": ["arcane_shot", "!range_8", "range_30", "power_40"]
+            "key": "6",
+            "conditions": ["arcane_shot", "!range_8", "range_30", "power_15"]
+        },
+        {
+            "name": "Serpent Sting",
+            "key": "5",
+            "conditions": ["!serpent_sting_debuff", "!range_8", "range_35", "power_10", "!leaving_combat"]
         },
         {
             "name": "Raptor Strike in Melee Range",
@@ -132,7 +212,7 @@
         {
             "name": "cast auto attack",
             "key": "r",
-            "conditions": ["!player_attacking", "range_8", "combat"]
+            "conditions": ["!player_attacking", "range_8"]
         }
     ]
-}
+}   
