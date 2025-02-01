@@ -1152,9 +1152,21 @@
         }
     },
     {
+        "id": "pet_recently_bandaged_debuff",
+        "name": "Pet Recently Bandaged Debuff",
+        "xOffset": 124,
+        "yOffset": 88,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
         "id": "pet_target_aggro",
         "name": "Pet Target Aggro",
-        "xOffset": 124,
+        "xOffset": 128,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1166,7 +1178,7 @@
     {
         "id": "player_all_debuff",
         "name": "Player All Debuff",
-        "xOffset": 128,
+        "xOffset": 132,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1178,7 +1190,7 @@
     {
         "id": "player_attacking",
         "name": "Player Attacking",
-        "xOffset": 132,
+        "xOffset": 136,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1190,7 +1202,7 @@
     {
         "id": "player_casting",
         "name": "Player Casting",
-        "xOffset": 136,
+        "xOffset": 140,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1202,7 +1214,7 @@
     {
         "id": "player_casting_heal",
         "name": "Player Casting Heal",
-        "xOffset": 140,
+        "xOffset": 144,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1214,7 +1226,7 @@
     {
         "id": "player_charmed",
         "name": "Player Charmed",
-        "xOffset": 144,
+        "xOffset": 148,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1226,7 +1238,7 @@
     {
         "id": "player_charmed_feared_or_slept",
         "name": "Player Charmed Feared or Slept",
-        "xOffset": 148,
+        "xOffset": 152,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1238,7 +1250,7 @@
     {
         "id": "player_crowd_controlled",
         "name": "Player Crowd Controlled",
-        "xOffset": 152,
+        "xOffset": 156,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1250,7 +1262,7 @@
     {
         "id": "player_diseased",
         "name": "Player Diseased",
-        "xOffset": 156,
+        "xOffset": 160,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1262,7 +1274,7 @@
     {
         "id": "player_dodge",
         "name": "Player Dodge",
-        "xOffset": 160,
+        "xOffset": 164,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1274,7 +1286,7 @@
     {
         "id": "player_feared",
         "name": "Player Feared",
-        "xOffset": 164,
+        "xOffset": 168,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1286,7 +1298,7 @@
     {
         "id": "player_has_pet",
         "name": "Player Has Pet",
-        "xOffset": 168,
+        "xOffset": 172,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1298,7 +1310,7 @@
     {
         "id": "player_magic_debuff",
         "name": "Player Magic Debuff",
-        "xOffset": 172,
+        "xOffset": 176,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1310,7 +1322,7 @@
     {
         "id": "player_moving",
         "name": "Player Moving",
-        "xOffset": 176,
+        "xOffset": 180,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1322,7 +1334,7 @@
     {
         "id": "player_poisoned",
         "name": "Player Poisoned",
-        "xOffset": 180,
+        "xOffset": 184,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1334,7 +1346,7 @@
     {
         "id": "player_rooted",
         "name": "Player Rooted",
-        "xOffset": 184,
+        "xOffset": 188,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1346,7 +1358,7 @@
     {
         "id": "player_shooting",
         "name": "Player Shooting",
-        "xOffset": 188,
+        "xOffset": 192,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1358,7 +1370,7 @@
     {
         "id": "player_silenced",
         "name": "Player Silenced",
-        "xOffset": 192,
+        "xOffset": 196,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1370,7 +1382,7 @@
     {
         "id": "player_slowed",
         "name": "Player Slowed",
-        "xOffset": 196,
+        "xOffset": 200,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1382,7 +1394,7 @@
     {
         "id": "player_stunned",
         "name": "Player Stunned",
-        "xOffset": 200,
+        "xOffset": 204,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1394,7 +1406,7 @@
     {
         "id": "player_weaked_soul_debuff",
         "name": "Player Weaked Soul Debuff",
-        "xOffset": 204,
+        "xOffset": 208,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1406,7 +1418,7 @@
     {
         "id": "player_has_aggro_from_any_mob",
         "name": "Player has Aggro from Any Mob",
-        "xOffset": 208,
+        "xOffset": 212,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1418,7 +1430,7 @@
     {
         "id": "player_not_behind_target",
         "name": "Player not behind target",
-        "xOffset": 212,
+        "xOffset": 216,
         "yOffset": 88,
         "backgroundColor": {
             "r": 0,
@@ -1430,8 +1442,8 @@
     {
         "id": "potion",
         "name": "Potion",
-        "xOffset": 216,
-        "yOffset": 88,
+        "xOffset": 100,
+        "yOffset": 84,
         "backgroundColor": {
             "r": 0,
             "g": 1,
@@ -1442,7 +1454,7 @@
     {
         "id": "potion_cooldown",
         "name": "Potion Cooldown",
-        "xOffset": 100,
+        "xOffset": 104,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1454,7 +1466,7 @@
     {
         "id": "potion_in_inventory",
         "name": "Potion in Inventory",
-        "xOffset": 104,
+        "xOffset": 108,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1466,7 +1478,7 @@
     {
         "id": "power_10",
         "name": "Power 10",
-        "xOffset": 108,
+        "xOffset": 112,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1478,7 +1490,7 @@
     {
         "id": "power_100",
         "name": "Power 100",
-        "xOffset": 112,
+        "xOffset": 116,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1490,7 +1502,7 @@
     {
         "id": "power_15",
         "name": "Power 15",
-        "xOffset": 116,
+        "xOffset": 120,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1502,7 +1514,7 @@
     {
         "id": "power_20",
         "name": "Power 20",
-        "xOffset": 120,
+        "xOffset": 124,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1514,7 +1526,7 @@
     {
         "id": "power_25",
         "name": "Power 25",
-        "xOffset": 124,
+        "xOffset": 128,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1526,7 +1538,7 @@
     {
         "id": "power_30",
         "name": "Power 30",
-        "xOffset": 128,
+        "xOffset": 132,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1538,7 +1550,7 @@
     {
         "id": "power_35",
         "name": "Power 35",
-        "xOffset": 132,
+        "xOffset": 136,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1550,7 +1562,7 @@
     {
         "id": "power_40",
         "name": "Power 40",
-        "xOffset": 136,
+        "xOffset": 140,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1562,7 +1574,7 @@
     {
         "id": "power_45",
         "name": "Power 45",
-        "xOffset": 140,
+        "xOffset": 144,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1574,7 +1586,7 @@
     {
         "id": "power_5",
         "name": "Power 5",
-        "xOffset": 144,
+        "xOffset": 148,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1586,7 +1598,7 @@
     {
         "id": "power_50",
         "name": "Power 50",
-        "xOffset": 148,
+        "xOffset": 152,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1598,7 +1610,7 @@
     {
         "id": "power_60",
         "name": "Power 60",
-        "xOffset": 152,
+        "xOffset": 156,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1610,7 +1622,7 @@
     {
         "id": "power_70",
         "name": "Power 70",
-        "xOffset": 156,
+        "xOffset": 160,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1622,7 +1634,7 @@
     {
         "id": "power_80",
         "name": "Power 80",
-        "xOffset": 160,
+        "xOffset": 164,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1634,7 +1646,7 @@
     {
         "id": "power_90",
         "name": "Power 90",
-        "xOffset": 164,
+        "xOffset": 168,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1646,7 +1658,7 @@
     {
         "id": "range_10",
         "name": "Range 10",
-        "xOffset": 168,
+        "xOffset": 172,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1658,7 +1670,7 @@
     {
         "id": "range_15",
         "name": "Range 15",
-        "xOffset": 172,
+        "xOffset": 176,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1670,7 +1682,7 @@
     {
         "id": "range_25",
         "name": "Range 25",
-        "xOffset": 176,
+        "xOffset": 180,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1682,7 +1694,7 @@
     {
         "id": "range_30",
         "name": "Range 30",
-        "xOffset": 180,
+        "xOffset": 184,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1694,7 +1706,7 @@
     {
         "id": "range_35",
         "name": "Range 35",
-        "xOffset": 184,
+        "xOffset": 188,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1706,7 +1718,7 @@
     {
         "id": "range_35_circle",
         "name": "Range 35 Circle",
-        "xOffset": 188,
+        "xOffset": 192,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1718,7 +1730,7 @@
     {
         "id": "range_35_cross",
         "name": "Range 35 Cross",
-        "xOffset": 192,
+        "xOffset": 196,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1730,7 +1742,7 @@
     {
         "id": "range_35_square",
         "name": "Range 35 Square",
-        "xOffset": 196,
+        "xOffset": 200,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1742,7 +1754,7 @@
     {
         "id": "range_40",
         "name": "Range 40",
-        "xOffset": 200,
+        "xOffset": 204,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1754,7 +1766,7 @@
     {
         "id": "range_8",
         "name": "Range 8",
-        "xOffset": 204,
+        "xOffset": 208,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1766,7 +1778,7 @@
     {
         "id": "range_8_1+",
         "name": "Range 8 1+",
-        "xOffset": 208,
+        "xOffset": 212,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1778,7 +1790,7 @@
     {
         "id": "range_8_2+",
         "name": "Range 8 2+",
-        "xOffset": 212,
+        "xOffset": 216,
         "yOffset": 84,
         "backgroundColor": {
             "r": 0,
@@ -1790,8 +1802,8 @@
     {
         "id": "range_8_3+",
         "name": "Range 8 3+",
-        "xOffset": 216,
-        "yOffset": 84,
+        "xOffset": 100,
+        "yOffset": 80,
         "backgroundColor": {
             "r": 0,
             "g": 1,
@@ -1802,7 +1814,7 @@
     {
         "id": "range_8_circle",
         "name": "Range 8 Circle",
-        "xOffset": 100,
+        "xOffset": 104,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -1814,7 +1826,7 @@
     {
         "id": "range_8_cross",
         "name": "Range 8 Cross",
-        "xOffset": 104,
+        "xOffset": 108,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -1826,7 +1838,7 @@
     {
         "id": "range_8_square",
         "name": "Range 8 Square",
-        "xOffset": 108,
+        "xOffset": 112,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -1838,7 +1850,7 @@
     {
         "id": "raptor_strike",
         "name": "Raptor Strike",
-        "xOffset": 112,
+        "xOffset": 116,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -1850,7 +1862,7 @@
     {
         "id": "recently_bandaged_debuff",
         "name": "Recently Bandaged Debuff",
-        "xOffset": 116,
+        "xOffset": 120,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -1862,7 +1874,7 @@
     {
         "id": "redirect",
         "name": "Redirect",
-        "xOffset": 120,
+        "xOffset": 124,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -1874,7 +1886,7 @@
     {
         "id": "role_toggle",
         "name": "Role Toggle",
-        "xOffset": 124,
+        "xOffset": 128,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -1886,7 +1898,7 @@
     {
         "id": "saber_slash",
         "name": "Saber Slash",
-        "xOffset": 128,
+        "xOffset": 132,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -1898,7 +1910,7 @@
     {
         "id": "sap",
         "name": "Sap",
-        "xOffset": 132,
+        "xOffset": 136,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -1910,7 +1922,7 @@
     {
         "id": "sap_debuff",
         "name": "Sap Debuff",
-        "xOffset": 136,
+        "xOffset": 140,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -1922,7 +1934,7 @@
     {
         "id": "scanner_all_in_one_v1",
         "name": "Scanner All In One V1",
-        "xOffset": 140,
+        "xOffset": 144,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -1934,7 +1946,7 @@
     {
         "id": "scanner_all_in_one_v2_triangle",
         "name": "Scanner All In One V2 Triangle",
-        "xOffset": 144,
+        "xOffset": 148,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -1946,7 +1958,7 @@
     {
         "id": "scanner_skull",
         "name": "Scanner Skull",
-        "xOffset": 148,
+        "xOffset": 152,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -1958,7 +1970,7 @@
     {
         "id": "scanner_test_no_load",
         "name": "Scanner Test No Load",
-        "xOffset": 152,
+        "xOffset": 156,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -1970,7 +1982,7 @@
     {
         "id": "scanner_test_no_load_2",
         "name": "Scanner Test No Load 2",
-        "xOffset": 156,
+        "xOffset": 160,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -1982,7 +1994,7 @@
     {
         "id": "scanner_triangle",
         "name": "Scanner Triangle",
-        "xOffset": 160,
+        "xOffset": 164,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -1994,7 +2006,7 @@
     {
         "id": "serpent_sting_debuff",
         "name": "Serpent Sting Debuff",
-        "xOffset": 164,
+        "xOffset": 168,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -2006,7 +2018,7 @@
     {
         "id": "serpent_sting_debuff_circle",
         "name": "Serpent Sting Debuff Circle",
-        "xOffset": 168,
+        "xOffset": 172,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -2018,7 +2030,7 @@
     {
         "id": "serpent_sting_debuff_cross",
         "name": "Serpent Sting Debuff Cross",
-        "xOffset": 172,
+        "xOffset": 176,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -2030,7 +2042,7 @@
     {
         "id": "serpent_sting_debuff_square",
         "name": "Serpent Sting Debuff Square",
-        "xOffset": 176,
+        "xOffset": 180,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -2042,7 +2054,7 @@
     {
         "id": "shadowstep",
         "name": "Shadowstep",
-        "xOffset": 180,
+        "xOffset": 184,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -2054,7 +2066,7 @@
     {
         "id": "shadowstrike",
         "name": "Shadowstrike",
-        "xOffset": 184,
+        "xOffset": 188,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -2066,7 +2078,7 @@
     {
         "id": "sinister_strike",
         "name": "Sinister Strike",
-        "xOffset": 188,
+        "xOffset": 192,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -2078,7 +2090,7 @@
     {
         "id": "slice_and_dice_buff",
         "name": "Slice and Dice Buff",
-        "xOffset": 192,
+        "xOffset": 196,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -2090,7 +2102,7 @@
     {
         "id": "sprint",
         "name": "Sprint",
-        "xOffset": 196,
+        "xOffset": 200,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -2102,7 +2114,7 @@
     {
         "id": "stealth_buff",
         "name": "Stealth Buff",
-        "xOffset": 200,
+        "xOffset": 204,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -2114,7 +2126,7 @@
     {
         "id": "swing_timer_main_hand",
         "name": "Swing Timer Main Hand",
-        "xOffset": 204,
+        "xOffset": 208,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -2126,7 +2138,7 @@
     {
         "id": "swing_timer_ranged",
         "name": "Swing Timer Ranged",
-        "xOffset": 208,
+        "xOffset": 212,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -2138,7 +2150,7 @@
     {
         "id": "target_aggro",
         "name": "Target Aggro",
-        "xOffset": 212,
+        "xOffset": 216,
         "yOffset": 80,
         "backgroundColor": {
             "r": 0,
@@ -2150,8 +2162,8 @@
     {
         "id": "target_casting",
         "name": "Target Casting",
-        "xOffset": 216,
-        "yOffset": 80,
+        "xOffset": 100,
+        "yOffset": 76,
         "backgroundColor": {
             "r": 0,
             "g": 1,
@@ -2162,7 +2174,7 @@
     {
         "id": "target_circle",
         "name": "Target Circle",
-        "xOffset": 100,
+        "xOffset": 104,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2174,7 +2186,7 @@
     {
         "id": "target_cross",
         "name": "Target Cross",
-        "xOffset": 104,
+        "xOffset": 108,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2186,7 +2198,7 @@
     {
         "id": "target_diamond",
         "name": "Target Diamond",
-        "xOffset": 108,
+        "xOffset": 112,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2198,7 +2210,7 @@
     {
         "id": "target_health_under_20",
         "name": "Target Health Under 20",
-        "xOffset": 112,
+        "xOffset": 116,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2210,7 +2222,7 @@
     {
         "id": "target_health_under_35",
         "name": "Target Health Under 35",
-        "xOffset": 116,
+        "xOffset": 120,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2222,7 +2234,7 @@
     {
         "id": "target_health_under_50",
         "name": "Target Health Under 50",
-        "xOffset": 120,
+        "xOffset": 124,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2234,7 +2246,7 @@
     {
         "id": "target_health_under_75",
         "name": "Target Health Under 75",
-        "xOffset": 124,
+        "xOffset": 128,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2246,7 +2258,7 @@
     {
         "id": "target_health_under_90",
         "name": "Target Health Under 90",
-        "xOffset": 128,
+        "xOffset": 132,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2258,7 +2270,7 @@
     {
         "id": "target_interruptible",
         "name": "Target Interruptible",
-        "xOffset": 132,
+        "xOffset": 136,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2270,7 +2282,7 @@
     {
         "id": "target_interruptible_range_12",
         "name": "Target Interruptible Range 12",
-        "xOffset": 136,
+        "xOffset": 140,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2282,7 +2294,7 @@
     {
         "id": "target_is_player",
         "name": "Target Is Player",
-        "xOffset": 140,
+        "xOffset": 144,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2294,7 +2306,7 @@
     {
         "id": "target_moon",
         "name": "Target Moon",
-        "xOffset": 144,
+        "xOffset": 148,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2306,7 +2318,7 @@
     {
         "id": "target_moving",
         "name": "Target Moving",
-        "xOffset": 148,
+        "xOffset": 152,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2318,7 +2330,7 @@
     {
         "id": "target_skull",
         "name": "Target Skull",
-        "xOffset": 152,
+        "xOffset": 156,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2330,7 +2342,7 @@
     {
         "id": "target_square",
         "name": "Target Square",
-        "xOffset": 156,
+        "xOffset": 160,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2342,7 +2354,7 @@
     {
         "id": "target_star",
         "name": "Target Star",
-        "xOffset": 160,
+        "xOffset": 164,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2354,7 +2366,7 @@
     {
         "id": "target_triangle",
         "name": "Target Triangle",
-        "xOffset": 164,
+        "xOffset": 168,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2366,7 +2378,7 @@
     {
         "id": "target_interruptible_range_15",
         "name": "Target interruptible Range 15",
-        "xOffset": 168,
+        "xOffset": 172,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2378,7 +2390,7 @@
     {
         "id": "target_interruptible_range_30",
         "name": "Target interruptible Range 30",
-        "xOffset": 172,
+        "xOffset": 176,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2390,7 +2402,7 @@
     {
         "id": "target_is_elite_boss_or_player",
         "name": "Target is Elite Boss or Player",
-        "xOffset": 176,
+        "xOffset": 180,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2402,7 +2414,7 @@
     {
         "id": "target_is_humanoid",
         "name": "Target is Humanoid",
-        "xOffset": 180,
+        "xOffset": 184,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2414,7 +2426,7 @@
     {
         "id": "target_is_ooc",
         "name": "Target is OOC",
-        "xOffset": 184,
+        "xOffset": 188,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2426,7 +2438,7 @@
     {
         "id": "theiranus_dead",
         "name": "Theiranus Dead",
-        "xOffset": 188,
+        "xOffset": 192,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2438,7 +2450,7 @@
     {
         "id": "throw",
         "name": "Throw",
-        "xOffset": 192,
+        "xOffset": 196,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2450,7 +2462,7 @@
     {
         "id": "undead_or_mechanical",
         "name": "Undead or Mechanical",
-        "xOffset": 196,
+        "xOffset": 200,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,
@@ -2462,7 +2474,19 @@
     {
         "id": "vanish",
         "name": "Vanish",
-        "xOffset": 200,
+        "xOffset": 204,
+        "yOffset": 76,
+        "backgroundColor": {
+            "r": 0,
+            "g": 1,
+            "b": 0,
+            "a": 1
+        }
+    },
+    {
+        "id": "wing_clip_debuff",
+        "name": "Wing Clip Debuff",
+        "xOffset": 208,
         "yOffset": 76,
         "backgroundColor": {
             "r": 0,

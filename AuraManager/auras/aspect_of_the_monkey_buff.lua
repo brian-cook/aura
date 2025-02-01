@@ -39,10 +39,10 @@ ns.auras["aspect_of_the_monkey_buff"] = {
             trigger = {
                 debuffType = "BOTH",
                 type = "aura2",
-                subeventPrefix = "SPELL",
-                names = {},
-                event = "Health",
                 unit = "player",
+                subeventPrefix = "SPELL",
+                event = "Health",
+                names = {},
                 spellIds = {},
                 subeventSuffix = "_CAST_START",
                 auranames = {
@@ -50,8 +50,8 @@ ns.auras["aspect_of_the_monkey_buff"] = {
                 },
                 unitExists = false,
                 useRem = false,
-                useName = true,
                 matchesShowOn = "showOnActive",
+                useName = true,
                 ownOnly = true,
             },
             untrigger = {},

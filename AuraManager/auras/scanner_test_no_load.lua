@@ -8,7 +8,7 @@ ns.auras["scanner_test_no_load"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 152,
+    xOffset = 156,
     yOffset = 80,
     width = 3,
     height = 3,
@@ -39,12 +39,12 @@ ns.auras["scanner_test_no_load"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "custom",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 unevent = "auto",
-                names = {},
+                subeventPrefix = "SPELL",
                 duration = "1",
                 event = "Health",
-                unit = "player",
+                names = {},
                 custom_type = "stateupdate",
                 custom = [[function(allstates, event, ...)
     -- Debug Tools
@@ -251,7 +251,6 @@ end]],
   stacks = true,
 }]],
                 subeventSuffix = "_CAST_START",
-                use_absorbMode = true,
                 customStacks = [[function() return aura_env.count end]],
                 events = [[PLAYER_TARGET_CHANGED
 UNIT_TARGET
@@ -261,6 +260,7 @@ NAME_PLATE_UNIT_ADDED
 NAME_PLATE_UNIT_REMOVED
 GROUP_ROSTER_UPDATE
 UNIT_PET]],
+                use_absorbMode = true,
             },
             untrigger = {},
         },

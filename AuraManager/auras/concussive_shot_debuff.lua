@@ -39,10 +39,10 @@ ns.auras["concussive_shot_debuff"] = {
             trigger = {
                 debuffType = "HARMFUL",
                 type = "aura2",
-                subeventPrefix = "SPELL",
-                names = {},
-                event = "Health",
                 unit = "target",
+                subeventPrefix = "SPELL",
+                event = "Health",
+                names = {},
                 spellIds = {},
                 subeventSuffix = "_CAST_START",
                 auranames = {
@@ -50,8 +50,8 @@ ns.auras["concussive_shot_debuff"] = {
                 },
                 unitExists = false,
                 useRem = false,
-                useName = true,
                 matchesShowOn = "showOnActive",
+                useName = true,
             },
             untrigger = {},
         },

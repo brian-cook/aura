@@ -104,6 +104,7 @@ auras/pet_health_under_50.lua
 auras/pet_health_under_75.lua
 auras/pet_range_20.lua
 auras/pet_range_8.lua
+auras/pet_recently_bandaged_debuff.lua
 auras/pet_target_aggro.lua
 auras/player_all_debuff.lua
 auras/player_attacking.lua
@@ -215,3 +216,4 @@ auras/theiranus_dead.lua
 auras/throw.lua
 auras/undead_or_mechanical.lua
 auras/vanish.lua
+auras/wing_clip_debuff.lua

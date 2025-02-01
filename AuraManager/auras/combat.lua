@@ -41,10 +41,10 @@ ns.auras["combat"] = {
             trigger = {
                 debuffType = "BOTH",
                 type = "unit",
-                subeventPrefix = "SPELL",
-                names = {},
-                event = "Conditions",
                 unit = "player",
+                subeventPrefix = "SPELL",
+                event = "Conditions",
+                names = {},
                 custom_type = "event",
                 custom = [[function(event)
     return UnitAffectingCombat("player")
@@ -60,8 +60,8 @@ end]],
                 },
                 unitExists = false,
                 useRem = false,
-                useName = true,
                 matchesShowOn = "showOnActive",
+                useName = true,
                 ownOnly = true,
                 use_incombat = true,
             },

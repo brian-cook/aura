@@ -39,12 +39,12 @@
         {
             "name": "Heal Pet",
             "key": ";",
-            "conditions": ["!player_has_pet", "pet_health_under_20", "!player_moving", "!combat", "!pet_combat", "pet_range_20", "power_20"]
+            "conditions": ["player_has_pet", "pet_health_under_50", "combat", "!player_moving", "pet_range_20", "power_20"]
         },
         {
             "name": "use bandage on pet when low OOC",
             "key": "v",
-            "conditions": ["!player_has_pet","bandage_in_inventory", "pet_health_under_50", "!player_moving", "!combat", "!pet_combat", "pet_range_8"]
+            "conditions": ["player_has_pet", "bandage_in_inventory", "pet_health_under_50", "!player_moving", "!combat", "pet_range_8"]
         },
 
 
@@ -184,6 +184,26 @@
             "name": "cast auto shoot",
             "key": "t",
             "conditions": ["!player_shooting", "!range_8", "range_30", "!leaving_combat"]
+        },
+        {
+            "name": "Stop and Shoot (Left)",
+            "key": "HOLD-d",
+            "conditions": ["combat", "is_moving_left", "player_shooting", "!swing_timer_ranged", "!range_8", "range_30"]
+        },
+        {
+            "name": "Stop and Shoot (Right)",
+            "key": "HOLD-a",
+            "conditions": ["combat", "is_moving_right", "player_shooting", "!swing_timer_ranged", "!range_8", "range_30"]
+        },
+        {
+            "name": "Stop and Shoot (forward)",
+            "key": "HOLD-s",
+            "conditions": ["combat", "is_moving_forward", "player_shooting", "!swing_timer_ranged", "!range_8", "range_30"]
+        },
+        {
+            "name": "Stop and Shoot (backward)",
+            "key": "HOLD-w",
+            "conditions": ["combat", "is_moving_backward", "player_shooting", "!swing_timer_ranged", "!range_8", "range_30"]
         },
         {
             "name": "cast auto attack",

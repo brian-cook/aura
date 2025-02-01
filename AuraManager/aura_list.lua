@@ -95,6 +95,7 @@ ns.aura_list = {
     "pet_health_under_75",
     "pet_range_20",
     "pet_range_8",
+    "pet_recently_bandaged_debuff",
     "pet_target_aggro",
     "player_all_debuff",
     "player_attacking",
@@ -206,4 +207,5 @@ ns.aura_list = {
     "throw",
     "undead_or_mechanical",
     "vanish",
+    "wing_clip_debuff",
 }

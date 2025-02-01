@@ -40,12 +40,12 @@ ns.auras["party_1_health_under_70"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "custom",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 unevent = "auto",
-                names = {},
+                subeventPrefix = "SPELL",
                 duration = "1",
                 event = "Health",
-                unit = "player",
+                names = {},
                 custom_type = "stateupdate",
                 custom = [[function(allstates)
     if not aura_env.last or GetTime() - aura_env.last > 0.5 then

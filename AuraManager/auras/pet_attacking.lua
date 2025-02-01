@@ -40,12 +40,12 @@ ns.auras["pet_attacking"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "custom",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 unevent = "auto",
-                names = {},
+                subeventPrefix = "SPELL",
                 duration = "1",
                 event = "Health",
-                unit = "player",
+                names = {},
                 custom_type = "stateupdate",
                 custom = [[function(allstates)
     -- Initialize state if needed

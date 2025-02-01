@@ -39,12 +39,12 @@ ns.auras["can_interrupt_diamond"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "custom",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 unevent = "auto",
-                names = {},
+                subeventPrefix = "SPELL",
                 duration = "1",
                 event = "Health",
-                unit = "player",
+                names = {},
                 custom_type = "stateupdate",
                 custom = [[function(allstates, event, ...)
         -- Throttle checks
@@ -95,8 +95,8 @@ ns.auras["can_interrupt_diamond"] = {
                 check = "update",
                 customVariables = "",
                 subeventSuffix = "_CAST_START",
-                use_absorbMode = true,
                 customStacks = [[function() return aura_env.count end]],
+                use_absorbMode = true,
             },
             untrigger = {},
         },
