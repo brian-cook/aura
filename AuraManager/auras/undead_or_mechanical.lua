@@ -39,10 +39,10 @@ ns.auras["undead_or_mechanical"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "custom",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Health",
                 names = {},
+                unit = "player",
+                event = "Health",
+                subeventPrefix = "SPELL",
                 custom_type = "status",
                 custom = [[function()
     return UnitExists("target") and (UnitCreatureType("target") == "Elemental" or UnitCreatureType("target") == "Mechanical")

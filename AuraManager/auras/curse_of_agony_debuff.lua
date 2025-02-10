@@ -1,15 +1,15 @@
 
 local ADDON_NAME, ns = ...
 ns.auras = ns.auras or {}
-ns.auras["mana_60"] = {
-    id = "Mana 60",
-    uid = "2Jq(0lKGP63",
+ns.auras["curse_of_agony_debuff"] = {
+    id = "Curse of Agony Debuff",
+    uid = "dL3JLcw(EXj",
     internalVersion = 78,
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 100,
-    yOffset = 92,
+    xOffset = 212,
+    yOffset = 100,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,25 +37,22 @@ ns.auras["mana_60"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
-                type = "unit",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Power",
+                debuffType = "HARMFUL",
+                type = "aura2",
                 names = {},
+                unit = "target",
+                event = "Health",
+                subeventPrefix = "SPELL",
                 spellIds = {},
-                use_unit = true,
                 subeventSuffix = "_CAST_START",
-                powertype = 0,
-                use_powertype = true,
-                use_percentpower = true,
-                use_showCost = false,
-                percentpower = {
-                    "60",
+                auranames = {
+                    "980",
                 },
-                percentpower_operator = {
-                    ">=",
-                },
+                unitExists = false,
+                useRem = false,
+                matchesShowOn = "showOnActive",
+                useName = true,
+                ownOnly = true,
             },
             untrigger = {},
         },
@@ -68,9 +65,8 @@ ns.auras["mana_60"] = {
         class = {
             multi = {
                 ROGUE = true,
-                DRUID = true,
             },
-            single = "DRUID",
+            single = "ROGUE",
         },
         size = {
             multi = {},

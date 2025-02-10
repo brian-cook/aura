@@ -8,7 +8,7 @@ ns.auras["player_not_behind_target"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 216,
+    xOffset = 192,
     yOffset = 88,
     width = 3,
     height = 3,
@@ -39,11 +39,11 @@ ns.auras["player_not_behind_target"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "custom",
+                names = {},
                 unit = "target",
-                subeventPrefix = "SPELL",
                 duration = ".5",
                 event = "Crowd Controlled",
-                names = {},
+                subeventPrefix = "SPELL",
                 custom_type = "event",
                 custom = [[function(event, arg1, arg2)
     if event == "UI_ERROR_MESSAGE" and string.find(arg2, "be behind your") then
@@ -56,7 +56,6 @@ end]],
                 subeventSuffix = "_CAST_START",
                 custom_hide = "timed",
                 events = "UI_ERROR_MESSAGE",
-                use_inverse = false,
                 auranames = {
                     "Quick Flame Ward",
                 },
@@ -65,6 +64,7 @@ end]],
                 matchesShowOn = "showOnActive",
                 use_debuffClass = false,
                 useName = true,
+                use_inverse = false,
                 debuffClass = {
                     magic = true,
                 },

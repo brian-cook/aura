@@ -8,7 +8,7 @@ ns.auras["scanner_test_no_load"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 156,
+    xOffset = 144,
     yOffset = 80,
     width = 3,
     height = 3,
@@ -39,235 +39,548 @@ ns.auras["scanner_test_no_load"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "custom",
-                unit = "player",
+                names = {},
                 unevent = "auto",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 duration = "1",
                 event = "Health",
-                names = {},
+                subeventPrefix = "SPELL",
                 custom_type = "stateupdate",
                 custom = [[function(allstates, event, ...)
-    -- Debug Tools
-    local DebugTools = {
-        enabled = false,
-        log = function(self, ...)
-            if not self.enabled then return end
-            print(string.format("[Scanner Pet] %s", string.format(...)))
+    -- Debug setup
+    aura_env.debug = true
+    local function debugPrint(...)
+        if aura_env.debug then
+            print(string.format("[TTD Debug] %s", string.format(...)))
         end
+    end
+    
+    debugPrint("Function called with event: %s", event or "nil")
+    
+    -- Handle OPTIONS and STATUS states
+    if event == "OPTIONS" or event == "STATUS" then
+        debugPrint("Handling %s state", event)
+        return {
+            [""] = {
+                show = true,
+                changed = true,
+                ttd = 2.5,
+                totalDPS = 100,
+                activeDots = {},
+                attackSources = {},
+                spellEfficiency = {}
+            }
+        }
+    end
+    
+    -- Initialize state if it doesn't exist
+    if not aura_env.state then
+        aura_env.state = {}
+    end
+    
+    -- Ensure lastUpdate exists
+    if aura_env.state.lastUpdate == nil then
+        aura_env.state.lastUpdate = 0
+    end
+    
+    -- Initialize config if needed
+    if not aura_env.state.config then
+        aura_env.state.config = {
+            TTD_THRESHOLD = 2,     -- Show when TTD < 2 seconds
+            UPDATE_FREQUENCY = 0.1, -- 100ms for frame updates
+            DOT_VALUES = {
+                -- Use exact spell names from Classic
+                ["Corruption"] = {dps = 10, name = "Corruption", duration = 12},    -- R1
+                ["Immolate"] = {dps = 12, name = "Immolate", duration = 15},      -- R1
+                ["Curse of Agony"] = {dps = 8,  name = "Curse of Agony", duration = 24} -- R1
+            },
+            PET_DPS_BY_TYPE = {
+                ["Imp"] = {
+                    base = 8,
+                    per_level = 0.8
+                },
+                ["Voidwalker"] = {
+                    base = 10,
+                    per_level = 1.0
+                },
+                ["Succubus"] = {
+                    base = 12,
+                    per_level = 1.2
+                },
+                ["Felhunter"] = {
+                    base = 11,
+                    per_level = 1.1
+                }
+            },
+            BASE_DPS = {
+                WAND = 15,      -- Level 10 wand
+            },
+            SPELL_VALUES = {
+                ["Shadow Bolt"] = {
+                    minDamage = 23,
+                    maxDamage = 30,
+                    castTime = 2.2  -- With talents
+                }
+            },
+            SPELL_EFFICIENCY = {
+                ["Shadow Bolt"] = {
+                    minDamage = 23,
+                    maxDamage = 30,
+                    castTime = 2.2,  -- With talents
+                    manaCost = 65
+                },
+                ["Corruption"] = {
+                    dps = 10,
+                    duration = 12,
+                    manaCost = 55
+                },
+                ["Immolate"] = {
+                    dps = 12,
+                    duration = 15,
+                    manaCost = 50
+                },
+                ["Curse of Agony"] = {
+                    dps = 8,
+                    duration = 24,
+                    manaCost = 45
+                }
+            }
+        }
+    end
+    
+    -- Initialize allstates
+    allstates[""] = allstates[""] or {
+        show = false,
+        changed = true,
+        ttd = 999,
+        totalDPS = 0,
+        activeDots = {},
+        attackSources = {},
+        spellEfficiency = {}
     }
     
-    -- Initialize state variables
-    aura_env.states = aura_env.states or {
-        marks = {},          -- Current mark assignments
-        aggroUnits = {},     -- Units with player/group aggro
-        previousMarks = {},  -- Stored marks for restoration
-        castingUnits = {},   -- Currently casting units
-        seenTargets = {},    -- Target history for skull marking
-        lastUpdate = 0,      -- Throttle timer
-        currentUnits = {}    -- Currently visible units
-    }
-    
-    -- Constants
-    local MARKS = {
-        SKULL = 8,
-        DIAMOND = 3,
-        TRIANGLE = 4
-    }
-    
-    -- Helper Functions
-    local function validateUnit(unit)
-        if not unit then return false end
-        if not UnitExists(unit) then return false end
-        if not UnitIsVisible(unit) then return false end
-        if UnitIsDeadOrGhost(unit) then return false end
+    -- Target validation function
+    local function validateTarget()
+        if not UnitExists("target") then
+            debugPrint("No target exists")
+            return false
+        end
+        if UnitIsDeadOrGhost("target") then
+            debugPrint("Target is dead or ghost")
+            return false
+        end
         return true
     end
     
-    local function hasPlayerAggro(unit)
-        if not validateUnit(unit) then return false end
-        
-        local targetUnit = unit.."target"
-        if not UnitExists(targetUnit) then return false end
-        
-        return UnitIsUnit(targetUnit, "player")
-    end
-    
-    local function checkGroupAggro(unit)
-        if not IsInGroup() then
-            return hasPlayerAggro(unit)
-        end
-        
-        -- Check all group members
-        local numMembers = GetNumGroupMembers()
-        for i = 1, numMembers do
-            local groupUnit = IsInRaid() and "raid"..i or "party"..i
-            if UnitExists(groupUnit) and UnitIsUnit(unit.."target", groupUnit) then
-                return true
-            end
-        end
-        return false
-    end
-    
-    local function checkPetAggro(unit)
-        -- Check player's pet
-        if UnitExists("pet") and UnitIsUnit(unit.."target", "pet") then
+    -- Handle target changes
+    if event == "PLAYER_TARGET_CHANGED" then
+        debugPrint("Target changed")
+        if not validateTarget() then
+            allstates[""].show = false
+            allstates[""].changed = true
             return true
         end
+    end
+    
+    -- Frame update throttling
+    local currentTime = GetTime()
+    if event == "FRAME_UPDATE" then
+        if (currentTime - aura_env.state.lastUpdate) < aura_env.state.config.UPDATE_FREQUENCY then
+            return false
+        end
+    end
+    aura_env.state.lastUpdate = currentTime
+    
+    -- Validate current target
+    if not validateTarget() then
+        allstates[""].show = false
+        allstates[""].changed = true
+        return true
+    end
+    
+    -- Calculate pet DPS based on type and level
+    local function calculatePetDPS(petUnit)
+        if not UnitExists(petUnit) then return 0 end
         
-        -- Check group pets if in group
+        local petFamily = UnitCreatureFamily(petUnit)
+        local ownerUnit = petUnit == "pet" and "player" or "party1"
+        local ownerLevel = UnitLevel(ownerUnit)
+        
+        debugPrint("Pet Family: %s (Owner: %s, Level: %d)", petFamily or "nil", ownerUnit, ownerLevel)
+        
+        -- Map creature family to pet type
+        local petTypeMap = {
+            ["Imp"] = "Imp",
+            ["Voidwalker"] = "Voidwalker",
+            ["Succubus"] = "Succubus",
+            ["Felhunter"] = "Felhunter"
+        }
+        
+        local petType = petTypeMap[petFamily]
+        if not petType or not aura_env.state.config.PET_DPS_BY_TYPE[petType] then 
+            debugPrint("Unknown pet family: %s", petFamily or "nil")
+            return 0 
+        end
+        
+        local petConfig = aura_env.state.config.PET_DPS_BY_TYPE[petType]
+        local calculatedDPS = petConfig.base + (petConfig.per_level * ownerLevel)
+        debugPrint("Pet DPS calculation: %.1f base + (%.1f * %d) = %.1f", 
+        petConfig.base, petConfig.per_level, ownerLevel, calculatedDPS)
+        
+        return calculatedDPS
+    end
+    
+    -- Get active DoTs on target
+    local function getActiveDots(unit)
+        local dots = {}
+        debugPrint("Checking DoTs on %s", unit or "nil")
+        
+        -- Validate unit
+        if not unit or not UnitExists(unit) then
+            debugPrint("Invalid unit or unit doesn't exist")
+            return dots
+        end
+        
+        -- Check all party members (including player)
+        local units = {"player"}
         if IsInGroup() then
-            local numMembers = GetNumGroupMembers()
-            for i = 1, numMembers do
-                local petUnit = (IsInRaid() and "raidpet" or "partypet")..i
-                if UnitExists(petUnit) and UnitIsUnit(unit.."target", petUnit) then
-                    return true
+            for i = 1, GetNumGroupMembers() do
+                table.insert(units, "party"..i)
+            end
+        end
+        
+        for spellName, spellData in pairs(aura_env.state.config.DOT_VALUES) do
+            local i = 1
+            while true do
+                local name, icon, count, debuffType, duration, expirationTime, unitCaster = UnitDebuff(unit, i)
+                if not name then 
+                    debugPrint("No more debuffs at index %d", i)
+                    break 
+                end
+                
+                debugPrint("Checking debuff %d: %s (looking for %s)", i, name, spellName)
+                
+                -- Check if the caster is any party member
+                if name == spellName and unitCaster then  -- Add nil check for unitCaster and name match
+                    local isCasterPartyMember = false
+                    for _, partyUnit in ipairs(units) do
+                        if UnitExists(partyUnit) and UnitIsUnit(unitCaster, partyUnit) then
+                            isCasterPartyMember = true
+                            local source = UnitIsUnit(unitCaster, "player") and "PLAYER" or "PARTY"..partyUnit:match("%d+")
+                            
+                            dots[spellName] = dots[spellName] or {}
+                            dots[spellName][source] = {
+                                timeLeft = expirationTime - GetTime(),
+                                duration = duration,
+                                stacks = count or 1
+                            }
+                            debugPrint("Found DoT: %s from %s", spellName, source)
+                            break
+                        end
+                    end
+                end
+                i = i + 1
+            end
+        end
+        return dots
+    end
+    
+    -- Update getCastingInfo to be more explicit about party member tracking
+    local function getCastingInfo()
+        local casters = {}
+        
+        -- Check all party members (including player)
+        local units = {"player"}
+        if IsInGroup() then
+            for i = 1, GetNumGroupMembers() do
+                table.insert(units, "party"..i)
+            end
+        end
+        
+        for _, unit in ipairs(units) do
+            -- First check if the unit exists and has our target targeted
+            if UnitExists(unit) and UnitExists("target") then
+                local isTargetingOurTarget = UnitIsUnit(unit.."target", "target")
+                debugPrint("Unit %s targeting our target: %s", unit, tostring(isTargetingOurTarget))
+                
+                if isTargetingOurTarget then
+                    local name, _, _, _, endTime = UnitCastingInfo(unit)
+                    if name == "Shadow Bolt" then
+                        local remainingCast = (endTime/1000) - GetTime()
+                        debugPrint("Unit %s casting Shadow Bolt, %.1fs remaining", unit, remainingCast)
+                        casters[unit] = {
+                            spell = name,
+                            timeLeft = remainingCast
+                        }
+                    end
                 end
             end
         end
-        return false
+        return casters
     end
     
-    local function setMarkWithVerification(unit, mark)
-        if not validateUnit(unit) then return false end
+    -- Update getAttackSources to include casting info
+    local function getAttackSources()
+        local sources = {
+            wanding = {},
+            pets = {},
+            casting = getCastingInfo()  -- Add casting info
+        }
         
-        local currentMark = GetRaidTargetIndex(unit)
-        if currentMark == mark then return true end
-        
-        SetRaidTarget(unit, mark)
-        -- Verify mark was set
-        local newMark = GetRaidTargetIndex(unit)
-        DebugTools:log("Mark set: %s -> %s (Verified: %s)", 
-            tostring(currentMark), tostring(mark), tostring(newMark == mark))
-        return newMark == mark
-    end
-    
-    local function restoreMarkWithVerification(guid, unit)
-        if not guid or not unit then return false end
-        
-        local previousMark = aura_env.states.previousMarks[guid]
-        if not previousMark then return false end
-        
-        local success = setMarkWithVerification(unit, previousMark)
-        if success then
-            aura_env.states.previousMarks[guid] = nil
+        -- Check all party members (including player)
+        local units = {"player"}
+        if IsInGroup() then
+            for i = 1, GetNumGroupMembers() do
+                table.insert(units, "party"..i)
+            end
         end
-        return success
+        
+        for _, unit in ipairs(units) do
+            -- First check if the unit exists and has our target targeted
+            if UnitExists(unit) and UnitExists("target") then
+                local isTargetingOurTarget = UnitIsUnit(unit.."target", "target")
+                debugPrint("Unit %s targeting our target: %s", unit, tostring(isTargetingOurTarget))
+                
+                if isTargetingOurTarget then
+                    -- Check if wanding
+                    local isWanding = IsAutoRepeatSpell(GetSpellInfo("Shoot"))
+                    sources.wanding[unit] = isWanding
+                    debugPrint("Unit %s wanding: %s", unit, tostring(isWanding))
+                    
+                    -- Check pets
+                    local petUnit = unit == "player" and "pet" or unit.."pet"
+                    if UnitExists(petUnit) then
+                        local isPetTargetingOurTarget = UnitIsUnit(petUnit.."target", "target")
+                        debugPrint("Pet %s targeting our target: %s", petUnit, tostring(isPetTargetingOurTarget))
+                        
+                        if isPetTargetingOurTarget then
+                            sources.pets[petUnit] = true
+                            debugPrint("Adding pet %s to DPS calculation", petUnit)
+                        end
+                    end
+                end
+            end
+        end
+        return sources
     end
     
-    -- Throttle updates
-    if GetTime() - aura_env.states.lastUpdate < 0.2 then
-        return false
+    -- Add function to calculate remaining TTD after Shadow Bolt impact
+    local function calculatePostCastTTD(currentHealth, currentDPS, castInfo)
+        local spellConfig = aura_env.state.config.SPELL_VALUES[castInfo.spell]
+        local avgDamage = (spellConfig.minDamage + spellConfig.maxDamage) / 2
+        local timeToImpact = castInfo.timeLeft
+        
+        -- Calculate health after regular DPS during cast
+        local healthAfterDPS = currentHealth - (currentDPS * timeToImpact)
+        -- Calculate final health after Shadow Bolt hits
+        local healthAfterBolt = healthAfterDPS - avgDamage
+        
+        debugPrint("TTD Adjustment: Current Health: %d, After DPS: %d, After Bolt: %d", 
+        currentHealth, healthAfterDPS, healthAfterBolt)
+        
+        -- Calculate new TTD based on remaining health
+        return healthAfterBolt > 0 and (healthAfterBolt / currentDPS) or 0
     end
-    aura_env.states.lastUpdate = GetTime()
     
-    -- Clear current units for this scan
-    wipe(aura_env.states.currentUnits)
-    
-    -- Main scanning logic
-    for i = 1, 40 do
-        local unit = "nameplate"..i
-        if validateUnit(unit) then
-            local guid = UnitGUID(unit)
-            if guid then
-                aura_env.states.currentUnits[guid] = unit
+    -- Update calculateTotalDPS function to handle Shadow Bolt correctly
+    local function calculateTotalDPS(sources, dots)
+        local dps = 0
+        local pendingBolts = {}
+        
+        -- Add casting DPS
+        for unit, castInfo in pairs(sources.casting) do
+            if castInfo.spell == "Shadow Bolt" then
+                local spellConfig = aura_env.state.config.SPELL_VALUES[castInfo.spell]
+                -- Calculate DPS from damage values instead of using dps field
+                local avgDamage = (spellConfig.minDamage + spellConfig.maxDamage) / 2
+                local castDPS = avgDamage / spellConfig.castTime
+                dps = dps + castDPS
                 
-                -- Handle target-based skull marking
-                if UnitIsUnit(unit, "target") then
-                    if not aura_env.states.seenTargets[guid] then
-                        aura_env.states.seenTargets[guid] = GetTime()
-                    elseif not aura_env.states.marks.skull then
-                        aura_env.states.marks.skull = guid
-                        setMarkWithVerification(unit, MARKS.SKULL)
-                    end
-                end
-                
-                -- Handle casting units (diamond mark)
-                local name, _, _, _, _, _, _, _, notInterruptible = UnitCastingInfo(unit)
-                if name and not notInterruptible and guid ~= aura_env.states.marks.skull then
-                    if not aura_env.states.castingUnits[guid] then
-                        aura_env.states.previousMarks[guid] = GetRaidTargetIndex(unit)
-                        setMarkWithVerification(unit, MARKS.DIAMOND)
-                        aura_env.states.castingUnits[guid] = true
-                    end
-                elseif aura_env.states.castingUnits[guid] then
-                    restoreMarkWithVerification(guid, unit)
-                    aura_env.states.castingUnits[guid] = nil
-                end
-                
-                -- Handle aggro-based triangle marking
-                local hasGroupAggro = checkGroupAggro(unit)
-                local hasPetAggro = checkPetAggro(unit)
-                
-                if hasGroupAggro and not hasPetAggro and 
-                guid ~= aura_env.states.marks.skull and 
-                not aura_env.states.castingUnits[guid] then
-                    if not aura_env.states.aggroUnits[guid] then
-                        aura_env.states.previousMarks[guid] = GetRaidTargetIndex(unit)
-                        setMarkWithVerification(unit, MARKS.TRIANGLE)
-                        aura_env.states.aggroUnits[guid] = true
-                    end
-                elseif aura_env.states.aggroUnits[guid] then
-                    restoreMarkWithVerification(guid, unit)
-                    aura_env.states.aggroUnits[guid] = nil
-                end
-                
-                -- Update WeakAura states
-                allstates[guid] = allstates[guid] or {
-                    show = true,
-                    changed = true,
-                    unit = unit,
-                    mark = GetRaidTargetIndex(unit),
-                    hasAggro = aura_env.states.aggroUnits[guid],
-                    isCasting = aura_env.states.castingUnits[guid]
+                pendingBolts[unit] = {
+                    timeLeft = castInfo.timeLeft,
+                    damage = avgDamage
                 }
+                
+                debugPrint("Adding Shadow Bolt DPS for %s: %.1f (Avg Damage: %.1f)", 
+                unit, castDPS, avgDamage)
             end
         end
-    end
-    
-    -- Cleanup non-existent units
-    for guid in pairs(allstates) do
-        if not aura_env.states.currentUnits[guid] then
-            allstates[guid].show = false
-            allstates[guid].changed = true
+        
+        -- Add wand DPS
+        for unit, isWanding in pairs(sources.wanding) do
+            if isWanding then
+                dps = dps + aura_env.state.config.BASE_DPS.WAND
+                debugPrint("Adding wand DPS for %s: %d", unit, aura_env.state.config.BASE_DPS.WAND)
+            end
         end
+        
+        -- Add pet DPS
+        for petUnit in pairs(sources.pets) do
+            local petDPS = calculatePetDPS(petUnit)
+            dps = dps + petDPS
+            debugPrint("Adding pet DPS for %s: %.1f", petUnit, petDPS)
+        end
+        
+        -- Add DoT DPS
+        for spellName, sources in pairs(dots) do
+            for source, dotInfo in pairs(sources) do
+                if dotInfo.timeLeft > 1.5 then
+                    local baseDPS = aura_env.state.config.DOT_VALUES[spellName].dps
+                    local dotDPS = baseDPS * dotInfo.stacks
+                    dps = dps + dotDPS
+                    debugPrint("Adding %s DoT DPS from %s: %.1f", spellName, source, dotDPS)
+                end
+            end
+        end
+        
+        return dps, pendingBolts
     end
     
-    -- Combat end cleanup
-    if event == "PLAYER_REGEN_ENABLED" then
-        wipe(aura_env.states.marks)
-        wipe(aura_env.states.aggroUnits)
-        wipe(aura_env.states.previousMarks)
-        wipe(aura_env.states.castingUnits)
-        wipe(aura_env.states.seenTargets)
-        DebugTools:log("Combat ended - states cleared")
+    -- Get target info
+    local targetInfo = {
+        guid = UnitGUID("target"),
+        health = UnitHealth("target"),
+        maxHealth = UnitHealthMax("target"),
+        level = UnitLevel("target")
+    }
+    debugPrint("Target: %s (%d/%d)", 
+        UnitName("target") or "nil", 
+        targetInfo.health, 
+    targetInfo.maxHealth)
+    
+    -- Get damage sources and calculate TTD
+    local sources = getAttackSources()
+    local dots = getActiveDots("target")
+    local totalDPS, pendingBolts = calculateTotalDPS(sources, dots)
+    local baseTTD = totalDPS > 0 and (targetInfo.health / totalDPS) or 999
+    
+    -- Adjust TTD for pending Shadow Bolts
+    local adjustedTTD = baseTTD
+    for unit, boltInfo in pairs(pendingBolts) do
+        adjustedTTD = calculatePostCastTTD(targetInfo.health, totalDPS, {
+                spell = "Shadow Bolt",
+                timeLeft = boltInfo.timeLeft
+        })
     end
+    
+    debugPrint("Base TTD: %.1fs, Adjusted for Bolts: %.1fs", baseTTD, adjustedTTD)
+    
+    -- Add function to calculate spell efficiency
+    local function calculateSpellEfficiency(targetInfo, totalDPS, dots)
+        local spellEfficiency = {}
+        local targetTTD = targetInfo.health / (totalDPS > 0 and totalDPS or 1)
+        
+        -- Helper to check if DoT is already active
+        local function isDoTActive(spellName)
+            return dots[spellName] and next(dots[spellName]) ~= nil
+        end
+        
+        -- Calculate efficiency for each spell
+        for spellName, spellData in pairs(aura_env.state.config.SPELL_EFFICIENCY) do
+            local efficiency = {
+                shouldCast = false,
+                reason = "default"
+            }
+            
+            if spellName == "Shadow Bolt" then
+                local avgDamage = (spellData.minDamage + spellData.maxDamage) / 2
+                local dps = avgDamage / spellData.castTime
+                efficiency.shouldCast = targetTTD > spellData.castTime
+                efficiency.dps = dps
+                efficiency.reason = efficiency.shouldCast and "time_available" or "dies_too_soon"
+                
+            else -- DoTs
+                local remainingTime = targetTTD
+                local dotActive = isDoTActive(spellName)
+                
+                if dotActive then
+                    -- Find the shortest remaining time on this DoT
+                    local shortestTime = 999
+                    for _, dotInfo in pairs(dots[spellName]) do
+                        shortestTime = min(shortestTime, dotInfo.timeLeft)
+                    end
+                    remainingTime = shortestTime
+                end
+                
+                -- Calculate if DoT should be cast
+                local fullDuration = spellData.duration
+                local breakEvenTime = (spellData.manaCost / spellData.dps)
+                
+                efficiency.shouldCast = not dotActive and remainingTime > breakEvenTime
+                efficiency.timeLeft = dotActive and remainingTime or 0
+                efficiency.dps = spellData.dps
+                efficiency.reason = dotActive and "already_active" or 
+                (remainingTime <= breakEvenTime and "dies_too_soon" or "time_available")
+            end
+            
+            spellEfficiency[spellName] = efficiency
+        end
+        
+        return spellEfficiency
+    end
+    
+    -- Update state with spell efficiency data
+    local spellEfficiency = calculateSpellEfficiency(targetInfo, totalDPS, dots)
+    allstates[""].spellEfficiency = spellEfficiency
+    
+    debugPrint("Spell efficiency calculated:")
+    for spell, data in pairs(spellEfficiency) do
+        debugPrint("  %s: should cast = %s, reason = %s", 
+            spell, 
+            tostring(data.shouldCast), 
+        data.reason)
+    end
+    
+    -- After calculating spell efficiency
+    for spellName, efficiency in pairs(spellEfficiency) do
+        -- Broadcast updates for each spell
+        WeakAuras.ScanEvents(
+            "WARLOCK_SPELL_UPDATE_"..string.upper(spellName:gsub(" ", "_")), 
+            efficiency.shouldCast,
+            efficiency.reason
+        )
+        
+        debugPrint("Broadcasting %s update: shouldCast=%s, reason=%s", 
+            spellName,
+            tostring(efficiency.shouldCast),
+            efficiency.reason
+        )
+    end
+    
+    -- Update state
+    local shouldShow = adjustedTTD < aura_env.state.config.TTD_THRESHOLD
+    debugPrint("TTD: %.1fs (Threshold: %.1fs) - Should show: %s", 
+        adjustedTTD, 
+        aura_env.state.config.TTD_THRESHOLD,
+        tostring(shouldShow))
+    
+    allstates[""].show = shouldShow
+    allstates[""].changed = true
+    allstates[""].ttd = adjustedTTD
+    allstates[""].totalDPS = totalDPS
+    allstates[""].activeDots = dots
+    allstates[""].attackSources = sources
     
     return true
 end]],
                 spellIds = {},
                 use_unit = true,
                 check = "update",
-                customVariables = [[{
-  stacks = true,
-}]],
+                customVariables = "",
                 subeventSuffix = "_CAST_START",
-                customStacks = [[function() return aura_env.count end]],
-                events = [[PLAYER_TARGET_CHANGED
-UNIT_TARGET
-COMBAT_LOG_EVENT_UNFILTERED
-PLAYER_REGEN_ENABLED
-NAME_PLATE_UNIT_ADDED
-NAME_PLATE_UNIT_REMOVED
-GROUP_ROSTER_UPDATE
-UNIT_PET]],
+                custom_hide = "timed",
+                customStacks = "",
+                events = "PLAYER_TARGET_CHANGED, UNIT_HEALTH, PLAYER_REGEN_DISABLED, PLAYER_REGEN_ENABLED PLAYER_TARGET_CHANGED, UNIT_HEALTH, UNIT_HEALTH_FREQUENT",
                 use_absorbMode = true,
             },
-            untrigger = {},
+            untrigger = {
+                custom = "",
+            },
         },
     },
     conditions = {},
     load = {
-        use_never = true,
+        use_never = false,
         talent = {
             multi = {},
         },

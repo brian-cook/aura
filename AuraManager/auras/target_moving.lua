@@ -40,12 +40,12 @@ ns.auras["target_moving"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "custom",
-                unit = "player",
+                names = {},
                 unevent = "auto",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 duration = "1",
                 event = "Health",
-                names = {},
+                subeventPrefix = "SPELL",
                 custom_type = "stateupdate",
                 custom = [[function(allstates)
     if not aura_env.last or GetTime() - aura_env.last > 0.5 then

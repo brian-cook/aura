@@ -242,6 +242,60 @@ function(allstates)
 end
 ```
 
+### 2.5 Inter-Aura Communication
+
+#### Sharing Data Between Auras
+```lua
+-- Method 1: Using WeakAuras.GetData()
+-- In Source Aura (e.g., TTD Calculator)
+aura_env.sharedData = aura_env.sharedData or {}
+aura_env.sharedData.ttd = 5.2
+aura_env.sharedData.totalDPS = 1250
+
+-- In Consumer Aura (e.g., Spell Suggester)
+local ttdAura = WeakAuras.GetData("TTDCalculator")
+if ttdAura and ttdAura.sharedData then
+    local ttd = ttdAura.sharedData.ttd
+    local dps = ttdAura.sharedData.totalDPS
+end
+```
+
+#### Custom Event Communication
+```lua
+-- In Source Aura
+WeakAuras.ScanEvents("TTD_UPDATE", ttdValue, totalDPS)
+
+-- In Consumer Aura (needs to register for "TTD_UPDATE" event)
+function(allstates, event, ...)
+    if event == "TTD_UPDATE" then
+        local ttd, dps = ...
+        -- Handle the TTD update
+        allstates[""].ttd = ttd
+        allstates[""].dps = dps
+        allstates[""].changed = true
+    end
+end
+```
+
+#### Best Practices for Inter-Aura Communication
+1. **Data Sharing**
+   - Use meaningful data structure names
+   - Document shared data format
+   - Include version checking
+   - Handle nil cases
+
+2. **Event Broadcasting**
+   - Use descriptive event names
+   - Include relevant data
+   - Handle missing subscribers
+   - Implement error checking
+
+3. **Performance Considerations**
+   - Throttle update frequency
+   - Minimize shared data size
+   - Clean up stale references
+   - Cache frequently accessed data
+
 ## 3. Advanced Techniques
 
 ### 3.1 Performance Optimization

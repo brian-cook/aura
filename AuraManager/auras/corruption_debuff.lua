@@ -1,15 +1,15 @@
 
 local ADDON_NAME, ns = ...
 ns.auras = ns.auras or {}
-ns.auras["mana_40"] = {
-    id = "Mana 40",
-    uid = "YoBIN)yPZTn",
+ns.auras["corruption_debuff"] = {
+    id = "Corruption Debuff",
+    uid = "0NS(vg6vxUq",
     internalVersion = 78,
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 212,
-    yOffset = 96,
+    xOffset = 208,
+    yOffset = 100,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,25 +37,22 @@ ns.auras["mana_40"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
-                type = "unit",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Power",
+                debuffType = "HARMFUL",
+                type = "aura2",
                 names = {},
+                unit = "target",
+                event = "Health",
+                subeventPrefix = "SPELL",
                 spellIds = {},
-                use_unit = true,
                 subeventSuffix = "_CAST_START",
-                powertype = 0,
-                use_powertype = true,
-                use_percentpower = true,
-                use_showCost = false,
-                percentpower = {
-                    "40",
+                auranames = {
+                    "172",
                 },
-                percentpower_operator = {
-                    ">=",
-                },
+                unitExists = false,
+                useRem = false,
+                matchesShowOn = "showOnActive",
+                useName = true,
+                ownOnly = true,
             },
             untrigger = {},
         },
@@ -68,9 +65,8 @@ ns.auras["mana_40"] = {
         class = {
             multi = {
                 ROGUE = true,
-                DRUID = true,
             },
-            single = "DRUID",
+            single = "ROGUE",
         },
         size = {
             multi = {},

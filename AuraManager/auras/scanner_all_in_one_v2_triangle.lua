@@ -8,7 +8,7 @@ ns.auras["scanner_all_in_one_v2_triangle"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 148,
+    xOffset = 132,
     yOffset = 80,
     width = 3,
     height = 3,
@@ -39,12 +39,12 @@ ns.auras["scanner_all_in_one_v2_triangle"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "custom",
-                unit = "player",
+                names = {},
                 unevent = "auto",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 duration = "1",
                 event = "Health",
-                names = {},
+                subeventPrefix = "SPELL",
                 custom_type = "stateupdate",
                 custom = [[function(allstates)
     -- Initialize aura environment variables if not exists
@@ -404,7 +404,7 @@ end]],
                 use_unit = true,
                 check = "update",
                 customVariables = [[{
-  stacks = true,
+    stacks = true,
 }]],
                 subeventSuffix = "_CAST_START",
                 customStacks = [[function() return aura_env.count end]],

@@ -39,15 +39,15 @@ ns.auras["arcane_shot"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "spell",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Action Usable",
                 names = {},
+                unit = "player",
+                event = "Action Usable",
+                subeventPrefix = "SPELL",
                 spellIds = {},
                 subeventSuffix = "_CAST_START",
+                use_genericShowOn = true,
                 realSpellName = "Arcane Shot",
                 use_spellName = true,
-                use_genericShowOn = true,
                 genericShowOn = "showOnCooldown",
                 use_track = true,
                 spellName = 14281,
@@ -62,10 +62,7 @@ ns.auras["arcane_shot"] = {
             multi = {},
         },
         class = {
-            multi = {
-                ROGUE = true,
-                HUNTER = true,
-            },
+            multi = {},
             single = "HUNTER",
         },
         size = {
@@ -74,7 +71,6 @@ ns.auras["arcane_shot"] = {
         spec = {
             multi = {},
         },
-        use_class = false,
         race = {
             multi = {
                 Scourge = true,

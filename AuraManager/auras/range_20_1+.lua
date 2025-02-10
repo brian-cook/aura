@@ -1,15 +1,15 @@
 
 local ADDON_NAME, ns = ...
 ns.auras = ns.auras or {}
-ns.auras["fecal_dead"] = {
-    id = "Fecal Dead",
-    uid = "BGJAftiq51e",
+ns.auras["range_20_1+"] = {
+    id = "Range 20 1+",
+    uid = "AvDh7R5YFSX",
     internalVersion = 78,
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 120,
-    yOffset = 96,
+    xOffset = 156,
+    yOffset = 84,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -34,53 +34,64 @@ ns.auras["fecal_dead"] = {
     texture = "Solid",
     textureSource = "LSM",
     triggers = {
-        disjunctive = "all",
-        activeTriggerMode = 1,
+        activeTriggerMode = -10,
         {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "custom",
-                unit = "player",
+                names = {},
                 unevent = "auto",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 duration = "1",
                 event = "Health",
-                names = {},
+                subeventPrefix = "SPELL",
                 custom_type = "stateupdate",
                 custom = [[function(allstates)
-    if not aura_env.last or GetTime() - aura_env.last > 0.5 then
+    -- Throttle the check for perf?  What is config?
+    if not aura_env.last or GetTime() - aura_env.last > 0.2 then
+        -- Set the last time
         aura_env.last = GetTime()
         
-        local targetName = "Fecal"
+        -- Start a count
+        local enemyIndex = 0
         
-        local exists = UnitExists(targetName)
-        local inRange = WeakAuras.CheckRange(targetName, 40, "<=")
-        local isDead = exists and inRange and UnitIsDeadOrGhost(targetName)
+        -- Iterate 40 times
+        for i = 1, 40 do
+            -- Concat string with index
+            local unit = "nameplate"..i
+            local unitCanAttack = UnitCanAttack("player", unit) 
+            local inRange = WeakAuras.CheckRange(unit, 20, "<=")
+            
+            if unitCanAttack and inRange then
+                enemyIndex = enemyIndex + 1
+            end
+        end
         
-        if (isDead) then
+        if enemyIndex >= 1 then
             allstates[""] = allstates[""] or {show = true}
+            allstates[""].show = true
             allstates[""].changed = true
-            return true
         else
             allstates[""] = allstates[""] or {show = false}
             allstates[""].show = false
+            --allstates[""].stacks = aura_env.config.enemy_count
             allstates[""].changed = true
-            return true
         end
+        
+        return true
     end
 end]],
                 spellIds = {},
                 use_unit = true,
                 check = "update",
-                customVariables = "{}",
+                customVariables = [[{
+  stacks = true,
+}]],
                 subeventSuffix = "_CAST_START",
-                custom_hide = "timed",
+                customStacks = [[function() return aura_env.count end]],
+                use_absorbMode = true,
             },
-            untrigger = {
-                custom = [[function()
-    return not aura_env.isTriggered
-end]],
-            },
+            untrigger = {},
         },
     },
     conditions = {},
@@ -91,24 +102,16 @@ end]],
         },
         class = {
             multi = {
-                WARLOCK = true,
+                WARRIOR = true,
             },
-            single = "WARLOCK",
+            single = "WARRIOR",
         },
-        use_spellknown = false,
         size = {
             multi = {},
         },
         spec = {
             multi = {},
         },
-        level_operator = {
-            "~=",
-        },
-        level = {
-            "120",
-        },
-        use_level = false,
         zoneIds = "",
     },
     animation = {

@@ -1,15 +1,15 @@
 
 local ADDON_NAME, ns = ...
 ns.auras = ns.auras or {}
-ns.auras["between_the_eyes"] = {
-    id = "Between the Eyes",
-    uid = "SnBx56A8MAx",
+ns.auras["escape_artist"] = {
+    id = "Escape Artist",
+    uid = "tX3wYNJmFUO",
     internalVersion = 78,
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
     xOffset = 120,
-    yOffset = 100,
+    yOffset = 96,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -39,19 +39,18 @@ ns.auras["between_the_eyes"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "spell",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Action Usable",
                 names = {},
+                unit = "player",
+                event = "Action Usable",
+                subeventPrefix = "SPELL",
                 spellIds = {},
                 subeventSuffix = "_CAST_START",
-                use_inverse = false,
-                realSpellName = "Arcane Blast",
-                use_spellName = true,
                 use_genericShowOn = true,
+                realSpellName = "Gouge",
+                use_spellName = true,
                 genericShowOn = "showOnCooldown",
                 use_track = true,
-                spellName = 400009,
+                spellName = 20589,
             },
             untrigger = {},
         },
@@ -63,22 +62,15 @@ ns.auras["between_the_eyes"] = {
         },
         class = {
             multi = {
-                MAGE = true,
                 ROGUE = true,
             },
-            single = "MAGE",
+            single = "ROGUE",
         },
         size = {
             multi = {},
         },
         spec = {
             multi = {},
-        },
-        race = {
-            multi = {
-                Scourge = true,
-            },
-            single = "Scourge",
         },
     },
     animation = {

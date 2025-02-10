@@ -1,15 +1,15 @@
 
 local ADDON_NAME, ns = ...
 ns.auras = ns.auras or {}
-ns.auras["main_gauche"] = {
-    id = "Main Gauche",
-    uid = "atiBAgWSGB0",
+ns.auras["curse_of_weakness_debuff"] = {
+    id = "Curse of Weakness Debuff",
+    uid = "cLavWfdYqiN",
     internalVersion = 78,
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 192,
-    yOffset = 96,
+    xOffset = 216,
+    yOffset = 100,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,21 +37,21 @@ ns.auras["main_gauche"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
-                type = "spell",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Action Usable",
+                debuffType = "HARMFUL",
+                type = "aura2",
                 names = {},
+                unit = "target",
+                event = "Health",
+                subeventPrefix = "SPELL",
                 spellIds = {},
                 subeventSuffix = "_CAST_START",
-                use_inverse = false,
-                realSpellName = "Arcane Blast",
-                use_spellName = true,
-                use_genericShowOn = true,
-                genericShowOn = "showOnCooldown",
-                use_track = true,
-                spellName = 424919,
+                auranames = {
+                    "702",
+                },
+                unitExists = false,
+                useRem = false,
+                matchesShowOn = "showOnActive",
+                useName = true,
             },
             untrigger = {},
         },
@@ -63,22 +63,15 @@ ns.auras["main_gauche"] = {
         },
         class = {
             multi = {
-                MAGE = true,
                 ROGUE = true,
             },
-            single = "MAGE",
+            single = "ROGUE",
         },
         size = {
             multi = {},
         },
         spec = {
             multi = {},
-        },
-        race = {
-            multi = {
-                Scourge = true,
-            },
-            single = "Scourge",
         },
     },
     animation = {

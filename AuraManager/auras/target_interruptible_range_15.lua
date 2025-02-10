@@ -39,12 +39,12 @@ ns.auras["target_interruptible_range_15"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "custom",
-                unit = "player",
+                names = {},
                 unevent = "auto",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 duration = "1",
                 event = "Health",
-                names = {},
+                subeventPrefix = "SPELL",
                 custom_type = "stateupdate",
                 custom = [[function(allstates)
     -- Throttle the check for perf?  What is config?

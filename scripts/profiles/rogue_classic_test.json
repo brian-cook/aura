@@ -2,14 +2,6 @@
     "name": "Rogue Hardcore",
     "actions": [
         {
-            "group": "OOC Scan",
-            "name": "OOC Scan /targetenemy",
-            "key": "i",
-            "conditions": ["!combat", "!icon_skull_exists", "!target_skull"]
-        },
-
-
-        {
             "group": "START GROUP: EMERGENCY ACTIONS WHEN LOW HEALTH",
             "name": "Evasion",
             "key": "2",
@@ -28,45 +20,61 @@
         {
             "name": "use bandage at 50% health",
             "key": "b",
-            "conditions": ["bandage_in_inventory", "health_under_50", "!recently_bandaged_debuff", "!target_aggro", "!player_moving"]
+            "conditions": ["bandage_in_inventory", "health_under_50", "!recently_bandaged_debuff", "!player_has_aggro_from_any_mob", "!player_moving"]
+        },
+
+
+        {
+            "group": "OOC Scan",
+            "name": "OOC Scan targetenemy",
+            "key": "q",
+            "conditions": ["!combat", "!target_skull"]
         },
 
 
         {
             "group": "START GROUP: SCANNING",
-            "name": "Gouge Target Cross: /targetenemy",
-            "key": "i",
-            "conditions": ["icon_cross_exists", "can_cc_cross", "!target_cross", "gouge", "power_45"]
+            "name": "Gouge Target cross: /targetenemy", 
+            "key": "q",
+            "conditions": ["icon_cross_exists", "!target_cross", "gouge", "range_8_cross", "power_45"]
         },
         {
             "name": "Gouge Cross",
             "key": "0",
-            "conditions": ["target_cross", "can_cc_cross", "gouge", "power_45"]
+            "conditions": ["target_cross", "gouge", "range_8_cross", "power_45"]
         },
         {
-            "name": "Gouge Target Circle: /targetenemy",
-            "key": "i",
-            "conditions": ["icon_circle_exists", "can_cc_circle", "!target_circle", "gouge", "power_45"]
+            "name": "Gouge Target Triangle: /targetenemy",
+            "key": "q",
+            "conditions": ["icon_triangle_exists", "!target_triangle", "gouge", "range_8_triangle", "power_45"]
         },
         {
-            "name": "Gouge Circle",
+            "name": "Gouge Triangle",
             "key": "0",
-            "conditions": ["target_circle", "can_cc_circle", "gouge", "power_45"]
+            "conditions": ["target_triangle", "gouge", "range_8_triangle", "power_45"]
         },
         {
             "name": "Kick Target Diamond: /targetenemy",
-            "key": "i",
-            "conditions": ["icon_diamond_exists", "can_interrupt_diamond", "!target_diamond", "kick", "power_25"]
+            "key": "q",
+            "conditions": ["inactive", "icon_diamond_exists", "can_interrupt_diamond", "!target_diamond", "kick", "power_25"]
         },
         {
             "name": "Kick Diamond",
             "key": "f",
-            "conditions": ["target_diamond", "can_interrupt_diamond", "kick", "power_25"]
+            "conditions": ["inactive", "target_diamond", "can_interrupt_diamond", "kick", "power_25"]
         },
         {
             "name": "Target Skull: /targetenemy", 
-            "key": "i",
-            "conditions": ["icon_skull_exists", "!target_skull", "!can_cc_cross", "!can_cc_circle", "!can_cc_diamond"]
+            "key": "q",
+            "conditions": ["combat", "!target_skull"]
+        },
+
+
+        {
+            "group": "START GROUP: STEALTH",
+            "name": "Stealth at 20 yards",
+            "key": "1",
+            "conditions": ["inactive", "!stealth_buff", "!combat", "range_20_1+"]
         },
 
 
@@ -90,7 +98,7 @@
             "group": "START GROUP: COMBAT BUFFS",
             "name": "Slice and Dice",
             "key": "g",
-            "conditions": ["!slice_and_dice_buff", "combo_points_1", "power_25"]
+            "conditions": ["inactive", "!slice_and_dice_buff", "combo_points_1", "power_25"]
         },
 
 
@@ -123,7 +131,7 @@
         {
             "name": "Sinister Strike",
             "key": "5",
-            "conditions": ["sinister_strike", "player_not_behind_target", "range_8", "power_40"]
+            "conditions": ["sinister_strike", "player_not_behind_target", "range_8", "power_45"]
         },
         {
             "name": "cast auto attack",

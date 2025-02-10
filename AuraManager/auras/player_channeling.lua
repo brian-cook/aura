@@ -1,15 +1,15 @@
 
 local ADDON_NAME, ns = ...
 ns.auras = ns.auras or {}
-ns.auras["mana_30"] = {
-    id = "Mana 30",
-    uid = "j(hvX8lw1k5",
+ns.auras["player_channeling"] = {
+    id = "Player Channeling",
+    uid = "bTXMsNJ8JSf",
     internalVersion = 78,
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 208,
-    yOffset = 96,
+    xOffset = 116,
+    yOffset = 88,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -39,23 +39,21 @@ ns.auras["mana_30"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "unit",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Power",
                 names = {},
+                unit = "player",
+                event = "Cast",
+                subeventPrefix = "SPELL",
                 spellIds = {},
                 use_unit = true,
                 subeventSuffix = "_CAST_START",
-                powertype = 0,
-                use_powertype = true,
-                use_percentpower = true,
-                use_showCost = false,
-                percentpower = {
-                    "30",
-                },
-                percentpower_operator = {
-                    ">=",
-                },
+                use_genericShowOn = true,
+                realSpellName = 0,
+                use_spellName = true,
+                genericShowOn = "showOnCooldown",
+                use_track = true,
+                spellName = 0,
+                use_castType = true,
+                castType = "channel",
             },
             untrigger = {},
         },
@@ -66,11 +64,7 @@ ns.auras["mana_30"] = {
             multi = {},
         },
         class = {
-            multi = {
-                ROGUE = true,
-                DRUID = true,
-            },
-            single = "DRUID",
+            multi = {},
         },
         size = {
             multi = {},

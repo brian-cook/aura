@@ -8,7 +8,7 @@ ns.auras["can_cc_moon"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 156,
+    xOffset = 152,
     yOffset = 100,
     width = 3,
     height = 3,
@@ -39,12 +39,12 @@ ns.auras["can_cc_moon"] = {
             trigger = {
                 debuffType = "HELPFUL",
                 type = "custom",
-                unit = "player",
+                names = {},
                 unevent = "auto",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 duration = "1",
                 event = "Health",
-                names = {},
+                subeventPrefix = "SPELL",
                 custom_type = "stateupdate",
                 custom = [[function(allstates, event, ...)
     -- Throttle checks
@@ -61,7 +61,7 @@ ns.auras["can_cc_moon"] = {
                 local mark = GetRaidTargetIndex(unit)
                 local inRange = WeakAuras.CheckRange(unit, 8, "<=")
                 
-                if mark == 4 and inRange then
+                if mark == 5 and inRange then
                     -- Check if unit is CC'd
                     local isCC = false
                     local i = 1

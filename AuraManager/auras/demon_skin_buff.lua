@@ -1,14 +1,14 @@
 
 local ADDON_NAME, ns = ...
 ns.auras = ns.auras or {}
-ns.auras["fan_of_knives"] = {
-    id = "Fan of Knives",
-    uid = "dvknaurGoa)",
+ns.auras["demon_skin_buff"] = {
+    id = "Demon Skin Buff",
+    uid = "dUspsQqoMLR",
     internalVersion = 78,
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 116,
+    xOffset = 100,
     yOffset = 96,
     width = 3,
     height = 3,
@@ -38,19 +38,21 @@ ns.auras["fan_of_knives"] = {
         {
             trigger = {
                 debuffType = "HELPFUL",
-                type = "spell",
-                unit = "player",
-                subeventPrefix = "SPELL",
-                event = "Action Usable",
+                type = "aura2",
                 names = {},
+                unit = "player",
+                event = "Health",
+                subeventPrefix = "SPELL",
                 spellIds = {},
                 subeventSuffix = "_CAST_START",
-                realSpellName = "Counterspell",
-                use_spellName = true,
-                use_genericShowOn = true,
-                genericShowOn = "showOnCooldown",
-                use_track = true,
-                spellName = 409240,
+                auranames = {
+                    "687",
+                },
+                unitExists = false,
+                useRem = false,
+                matchesShowOn = "showOnActive",
+                useName = true,
+                ownOnly = true,
             },
             untrigger = {},
         },
@@ -62,22 +64,15 @@ ns.auras["fan_of_knives"] = {
         },
         class = {
             multi = {
-                MAGE = true,
                 ROGUE = true,
             },
-            single = "MAGE",
+            single = "ROGUE",
         },
         size = {
             multi = {},
         },
         spec = {
             multi = {},
-        },
-        race = {
-            multi = {
-                Scourge = true,
-            },
-            single = "Scourge",
         },
     },
     animation = {
