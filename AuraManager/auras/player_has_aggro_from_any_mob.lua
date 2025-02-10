@@ -8,7 +8,7 @@ ns.auras["player_has_aggro_from_any_mob"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 116,
+    xOffset = 188,
     yOffset = 88,
     width = 3,
     height = 3,
@@ -37,14 +37,13 @@ ns.auras["player_has_aggro_from_any_mob"] = {
         activeTriggerMode = -10,
         {
             trigger = {
+                debuffType = "HELPFUL",
                 type = "custom",
-                subeventSuffix = "_CAST_START",
-                customVariables = "{}",
+                names = {},
+                unit = "target",
                 event = "Conditions",
                 subeventPrefix = "SPELL",
                 custom_type = "stateupdate",
-                use_unit = true,
-                spellIds = {},
                 custom = [[function(allstates)
     if not aura_env.last or GetTime() - aura_env.last > 0.5 then
         aura_env.last = GetTime()
@@ -69,26 +68,27 @@ ns.auras["player_has_aggro_from_any_mob"] = {
         return true
     end
 end]],
+                spellIds = {},
+                use_unit = true,
                 check = "update",
-                unit = "target",
-                names = {},
-                debuffType = "HELPFUL",
-                spellName = 5176,
-                use_inverse = false,
+                customVariables = "{}",
+                subeventSuffix = "_CAST_START",
+                use_genericShowOn = true,
                 realSpellName = "Wrath",
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
-                use_genericShowOn = true,
                 use_track = true,
+                spellName = 5176,
                 itemName = 0,
                 use_itemName = true,
+                use_inverse = false,
                 use_messageType = false,
-                use_message = false,
-                instance_size = {},
-                use_sourceName = false,
-                use_targetRequired = false,
-                use_moveSpeed = false,
                 use_ismoving = true,
+                instance_size = {},
+                use_moveSpeed = false,
+                use_targetRequired = false,
+                use_message = false,
+                use_sourceName = false,
                 use_spec = true,
             },
             untrigger = {},
@@ -103,10 +103,10 @@ end]],
         class = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
     },

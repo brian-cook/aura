@@ -8,7 +8,7 @@ ns.auras["icon_moon_exists"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 132,
+    xOffset = 172,
     yOffset = 96,
     width = 3,
     height = 3,
@@ -37,56 +37,64 @@ ns.auras["icon_moon_exists"] = {
         activeTriggerMode = -10,
         {
             trigger = {
+                debuffType = "HELPFUL",
                 type = "custom",
+                names = {},
                 unevent = "auto",
-                subeventSuffix = "_CAST_START",
-                customVariables = [[{
-  stacks = true,
-}]],
+                unit = "player",
                 duration = "1",
                 event = "Health",
                 subeventPrefix = "SPELL",
                 custom_type = "stateupdate",
-                use_unit = true,
-                spellIds = {},
                 custom = [[function(allstates)
-    -- Throttle the check for perf?  What is config?
+    -- Throttle updates for performance
     if not aura_env.last or GetTime() - aura_env.last > 0.2 then
-        -- Set the last time
         aura_env.last = GetTime()
         
-        -- Start a count
-        local enemyIndex = 0
-        
-        -- Iterate 40 times
-        for i = 1, 40 do
-            -- Concat string with index
-            local unit = "nameplate"..i
-            
-            if UnitExists(unit) and GetRaidTargetIndex(unit) == 4 then
-                enemyIndex = enemyIndex + 1
+        -- Function to check a unit for triangle mark
+        local function checkUnit(unit)
+            if UnitExists(unit) and GetRaidTargetIndex(unit) == 5 then
+                -- Found a triangle, set state and return true
+                allstates[""] = allstates[""] or {show = true}
+                allstates[""].show = true
+                allstates[""].changed = true
+                return true
             end
+            return false
         end
         
-        if enemyIndex >= 1 then
-            allstates[""] = allstates[""] or {show = true}
-            allstates[""].show = true
-            allstates[""].changed = true
-        else
-            allstates[""] = allstates[""] or {show = false}
-            allstates[""].show = false
-            allstates[""].changed = true
+        -- Check nameplates (max 20)
+        for i = 1, 20 do
+            if checkUnit("nameplate" .. i) then return true end
         end
         
-        return true
+        -- Check direct targets
+        if checkUnit("target") then return true end
+        if checkUnit("pettarget") then return true end
+        
+        -- Check party members and their targets/pets
+        for i = 1, 4 do
+            if checkUnit("party" .. i .. "target") then return true end
+            if checkUnit("partypet" .. i .. "target") then return true end
+        end
+        
+        -- No triangle found, set state to false
+        allstates[""] = allstates[""] or {show = false}
+        allstates[""].show = false
+        allstates[""].changed = true
     end
+    
+    return true
 end]],
+                spellIds = {},
+                use_unit = true,
                 check = "update",
-                unit = "player",
-                names = {},
-                debuffType = "HELPFUL",
-                use_absorbMode = true,
+                customVariables = [[{
+  stacks = true,
+}]],
+                subeventSuffix = "_CAST_START",
                 customStacks = [[function() return aura_env.count end]],
+                use_absorbMode = true,
             },
             untrigger = {},
         },
@@ -103,13 +111,13 @@ end]],
             },
             single = "WARRIOR",
         },
-        zoneIds = "",
-        spec = {
-            multi = {},
-        },
         size = {
             multi = {},
         },
+        spec = {
+            multi = {},
+        },
+        zoneIds = "",
     },
     animation = {
         start = {

@@ -8,8 +8,8 @@ ns.auras["stealth_buff"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 160,
-    yOffset = 84,
+    xOffset = 188,
+    yOffset = 80,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,21 +37,21 @@ ns.auras["stealth_buff"] = {
         activeTriggerMode = -10,
         {
             trigger = {
+                debuffType = "BOTH",
                 type = "aura2",
-                subeventSuffix = "_CAST_START",
+                names = {},
+                unit = "player",
                 event = "Health",
                 subeventPrefix = "SPELL",
                 spellIds = {},
-                unit = "player",
-                names = {},
-                debuffType = "BOTH",
+                subeventSuffix = "_CAST_START",
                 auranames = {
                     "Stealth",
                 },
                 unitExists = false,
+                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
-                useRem = false,
                 ownOnly = true,
             },
             untrigger = {},
@@ -68,10 +68,10 @@ ns.auras["stealth_buff"] = {
             },
             single = "DRUID",
         },
-        spec = {
+        size = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
     },

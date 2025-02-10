@@ -8,8 +8,8 @@ ns.auras["eviscerate"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 204,
-    yOffset = 100,
+    xOffset = 128,
+    yOffset = 96,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,20 +37,20 @@ ns.auras["eviscerate"] = {
         activeTriggerMode = -10,
         {
             trigger = {
+                debuffType = "HELPFUL",
                 type = "spell",
-                subeventSuffix = "_CAST_START",
+                names = {},
+                unit = "player",
                 event = "Action Usable",
                 subeventPrefix = "SPELL",
                 spellIds = {},
-                unit = "player",
-                names = {},
-                debuffType = "HELPFUL",
-                spellName = 2098,
+                subeventSuffix = "_CAST_START",
+                use_genericShowOn = true,
                 realSpellName = "Arcane Shot",
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
-                use_genericShowOn = true,
                 use_track = true,
+                spellName = 2098,
                 use_exact_spellName = false,
             },
             untrigger = {},
@@ -62,19 +62,15 @@ ns.auras["eviscerate"] = {
             multi = {},
         },
         class = {
-            multi = {
-                ROGUE = true,
-                HUNTER = true,
-            },
-            single = "HUNTER",
-        },
-        spec = {
             multi = {},
+            single = "HUNTER",
         },
         size = {
             multi = {},
         },
-        use_class = false,
+        spec = {
+            multi = {},
+        },
         race = {
             multi = {
                 Scourge = true,

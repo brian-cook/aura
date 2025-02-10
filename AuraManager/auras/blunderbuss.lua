@@ -8,7 +8,7 @@ ns.auras["blunderbuss"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 124,
+    xOffset = 128,
     yOffset = 100,
     width = 3,
     height = 3,
@@ -37,20 +37,20 @@ ns.auras["blunderbuss"] = {
         activeTriggerMode = -10,
         {
             trigger = {
+                debuffType = "HELPFUL",
                 type = "spell",
-                subeventSuffix = "_CAST_START",
+                names = {},
+                unit = "player",
                 event = "Action Usable",
                 subeventPrefix = "SPELL",
                 spellIds = {},
-                unit = "player",
-                names = {},
-                debuffType = "HELPFUL",
-                spellName = 436564,
+                subeventSuffix = "_CAST_START",
+                use_genericShowOn = true,
                 realSpellName = "Counterspell",
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
-                use_genericShowOn = true,
                 use_track = true,
+                spellName = 436564,
             },
             untrigger = {},
         },
@@ -67,10 +67,10 @@ ns.auras["blunderbuss"] = {
             },
             single = "MAGE",
         },
-        spec = {
+        size = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
         race = {

@@ -8,8 +8,8 @@ ns.auras["target_is_player"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 100,
-    yOffset = 80,
+    xOffset = 144,
+    yOffset = 76,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -38,21 +38,21 @@ ns.auras["target_is_player"] = {
         activeTriggerMode = 1,
         {
             trigger = {
-                custom_hide = "timed",
+                debuffType = "HELPFUL",
                 type = "unit",
+                names = {},
                 unevent = "auto",
-                subeventSuffix = "_CAST_START",
-                customVariables = "{}",
+                unit = "target",
                 duration = "1",
                 event = "Unit Characteristics",
                 subeventPrefix = "SPELL",
                 custom_type = "stateupdate",
-                use_unit = true,
                 spellIds = {},
+                use_unit = true,
                 check = "update",
-                unit = "target",
-                names = {},
-                debuffType = "HELPFUL",
+                customVariables = "{}",
+                subeventSuffix = "_CAST_START",
+                custom_hide = "timed",
                 use_unitisunit = false,
                 use_character = true,
                 use_class = false,
@@ -74,20 +74,20 @@ ns.auras["target_is_player"] = {
             },
             single = "WARLOCK",
         },
-        zoneIds = "",
-        use_level = false,
+        size = {
+            multi = {},
+        },
+        spec = {
+            multi = {},
+        },
         level_operator = {
             "~=",
         },
         level = {
             "120",
         },
-        spec = {
-            multi = {},
-        },
-        size = {
-            multi = {},
-        },
+        use_level = false,
+        zoneIds = "",
     },
     animation = {
         start = {

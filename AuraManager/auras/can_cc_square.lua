@@ -8,7 +8,7 @@ ns.auras["can_cc_square"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 152,
+    xOffset = 156,
     yOffset = 100,
     width = 3,
     height = 3,
@@ -37,16 +37,15 @@ ns.auras["can_cc_square"] = {
         activeTriggerMode = -10,
         {
             trigger = {
+                debuffType = "HELPFUL",
                 type = "custom",
+                names = {},
                 unevent = "auto",
-                subeventSuffix = "_CAST_START",
-                customVariables = "",
+                unit = "player",
                 duration = "1",
                 event = "Health",
                 subeventPrefix = "SPELL",
                 custom_type = "stateupdate",
-                use_unit = true,
-                spellIds = {},
                 custom = [[function(allstates, event, ...)
     -- Throttle checks
     if not aura_env.last or GetTime() - aura_env.last > 0.2 then
@@ -99,12 +98,13 @@ ns.auras["can_cc_square"] = {
         return true
     end
 end]],
+                spellIds = {},
+                use_unit = true,
                 check = "update",
-                unit = "player",
-                names = {},
-                debuffType = "HELPFUL",
-                use_absorbMode = true,
+                customVariables = "",
+                subeventSuffix = "_CAST_START",
                 customStacks = [[function() return aura_env.count end]],
+                use_absorbMode = true,
             },
             untrigger = {},
         },
@@ -121,13 +121,13 @@ end]],
             },
             single = "WARRIOR",
         },
-        zoneIds = "",
-        spec = {
-            multi = {},
-        },
         size = {
             multi = {},
         },
+        spec = {
+            multi = {},
+        },
+        zoneIds = "",
     },
     animation = {
         start = {

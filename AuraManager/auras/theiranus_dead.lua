@@ -8,8 +8,8 @@ ns.auras["theiranus_dead"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 144,
-    yOffset = 80,
+    xOffset = 192,
+    yOffset = 76,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -38,17 +38,15 @@ ns.auras["theiranus_dead"] = {
         activeTriggerMode = 1,
         {
             trigger = {
-                custom_hide = "timed",
+                debuffType = "HELPFUL",
                 type = "custom",
+                names = {},
                 unevent = "auto",
-                subeventSuffix = "_CAST_START",
-                customVariables = "{}",
+                unit = "player",
                 duration = "1",
                 event = "Health",
                 subeventPrefix = "SPELL",
                 custom_type = "stateupdate",
-                use_unit = true,
-                spellIds = {},
                 custom = [[function(allstates)
     if not aura_env.last or GetTime() - aura_env.last > 0.5 then
         aura_env.last = GetTime()
@@ -70,10 +68,12 @@ ns.auras["theiranus_dead"] = {
         end
     end
 end]],
+                spellIds = {},
+                use_unit = true,
                 check = "update",
-                unit = "player",
-                names = {},
-                debuffType = "HELPFUL",
+                customVariables = "{}",
+                subeventSuffix = "_CAST_START",
+                custom_hide = "timed",
             },
             untrigger = {
                 custom = [[function()
@@ -95,20 +95,20 @@ end]],
             single = "WARLOCK",
         },
         use_spellknown = false,
-        zoneIds = "",
-        use_level = false,
+        size = {
+            multi = {},
+        },
+        spec = {
+            multi = {},
+        },
         level_operator = {
             "~=",
         },
         level = {
             "120",
         },
-        spec = {
-            multi = {},
-        },
-        size = {
-            multi = {},
-        },
+        use_level = false,
+        zoneIds = "",
     },
     animation = {
         start = {

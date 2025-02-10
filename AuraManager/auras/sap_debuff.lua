@@ -8,8 +8,8 @@ ns.auras["sap_debuff"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 128,
-    yOffset = 84,
+    xOffset = 124,
+    yOffset = 80,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,21 +37,21 @@ ns.auras["sap_debuff"] = {
         activeTriggerMode = -10,
         {
             trigger = {
+                debuffType = "HARMFUL",
                 type = "aura2",
-                subeventSuffix = "_CAST_START",
+                names = {},
+                unit = "target",
                 event = "Health",
                 subeventPrefix = "SPELL",
                 spellIds = {},
-                unit = "target",
-                names = {},
-                debuffType = "HARMFUL",
+                subeventSuffix = "_CAST_START",
                 auranames = {
                     "Sap",
                 },
                 unitExists = false,
+                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
-                useRem = false,
                 ownOnly = true,
             },
             untrigger = {},
@@ -68,13 +68,12 @@ ns.auras["sap_debuff"] = {
             },
             single = "ROGUE",
         },
-        spec = {
-            multi = {},
-        },
         size = {
             multi = {},
         },
-        use_class = true,
+        spec = {
+            multi = {},
+        },
     },
     animation = {
         start = {

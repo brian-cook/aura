@@ -8,8 +8,8 @@ ns.auras["player_casting"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 168,
-    yOffset = 92,
+    xOffset = 108,
+    yOffset = 88,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -34,26 +34,61 @@ ns.auras["player_casting"] = {
     texture = "Solid",
     textureSource = "LSM",
     triggers = {
+        disjunctive = "any",
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "unit",
-                subeventSuffix = "_CAST_START",
+                debuffType = "HELPFUL",
+                type = "custom",
+                names = {},
+                unit = "player",
                 event = "Cast",
                 subeventPrefix = "SPELL",
-                use_unit = true,
+                custom_type = "stateupdate",
+                custom = [[function(allstates, event, ...)
+    -- Throttle updates for performance
+    if not aura_env.lastUpdate or GetTime() - aura_env.lastUpdate > 0.05 then
+        aura_env.lastUpdate = GetTime()
+        
+        -- Get casting info
+        local name, _, _, _, endTime = UnitCastingInfo("player")
+        
+        -- Store end time with buffer for comparison
+        if name then
+            aura_env.bufferedEndTime = (endTime / 1000) + 0.05
+        end
+        
+        -- Show if casting or within buffer period
+        if name or (aura_env.bufferedEndTime and GetTime() < aura_env.bufferedEndTime) then
+            allstates[""] = {
+                show = true,
+                changed = true
+            }
+        else
+            allstates[""] = {
+                show = false,
+                changed = true
+            }
+            aura_env.bufferedEndTime = nil
+        end
+    end
+    
+    return true
+end]],
                 spellIds = {},
-                unit = "player",
-                names = {},
-                debuffType = "HELPFUL",
-                spellName = 0,
+                use_unit = true,
+                check = "update",
+                subeventSuffix = "_CAST_START",
+                use_genericShowOn = true,
                 realSpellName = 0,
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
-                use_genericShowOn = true,
                 use_track = true,
+                spellName = 0,
+                use_remaining = false,
                 use_castType = true,
-                castType = "channel",
+                use_showLatency = false,
+                castType = "cast",
             },
             untrigger = {},
         },
@@ -66,10 +101,10 @@ ns.auras["player_casting"] = {
         class = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
-        size = {
+        spec = {
             multi = {},
         },
     },

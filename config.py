@@ -17,8 +17,8 @@ WEAKAURAS_PATH = WOW_PATH / "WTF" / "Account" / "PROSTRATED" / "SavedVariables" 
 
 # Input settings
 INPUT_SETTINGS = {
-    "key_hold_duration": 0.1,  # How long to hold down keys when executing actions
-    "check_interval": 0.01,    # How often to check for conditions (in seconds)
+    "key_hold_duration": 0.1,  # How long to hold down keys when executing actions - default 0.1
+    "check_interval": 0.01,    # How often to check for conditions (in seconds) - default 0.01
     "keyboard_trigger": "4",   # Key to use as trigger when no gamepad available
     "trigger_mode": "hold",  # Can be "hold" or "toggle"
     "exit_key": Key.num_lock,       # Key to terminate the program
@@ -34,6 +34,19 @@ GRID_SETTINGS = {
     # Base offset from center of screen
     "BASE_X_OFFSET": 100,  # Positive moves right, negative moves left
     "BASE_Y_OFFSET": 100   # Positive moves up, negative moves down
+}
+
+# Movement detection settings
+MOVEMENT_SETTINGS = {
+    "keyboard": {
+        "forward": "w",
+        "backward": "s",
+        "left": "a",
+        "right": "d"
+    },
+    "gamepad": {
+        "stick_deadzone": 0.2  # Minimum analog stick movement to register as direction
+    }
 }
 
 # Addon metadata
