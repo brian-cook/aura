@@ -98,7 +98,7 @@
             "group": "START GROUP: COMBAT BUFFS",
             "name": "Slice and Dice",
             "key": "g",
-            "conditions": ["inactive", "!slice_and_dice_buff", "combo_points_1", "power_25"]
+            "conditions": ["!slice_and_dice_buff", "combo_points_1", "power_25"]
         },
 
 
