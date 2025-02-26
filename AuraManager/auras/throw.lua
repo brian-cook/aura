@@ -8,8 +8,8 @@ ns.auras["throw"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 196,
-    yOffset = 76,
+    xOffset = 108,
+    yOffset = 72,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,20 +37,20 @@ ns.auras["throw"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "spell",
-                names = {},
-                unit = "player",
-                event = "Action Usable",
-                subeventPrefix = "SPELL",
-                spellIds = {},
                 subeventSuffix = "_CAST_START",
+                event = "Action Usable",
+                unit = "player",
+                spellIds = {},
+                names = {},
+                subeventPrefix = "SPELL",
+                debuffType = "HELPFUL",
+                spellName = 2764,
                 use_genericShowOn = true,
                 realSpellName = "Counterspell",
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
                 use_track = true,
-                spellName = 2764,
             },
             untrigger = {},
         },
@@ -67,10 +67,10 @@ ns.auras["throw"] = {
             },
             single = "MAGE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
         race = {

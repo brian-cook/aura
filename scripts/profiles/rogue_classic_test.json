@@ -5,7 +5,7 @@
             "group": "START GROUP: EMERGENCY ACTIONS WHEN LOW HEALTH",
             "name": "Evasion",
             "key": "2",
-            "conditions": ["evasion", "health_under_50", "combat"]
+            "conditions": ["inactive", "evasion", "health_under_50", "combat"]
         },
         {
             "name": "use potion at 50% health",
@@ -15,7 +15,7 @@
         {
             "name": "Gouge",
             "key": "0",
-            "conditions": ["gouge", "!gouge_debuff", "range_8", "power_45", "health_under_50", "combat", "target_aggro"]
+            "conditions": ["inactive", "gouge", "!gouge_debuff", "range_8", "power_45", "health_under_50", "combat", "target_aggro"]
         },
         {
             "name": "use bandage at 50% health",
@@ -36,22 +36,22 @@
             "group": "START GROUP: SCANNING",
             "name": "Gouge Target cross: /targetenemy", 
             "key": "q",
-            "conditions": ["icon_cross_exists", "!target_cross", "gouge", "range_8_cross", "power_45"]
+            "conditions": ["inactive", "icon_cross_exists", "!target_cross", "gouge", "range_8_cross", "power_45"]
         },
         {
             "name": "Gouge Cross",
             "key": "0",
-            "conditions": ["target_cross", "gouge", "range_8_cross", "power_45"]
+            "conditions": ["inactive", "target_cross", "gouge", "range_8_cross", "power_45"]
         },
         {
             "name": "Gouge Target Triangle: /targetenemy",
             "key": "q",
-            "conditions": ["icon_triangle_exists", "!target_triangle", "gouge", "range_8_triangle", "power_45"]
+            "conditions": ["inactive", "icon_triangle_exists", "!target_triangle", "gouge", "range_8_triangle", "power_45"]
         },
         {
             "name": "Gouge Triangle",
             "key": "0",
-            "conditions": ["target_triangle", "gouge", "range_8_triangle", "power_45"]
+            "conditions": ["inactive", "target_triangle", "gouge", "range_8_triangle", "power_45"]
         },
         {
             "name": "Kick Target Diamond: /targetenemy",
@@ -82,7 +82,7 @@
             "group": "START GROUP: STEALTH ACTIONS",
             "name": "Pick Pocket",
             "key": "x",
-            "conditions": ["stealth_buff", "!combat", "range_8"]
+            "conditions": ["inactive", "stealth_buff", "!combat", "range_8"]
         },
 
 
@@ -98,7 +98,7 @@
             "group": "START GROUP: COMBAT BUFFS",
             "name": "Slice and Dice",
             "key": "g",
-            "conditions": ["!slice_and_dice_buff", "combo_points_1", "power_25"]
+            "conditions": ["inactive", "!slice_and_dice_buff", "combo_points_1", "power_25"]
         },
 
 
@@ -131,7 +131,7 @@
         {
             "name": "Sinister Strike",
             "key": "5",
-            "conditions": ["sinister_strike", "player_not_behind_target", "range_8", "power_45"]
+            "conditions": ["sinister_strike", "player_not_behind_target", "range_8", "power_40"]
         },
         {
             "name": "cast auto attack",

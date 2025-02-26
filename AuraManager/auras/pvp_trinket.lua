@@ -8,8 +8,8 @@ ns.auras["pvp_trinket"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 216,
-    yOffset = 96,
+    xOffset = 112,
+    yOffset = 92,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,20 +37,20 @@ ns.auras["pvp_trinket"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "item",
-                names = {},
-                unit = "player",
-                event = "Cooldown Progress (Item)",
-                subeventPrefix = "SPELL",
-                spellIds = {},
                 subeventSuffix = "_CAST_START",
+                event = "Cooldown Progress (Item)",
+                unit = "player",
+                spellIds = {},
+                names = {},
+                subeventPrefix = "SPELL",
+                debuffType = "HELPFUL",
+                spellName = 56222,
                 use_genericShowOn = true,
                 realSpellName = "Arcane Blast",
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
                 use_track = true,
-                spellName = 56222,
                 itemName = 122370,
                 use_itemName = true,
                 use_inverse = false,
@@ -70,10 +70,10 @@ ns.auras["pvp_trinket"] = {
             },
             single = "MAGE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
         race = {

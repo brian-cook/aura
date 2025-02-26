@@ -8,8 +8,8 @@ ns.auras["ttd_corruption"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 200,
-    yOffset = 80,
+    xOffset = 112,
+    yOffset = 76,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,88 +37,115 @@ ns.auras["ttd_corruption"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
+                custom_hide = "timed",
                 type = "custom",
-                names = {},
+                subeventSuffix = "_CAST_START",
                 unevent = "auto",
-                unit = "player",
+                customVariables = "",
                 duration = "1",
                 event = "Health",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 custom_type = "event",
+                use_unit = true,
                 custom = [[function(allstates, event, ...)
     -- Debug setup
     aura_env.debug = true
-    local function debugPrint(...)
+    local function debugPrint(message, ...)
         if aura_env.debug then
-            print(string.format("[Corruption Alert] %s", string.format(...)))
+            print(string.format("[TTD Corruption] " .. message, ...))
         end
     end
     
-    -- Handle OPTIONS and STATUS events
-    if event == "OPTIONS" or event == "STATUS" then
-        return {
-            [""] = {
-                show = true,
-                changed = true,
-                progressType = "timed",
-                autoHide = false,
-                value = 0,
-                total = 100,
-                reason = "Options mode"
+    -- Handle string input cases (OPTIONS/STATUS or event name)
+    if type(allstates) == "string" then
+        -- Handle OPTIONS/STATUS
+        if allstates == "OPTIONS" or allstates == "STATUS" then
+            debugPrint("Handling %s event", allstates)
+            return {
+                [""] = {
+                    show = false,
+                    changed = true,
+                    icon = 172,
+                    spellName = "Corruption",
+                    progressType = "static",
+                    autoHide = true,
+                    duration = 0.1
+                }
             }
-        }
-    end
-    
-    -- For all other events, ensure allstates is a table
-    if type(allstates) ~= "table" then
-        allstates = {}
-    end
-    
-    -- Initialize state
-    allstates[""] = allstates[""] or {
-        show = false,
-        changed = true,
-        progressType = "timed",
-        autoHide = false,
-        value = 0,
-        total = 100,
-        reason = ""
-    }
-    
-    if event == "WARLOCK_SPELL_UPDATE_CORRUPTION" then
-        local shouldCast, reason = ...
-        if shouldCast ~= nil then
-            debugPrint("Corruption update: shouldCast=%s, reason=%s", 
-                tostring(shouldCast), reason or "nil")
-            allstates[""].show = shouldCast
-            allstates[""].changed = true
-            allstates[""].reason = reason or ""
         end
-        return true
+        
+        -- Handle event name in allstates parameter
+        if allstates == "WARLOCK_SPELL_UPDATE_CORRUPTION" then
+            debugPrint("Update received via allstates - shouldCast: %s", tostring(event))
+            local show = event == true
+            return {
+                [""] = {
+                    show = show,
+                    changed = true,
+                    icon = 172,
+                    spellName = "Corruption",
+                    progressType = "static",
+                    autoHide = true,
+                    duration = 0.1,
+                    reason = select(1, ...) or ""
+                }
+            }
+        end
+    end
+    
+    -- Handle normal event case
+    if type(allstates) == "table" then
+        -- Initialize with hidden state
+        if not allstates[""] then
+            allstates[""] = {
+                show = false,
+                changed = true,
+                icon = 172,
+                spellName = "Corruption",
+                progressType = "static",
+                autoHide = true,
+                duration = 0.1
+            }
+            return true
+        end
+        
+        if event == "WARLOCK_SPELL_UPDATE_CORRUPTION" then
+            local shouldCast, reason = ...
+            debugPrint("Update received - shouldCast: %s, reason: %s", 
+                tostring(shouldCast), tostring(reason))
+            
+            shouldCast = shouldCast == true
+            
+            if allstates[""].show ~= shouldCast then
+                allstates[""].show = shouldCast
+                allstates[""].changed = true
+                allstates[""].reason = reason or ""
+                return true
+            end
+        end
     end
     
     return false
 end]],
                 spellIds = {},
-                use_unit = true,
                 check = "update",
-                customVariables = "",
-                subeventSuffix = "_CAST_START",
-                custom_hide = "timed",
-                customStacks = "",
-                events = [[WARLOCK_SPELL_UPDATE_CORRUPTION
-]],
+                names = {},
+                subeventPrefix = "SPELL",
+                debuffType = "HELPFUL",
                 use_absorbMode = true,
+                customStacks = "",
+                events = "WARLOCK_SPELL_UPDATE_CORRUPTION",
+                dynamicDuration = true,
             },
             untrigger = {
-                custom = "",
+                custom = [[
+]],
             },
         },
     },
     conditions = {},
     load = {
-        use_never = false,
+        use_never = true,
         talent = {
             multi = {},
         },
@@ -128,13 +155,13 @@ end]],
             },
             single = "WARRIOR",
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
         spec = {
             multi = {},
         },
-        zoneIds = "",
+        size = {
+            multi = {},
+        },
         group_leader = {
             multi = {
                 LEADER = true,

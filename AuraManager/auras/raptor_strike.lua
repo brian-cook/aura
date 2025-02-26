@@ -8,7 +8,7 @@ ns.auras["raptor_strike"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 100,
+    xOffset = 116,
     yOffset = 80,
     width = 3,
     height = 3,
@@ -37,20 +37,20 @@ ns.auras["raptor_strike"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "spell",
-                names = {},
-                unit = "player",
-                event = "Action Usable",
-                subeventPrefix = "SPELL",
-                spellIds = {},
                 subeventSuffix = "_CAST_START",
+                event = "Action Usable",
+                unit = "player",
+                spellIds = {},
+                names = {},
+                subeventPrefix = "SPELL",
+                debuffType = "HELPFUL",
+                spellName = 2973,
                 use_genericShowOn = true,
                 realSpellName = "Raptor Strike",
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
                 use_track = true,
-                spellName = 2973,
             },
             untrigger = {},
         },
@@ -67,10 +67,10 @@ ns.auras["raptor_strike"] = {
             },
             single = "HUNTER",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
         race = {

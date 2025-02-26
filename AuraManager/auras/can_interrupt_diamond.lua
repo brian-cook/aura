@@ -37,15 +37,15 @@ ns.auras["can_interrupt_diamond"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "custom",
-                names = {},
+                subeventSuffix = "_CAST_START",
                 unevent = "auto",
-                unit = "player",
+                customVariables = "",
                 duration = "1",
                 event = "Health",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 custom_type = "stateupdate",
+                use_unit = true,
                 custom = [[function(allstates, event, ...)
         -- Throttle checks
         if not aura_env.last or GetTime() - aura_env.last > 0.2 then
@@ -91,12 +91,12 @@ ns.auras["can_interrupt_diamond"] = {
         end
     end]],
                 spellIds = {},
-                use_unit = true,
                 check = "update",
-                customVariables = "",
-                subeventSuffix = "_CAST_START",
-                customStacks = [[function() return aura_env.count end]],
+                names = {},
+                subeventPrefix = "SPELL",
+                debuffType = "HELPFUL",
                 use_absorbMode = true,
+                customStacks = [[function() return aura_env.count end]],
             },
             untrigger = {},
         },
@@ -113,13 +113,13 @@ ns.auras["can_interrupt_diamond"] = {
             },
             single = "WARRIOR",
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
         spec = {
             multi = {},
         },
-        zoneIds = "",
+        size = {
+            multi = {},
+        },
     },
     animation = {
         start = {

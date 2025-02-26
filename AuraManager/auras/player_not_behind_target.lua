@@ -8,7 +8,7 @@ ns.auras["player_not_behind_target"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 192,
+    xOffset = 208,
     yOffset = 88,
     width = 3,
     height = 3,
@@ -37,14 +37,14 @@ ns.auras["player_not_behind_target"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
+                custom_hide = "timed",
                 type = "custom",
-                names = {},
-                unit = "target",
+                subeventSuffix = "_CAST_START",
                 duration = ".5",
                 event = "Crowd Controlled",
-                subeventPrefix = "SPELL",
+                unit = "target",
                 custom_type = "event",
+                use_unit = true,
                 custom = [[function(event, arg1, arg2)
     if event == "UI_ERROR_MESSAGE" and string.find(arg2, "be behind your") then
         return true
@@ -52,27 +52,27 @@ ns.auras["player_not_behind_target"] = {
     return false
 end]],
                 spellIds = {},
-                use_unit = true,
-                subeventSuffix = "_CAST_START",
-                custom_hide = "timed",
+                names = {},
+                subeventPrefix = "SPELL",
+                debuffType = "HELPFUL",
                 events = "UI_ERROR_MESSAGE",
                 auranames = {
                     "Quick Flame Ward",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 use_debuffClass = false,
                 useName = true,
+                useRem = false,
                 use_inverse = false,
                 debuffClass = {
                     magic = true,
                 },
                 use_controlType = true,
                 use_interruptSchool = true,
-                useExactSpellId = false,
-                controlType = "ROOT",
                 interruptSchool = 16,
+                controlType = "ROOT",
+                useExactSpellId = false,
                 auraspellids = {
                     "116",
                 },
@@ -92,10 +92,10 @@ end]],
             },
             single = "MAGE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

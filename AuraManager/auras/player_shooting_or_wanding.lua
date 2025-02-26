@@ -8,7 +8,7 @@ ns.auras["player_shooting_or_wanding"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 168,
+    xOffset = 184,
     yOffset = 88,
     width = 3,
     height = 3,
@@ -38,15 +38,16 @@ ns.auras["player_shooting_or_wanding"] = {
         activeTriggerMode = 1,
         {
             trigger = {
-                debuffType = "HELPFUL",
+                custom_hide = "timed",
                 type = "custom",
-                names = {},
+                subeventSuffix = "_CAST_START",
                 unevent = "auto",
-                unit = "player",
+                customVariables = "{}",
                 duration = "1",
                 event = "Health",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 custom_type = "stateupdate",
+                use_unit = true,
                 custom = [[function(allstates)
     -- Initialize state if needed
     aura_env.last = aura_env.last or 0
@@ -74,11 +75,10 @@ ns.auras["player_shooting_or_wanding"] = {
     return false
 end]],
                 spellIds = {},
-                use_unit = true,
                 check = "update",
-                customVariables = "{}",
-                subeventSuffix = "_CAST_START",
-                custom_hide = "timed",
+                names = {},
+                subeventPrefix = "SPELL",
+                debuffType = "HELPFUL",
                 events = "PLAYER_TARGET_CHANGED START_AUTOREPEAT_SPELL STOP_AUTOREPEAT_SPELL",
             },
             untrigger = {
@@ -101,20 +101,20 @@ end]],
             single = "WARLOCK",
         },
         use_spellknown = false,
-        size = {
-            multi = {},
-        },
-        spec = {
-            multi = {},
-        },
+        zoneIds = "",
+        use_level = false,
         level_operator = {
             "~=",
         },
         level = {
             "120",
         },
-        use_level = false,
-        zoneIds = "",
+        spec = {
+            multi = {},
+        },
+        size = {
+            multi = {},
+        },
     },
     animation = {
         start = {

@@ -8,7 +8,7 @@ ns.auras["target_is_elite_boss_or_player"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 180,
+    xOffset = 212,
     yOffset = 76,
     width = 3,
     height = 3,
@@ -38,15 +38,15 @@ ns.auras["target_is_elite_boss_or_player"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "unit",
-                names = {},
-                unit = "target",
-                event = "Unit Characteristics",
-                subeventPrefix = "SPELL",
-                spellIds = {},
-                use_unit = true,
                 subeventSuffix = "_CAST_START",
+                event = "Unit Characteristics",
+                unit = "target",
+                use_unit = true,
+                spellIds = {},
+                names = {},
+                subeventPrefix = "SPELL",
+                debuffType = "HELPFUL",
                 use_absorbMode = true,
                 use_unitisunit = false,
                 use_character = false,
@@ -58,16 +58,12 @@ ns.auras["target_is_elite_boss_or_player"] = {
                     "20",
                 },
                 use_percentpower = false,
-                use_showCost = true,
                 use_power = false,
+                use_showCost = true,
                 use_percenthealth = true,
                 percenthealth_operator = {
                     "<",
                 },
-                use_classification = false,
-                use_specific_unitisunit = true,
-                use_namerealm = false,
-                use_npcId = false,
                 classification = {
                     multi = {
                         elite = true,
@@ -76,6 +72,10 @@ ns.auras["target_is_elite_boss_or_player"] = {
                     },
                     single = "elite",
                 },
+                use_classification = false,
+                use_specific_unitisunit = true,
+                use_npcId = false,
+                use_namerealm = false,
             },
             untrigger = {},
         },
@@ -91,10 +91,10 @@ ns.auras["target_is_elite_boss_or_player"] = {
             },
             single = "ROGUE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

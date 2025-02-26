@@ -8,7 +8,7 @@ ns.auras["icon_skull_exists"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 176,
+    xOffset = 184,
     yOffset = 96,
     width = 3,
     height = 3,
@@ -37,15 +37,17 @@ ns.auras["icon_skull_exists"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "custom",
-                names = {},
+                subeventSuffix = "_CAST_START",
                 unevent = "auto",
-                unit = "player",
+                customVariables = [[{
+  stacks = true,
+}]],
                 duration = "1",
                 event = "Health",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 custom_type = "stateupdate",
+                use_unit = true,
                 custom = [[function(allstates)
     -- Throttle updates for performance
     if not aura_env.last or GetTime() - aura_env.last > 0.2 then
@@ -87,15 +89,13 @@ ns.auras["icon_skull_exists"] = {
     return true
 end]],
                 spellIds = {},
-                use_unit = true,
                 check = "update",
-                customVariables = [[{
-  stacks = true,
-}]],
-                subeventSuffix = "_CAST_START",
+                names = {},
+                subeventPrefix = "SPELL",
+                debuffType = "HELPFUL",
+                use_absorbMode = true,
                 customStacks = [[function() return aura_env.count end]],
                 events = "NAME_PLATE_UNIT_ADDED NAME_PLATE_UNIT_REMOVED PLAYER_TARGET_CHANGED UNIT_PET RAID_TARGET_UPDATE",
-                use_absorbMode = true,
             },
             untrigger = {},
         },
@@ -112,13 +112,13 @@ end]],
             },
             single = "WARRIOR",
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
         spec = {
             multi = {},
         },
-        zoneIds = "",
+        size = {
+            multi = {},
+        },
     },
     animation = {
         start = {

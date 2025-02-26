@@ -8,7 +8,7 @@ ns.auras["serpent_sting_debuff_cross"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 160,
+    xOffset = 180,
     yOffset = 80,
     width = 3,
     height = 3,
@@ -37,12 +37,10 @@ ns.auras["serpent_sting_debuff_cross"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HARMFUL",
                 type = "custom",
-                names = {},
-                unit = "target",
+                subeventSuffix = "_CAST_START",
                 event = "Combat Log",
-                subeventPrefix = "SPELL",
+                unit = "target",
                 custom_type = "stateupdate",
                 custom = [[function(allstates, event, ...)
     -- Throttle checks
@@ -97,14 +95,16 @@ ns.auras["serpent_sting_debuff_cross"] = {
 end]],
                 spellIds = {},
                 check = "update",
-                subeventSuffix = "_CAST_START",
+                names = {},
+                subeventPrefix = "SPELL",
+                debuffType = "HARMFUL",
                 auranames = {
                     "Serpent Sting",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
+                useRem = false,
                 ownOnly = true,
             },
             untrigger = {},
@@ -121,10 +121,10 @@ end]],
             },
             single = "HUNTER",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

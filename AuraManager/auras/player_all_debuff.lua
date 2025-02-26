@@ -8,7 +8,7 @@ ns.auras["player_all_debuff"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 100,
+    xOffset = 116,
     yOffset = 88,
     width = 3,
     height = 3,
@@ -37,23 +37,23 @@ ns.auras["player_all_debuff"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HARMFUL",
                 type = "aura2",
-                names = {},
-                unit = "player",
-                event = "Crowd Controlled",
-                subeventPrefix = "SPELL",
-                spellIds = {},
-                use_unit = true,
                 subeventSuffix = "_CAST_START",
+                event = "Crowd Controlled",
+                unit = "player",
+                use_unit = true,
+                spellIds = {},
+                names = {},
+                subeventPrefix = "SPELL",
+                debuffType = "HARMFUL",
                 auranames = {
                     "Quick Flame Ward",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 use_debuffClass = true,
                 useName = false,
+                useRem = false,
                 use_inverse = false,
                 debuffClass = {
                     disease = true,
@@ -64,9 +64,9 @@ ns.auras["player_all_debuff"] = {
                 },
                 use_controlType = true,
                 use_interruptSchool = true,
-                useExactSpellId = false,
-                controlType = "FEAR",
                 interruptSchool = 16,
+                controlType = "FEAR",
+                useExactSpellId = false,
                 auraspellids = {
                     "116",
                 },
@@ -86,10 +86,10 @@ ns.auras["player_all_debuff"] = {
             },
             single = "MAGE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

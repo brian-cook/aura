@@ -8,7 +8,7 @@ ns.auras["scanner_all_in_one_v1"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 128,
+    xOffset = 148,
     yOffset = 80,
     width = 3,
     height = 3,
@@ -37,15 +37,17 @@ ns.auras["scanner_all_in_one_v1"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "custom",
-                names = {},
+                subeventSuffix = "_CAST_START",
                 unevent = "auto",
-                unit = "player",
+                customVariables = [[{
+  stacks = true,
+}]],
                 duration = "1",
                 event = "Health",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 custom_type = "stateupdate",
+                use_unit = true,
                 custom = [[function(allstates)
     -- Initialize aura environment variables if not exists
     aura_env.last = aura_env.last or 0
@@ -316,15 +318,13 @@ ns.auras["scanner_all_in_one_v1"] = {
     return false
 end]],
                 spellIds = {},
-                use_unit = true,
                 check = "update",
-                customVariables = [[{
-  stacks = true,
-}]],
-                subeventSuffix = "_CAST_START",
+                names = {},
+                subeventPrefix = "SPELL",
+                debuffType = "HELPFUL",
+                use_absorbMode = true,
                 customStacks = [[function() return aura_env.count end]],
                 events = "PLAYER_TARGET_CHANGED UNIT_TARGET NAME_PLATE_UNIT_ADDED NAME_PLATE_UNIT_REMOVED PLAYER_TARGET_CHANGED UNIT_TARGET PLAYER_REGEN_DISABLED PLAYER_REGEN_ENABLED",
-                use_absorbMode = true,
             },
             untrigger = {},
         },
@@ -341,13 +341,13 @@ end]],
             },
             single = "WARRIOR",
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
         spec = {
             multi = {},
         },
-        zoneIds = "",
+        size = {
+            multi = {},
+        },
         group_leader = {
             multi = {
                 LEADER = true,

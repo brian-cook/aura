@@ -8,7 +8,7 @@ ns.auras["target_health_under_90"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 132,
+    xOffset = 164,
     yOffset = 76,
     width = 3,
     height = 3,
@@ -37,15 +37,15 @@ ns.auras["target_health_under_90"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "unit",
-                names = {},
-                unit = "target",
-                event = "Health",
-                subeventPrefix = "SPELL",
-                spellIds = {},
-                use_unit = true,
                 subeventSuffix = "_CAST_START",
+                event = "Health",
+                unit = "target",
+                use_unit = true,
+                spellIds = {},
+                names = {},
+                subeventPrefix = "SPELL",
+                debuffType = "HELPFUL",
                 use_absorbMode = true,
                 powertype = 3,
                 use_powertype = true,
@@ -54,8 +54,8 @@ ns.auras["target_health_under_90"] = {
                     "90",
                 },
                 use_percentpower = false,
-                use_showCost = true,
                 use_power = false,
+                use_showCost = true,
                 use_percenthealth = true,
                 percenthealth_operator = {
                     "<",
@@ -75,10 +75,10 @@ ns.auras["target_health_under_90"] = {
             },
             single = "ROGUE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

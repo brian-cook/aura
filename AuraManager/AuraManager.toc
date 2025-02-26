@@ -41,6 +41,8 @@ auras/curse_of_agony_debuff.lua
 auras/curse_of_weakness_debuff.lua
 auras/demon_skin_buff.lua
 auras/distracting_shot.lua
+auras/earth_shock.lua
+auras/earthbind_totem.lua
 auras/enemy_loose.lua
 auras/entering_combat.lua
 auras/envenom.lua
@@ -65,8 +67,10 @@ auras/icon_triangle_exists.lua
 auras/immolate_debuff.lua
 auras/kick.lua
 auras/leaving_combat.lua
+auras/lightning_shield_buff.lua
 auras/mike_health_under_50.lua
 auras/mongoose_bite.lua
+auras/mp5.lua
 auras/mutilate.lua
 auras/party_1_health_under_70.lua
 auras/party_1_range_35.lua
@@ -162,6 +166,7 @@ auras/range_8_triangle.lua
 auras/raptor_strike.lua
 auras/recently_bandaged_debuff.lua
 auras/redirect.lua
+auras/rock_biter_weapon_buff.lua
 auras/role_toggle.lua
 auras/saber_slash.lua
 auras/sap.lua
@@ -182,6 +187,9 @@ auras/sinister_strike.lua
 auras/slice_and_dice_buff.lua
 auras/sprint.lua
 auras/stealth_buff.lua
+auras/stone_claw_totem.lua
+auras/stoneskin_buff.lua
+auras/stoneskin_totem.lua
 auras/swing_timer_main_hand.lua
 auras/swing_timer_ranged.lua
 auras/target_aggro.lua

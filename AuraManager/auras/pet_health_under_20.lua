@@ -8,7 +8,7 @@ ns.auras["pet_health_under_20"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 192,
+    xOffset = 208,
     yOffset = 92,
     width = 3,
     height = 3,
@@ -37,15 +37,15 @@ ns.auras["pet_health_under_20"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
                 type = "unit",
-                names = {},
-                unit = "pet",
-                event = "Health",
-                subeventPrefix = "SPELL",
-                spellIds = {},
-                use_unit = true,
                 subeventSuffix = "_CAST_START",
+                event = "Health",
+                unit = "pet",
+                use_unit = true,
+                spellIds = {},
+                names = {},
+                subeventPrefix = "SPELL",
+                debuffType = "HELPFUL",
                 use_absorbMode = true,
                 powertype = 3,
                 use_powertype = true,
@@ -54,8 +54,8 @@ ns.auras["pet_health_under_20"] = {
                     "20",
                 },
                 use_percentpower = false,
-                use_showCost = true,
                 use_power = false,
+                use_showCost = true,
                 use_percenthealth = true,
                 percenthealth_operator = {
                     "<",
@@ -75,10 +75,10 @@ ns.auras["pet_health_under_20"] = {
             },
             single = "ROGUE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

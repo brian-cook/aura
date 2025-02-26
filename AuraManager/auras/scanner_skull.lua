@@ -8,7 +8,7 @@ ns.auras["scanner_skull"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 140,
+    xOffset = 160,
     yOffset = 80,
     width = 3,
     height = 3,
@@ -37,15 +37,18 @@ ns.auras["scanner_skull"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
+                custom_hide = "timed",
                 type = "custom",
-                names = {},
+                subeventSuffix = "_CAST_START",
                 unevent = "auto",
-                unit = "player",
+                customVariables = [[{
+  stacks = true,
+}]],
                 duration = "1",
                 event = "Health",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 custom_type = "stateupdate",
+                use_unit = true,
                 custom = [[function(allstates)
     -- Throttle updates for performance
     if not aura_env.lastUpdate or GetTime() - aura_env.lastUpdate > 0.1 then
@@ -103,23 +106,20 @@ ns.auras["scanner_skull"] = {
     return true
 end]],
                 spellIds = {},
-                use_unit = true,
                 check = "update",
-                customVariables = [[{
-  stacks = true,
-}]],
-                subeventSuffix = "_CAST_START",
-                custom_hide = "timed",
+                names = {},
+                subeventPrefix = "SPELL",
+                debuffType = "HELPFUL",
+                use_absorbMode = true,
                 customStacks = [[function() return aura_env.count end]],
                 events = "PLAYER_TARGET_CHANGED",
-                use_absorbMode = true,
             },
             untrigger = {},
         },
     },
     conditions = {},
     load = {
-        use_never = false,
+        use_never = true,
         talent = {
             multi = {},
         },
@@ -129,13 +129,13 @@ end]],
             },
             single = "WARRIOR",
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
         spec = {
             multi = {},
         },
-        zoneIds = "",
+        size = {
+            multi = {},
+        },
     },
     animation = {
         start = {

@@ -39,29 +39,29 @@ ns.auras["combat"] = {
         customTriggerLogic = "",
         {
             trigger = {
-                debuffType = "BOTH",
+                custom_hide = "timed",
                 type = "unit",
-                names = {},
-                unit = "player",
+                subeventSuffix = "_CAST_START",
                 event = "Conditions",
-                subeventPrefix = "SPELL",
+                unit = "player",
                 custom_type = "event",
+                use_unit = true,
                 custom = [[function(event)
     return UnitAffectingCombat("player")
 end]],
                 spellIds = {},
-                use_unit = true,
                 check = "update",
-                subeventSuffix = "_CAST_START",
-                custom_hide = "timed",
+                names = {},
+                subeventPrefix = "SPELL",
+                debuffType = "BOTH",
                 events = "PLAYER_REGEN_ENABLED PLAYER_REGEN_DISABLED",
                 auranames = {
                     "Demon Skin",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
+                useRem = false,
                 ownOnly = true,
                 use_incombat = true,
             },
@@ -79,10 +79,10 @@ end]],
             },
             single = "DRUID",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },
