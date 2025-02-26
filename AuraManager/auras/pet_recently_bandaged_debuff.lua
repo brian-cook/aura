@@ -8,8 +8,8 @@ ns.auras["pet_recently_bandaged_debuff"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 108,
-    yOffset = 88,
+    xOffset = 124,
+    yOffset = 84,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,21 +37,21 @@ ns.auras["pet_recently_bandaged_debuff"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "aura2",
-                subeventSuffix = "_CAST_START",
-                event = "Health",
-                unit = "pet",
-                spellIds = {},
-                names = {},
                 subeventPrefix = "SPELL",
+                type = "aura2",
+                names = {},
+                subeventSuffix = "_CAST_START",
                 debuffType = "HARMFUL",
+                unit = "pet",
+                event = "Health",
+                spellIds = {},
                 auranames = {
                     "Recently Bandaged",
                 },
                 unitExists = false,
+                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
-                useRem = false,
                 ownOnly = true,
             },
             untrigger = {},
@@ -62,6 +62,9 @@ ns.auras["pet_recently_bandaged_debuff"] = {
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
                 ROGUE = true,
@@ -69,9 +72,6 @@ ns.auras["pet_recently_bandaged_debuff"] = {
             single = "ROGUE",
         },
         spec = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
     },

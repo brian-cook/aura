@@ -8,7 +8,7 @@ ns.auras["enemy_loose"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 116,
+    xOffset = 140,
     yOffset = 96,
     width = 3,
     height = 3,
@@ -37,16 +37,16 @@ ns.auras["enemy_loose"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "custom",
-                subeventSuffix = "_CAST_START",
-                unevent = "auto",
-                customVariables = [[{
-  stacks = true,
-}]],
                 duration = "1",
-                event = "Health",
+                subeventPrefix = "SPELL",
+                use_absorbMode = true,
+                type = "custom",
+                names = {},
+                subeventSuffix = "_CAST_START",
+                debuffType = "HELPFUL",
                 unit = "player",
-                custom_type = "stateupdate",
+                event = "Health",
+                customStacks = [[function() return aura_env.count end]],
                 use_unit = true,
                 custom = [[function(allstates)
     -- Throttle the check for perf?  What is config?
@@ -86,11 +86,11 @@ ns.auras["enemy_loose"] = {
 end]],
                 spellIds = {},
                 check = "update",
-                names = {},
-                subeventPrefix = "SPELL",
-                debuffType = "HELPFUL",
-                use_absorbMode = true,
-                customStacks = [[function() return aura_env.count end]],
+                custom_type = "stateupdate",
+                unevent = "auto",
+                customVariables = [[{
+  stacks = true,
+}]],
             },
             untrigger = {},
         },
@@ -101,19 +101,19 @@ end]],
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
                 WARRIOR = true,
             },
             single = "WARRIOR",
         },
-        zoneIds = "",
         spec = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
     },
     animation = {
         start = {

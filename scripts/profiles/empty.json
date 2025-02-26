@@ -31,14 +31,6 @@
             "key": ".",
             "conditions": ["NA"]
         },
-        
-
-        {
-            "group": "START GROUP: MIKE HEALS AND BUFFS",
-            "name": "NA",
-            "key": ".",
-            "conditions": ["NA"]
-        }, 
 
         
         {

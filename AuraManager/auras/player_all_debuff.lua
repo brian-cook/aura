@@ -8,8 +8,8 @@ ns.auras["player_all_debuff"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 116,
-    yOffset = 88,
+    xOffset = 132,
+    yOffset = 84,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,24 +37,24 @@ ns.auras["player_all_debuff"] = {
         activeTriggerMode = -10,
         {
             trigger = {
+                subeventPrefix = "SPELL",
                 type = "aura2",
+                names = {},
                 subeventSuffix = "_CAST_START",
-                event = "Crowd Controlled",
+                debuffType = "HARMFUL",
                 unit = "player",
+                event = "Crowd Controlled",
                 use_unit = true,
                 spellIds = {},
-                names = {},
-                subeventPrefix = "SPELL",
-                debuffType = "HARMFUL",
+                use_inverse = false,
                 auranames = {
                     "Quick Flame Ward",
                 },
                 unitExists = false,
+                useRem = false,
                 matchesShowOn = "showOnActive",
                 use_debuffClass = true,
                 useName = false,
-                useRem = false,
-                use_inverse = false,
                 debuffClass = {
                     disease = true,
                     bleed = true,
@@ -64,9 +64,9 @@ ns.auras["player_all_debuff"] = {
                 },
                 use_controlType = true,
                 use_interruptSchool = true,
-                interruptSchool = 16,
-                controlType = "FEAR",
                 useExactSpellId = false,
+                controlType = "FEAR",
+                interruptSchool = 16,
                 auraspellids = {
                     "116",
                 },
@@ -79,17 +79,17 @@ ns.auras["player_all_debuff"] = {
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
-                MAGE = true,
                 ROGUE = true,
+                MAGE = true,
             },
             single = "MAGE",
         },
         spec = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
     },

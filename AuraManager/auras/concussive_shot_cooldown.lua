@@ -8,7 +8,7 @@ ns.auras["concussive_shot_cooldown"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 200,
+    xOffset = 216,
     yOffset = 100,
     width = 3,
     height = 3,
@@ -37,27 +37,27 @@ ns.auras["concussive_shot_cooldown"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "spell",
-                subeventSuffix = "_CAST_START",
-                event = "Action Usable",
-                unit = "target",
-                spellIds = {},
-                names = {},
                 subeventPrefix = "SPELL",
+                type = "spell",
+                names = {},
+                subeventSuffix = "_CAST_START",
                 debuffType = "HARMFUL",
-                spellName = 5116,
+                unit = "target",
+                event = "Action Usable",
+                spellIds = {},
                 use_genericShowOn = true,
                 realSpellName = "Concussive Shot",
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
                 use_track = true,
+                spellName = 5116,
                 auranames = {
                     "Concussive Shot",
                 },
                 unitExists = false,
+                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
-                useRem = false,
                 ownOnly = true,
             },
             untrigger = {},
@@ -68,6 +68,9 @@ ns.auras["concussive_shot_cooldown"] = {
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
                 HUNTER = true,
@@ -75,9 +78,6 @@ ns.auras["concussive_shot_cooldown"] = {
             single = "HUNTER",
         },
         spec = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
     },

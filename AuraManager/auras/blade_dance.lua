@@ -8,7 +8,7 @@ ns.auras["blade_dance"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 120,
+    xOffset = 128,
     yOffset = 100,
     width = 3,
     height = 3,
@@ -37,20 +37,20 @@ ns.auras["blade_dance"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "spell",
-                subeventSuffix = "_CAST_START",
-                event = "Action Usable",
-                unit = "player",
-                spellIds = {},
-                names = {},
                 subeventPrefix = "SPELL",
+                type = "spell",
+                names = {},
+                subeventSuffix = "_CAST_START",
                 debuffType = "HELPFUL",
-                spellName = 400012,
+                unit = "player",
+                event = "Action Usable",
+                spellIds = {},
                 use_genericShowOn = true,
                 realSpellName = "Blink",
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
                 use_track = true,
+                spellName = 400012,
             },
             untrigger = {},
         },
@@ -60,17 +60,17 @@ ns.auras["blade_dance"] = {
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
-                MAGE = true,
                 ROGUE = true,
+                MAGE = true,
             },
             single = "MAGE",
         },
         spec = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
         race = {

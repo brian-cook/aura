@@ -8,8 +8,8 @@ ns.auras["serpent_sting_debuff"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 172,
-    yOffset = 80,
+    xOffset = 208,
+    yOffset = 76,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,21 +37,21 @@ ns.auras["serpent_sting_debuff"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "aura2",
-                subeventSuffix = "_CAST_START",
-                event = "Health",
-                unit = "target",
-                spellIds = {},
-                names = {},
                 subeventPrefix = "SPELL",
+                type = "aura2",
+                names = {},
+                subeventSuffix = "_CAST_START",
                 debuffType = "HARMFUL",
+                unit = "target",
+                event = "Health",
+                spellIds = {},
                 auranames = {
                     "Serpent Sting",
                 },
                 unitExists = false,
+                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
-                useRem = false,
                 ownOnly = true,
             },
             untrigger = {},
@@ -62,6 +62,9 @@ ns.auras["serpent_sting_debuff"] = {
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
                 HUNTER = true,
@@ -69,9 +72,6 @@ ns.auras["serpent_sting_debuff"] = {
             single = "HUNTER",
         },
         spec = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
     },

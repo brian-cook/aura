@@ -8,7 +8,7 @@ ns.auras["combat"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 172,
+    xOffset = 188,
     yOffset = 100,
     width = 3,
     height = 3,
@@ -34,34 +34,34 @@ ns.auras["combat"] = {
     texture = "Solid",
     textureSource = "LSM",
     triggers = {
-        disjunctive = "any",
         activeTriggerMode = -10,
+        disjunctive = "any",
         customTriggerLogic = "",
         {
             trigger = {
+                subeventPrefix = "SPELL",
                 custom_hide = "timed",
                 type = "unit",
+                names = {},
                 subeventSuffix = "_CAST_START",
-                event = "Conditions",
+                debuffType = "BOTH",
                 unit = "player",
-                custom_type = "event",
+                event = "Conditions",
                 use_unit = true,
+                events = "PLAYER_REGEN_ENABLED PLAYER_REGEN_DISABLED",
                 custom = [[function(event)
     return UnitAffectingCombat("player")
 end]],
                 spellIds = {},
                 check = "update",
-                names = {},
-                subeventPrefix = "SPELL",
-                debuffType = "BOTH",
-                events = "PLAYER_REGEN_ENABLED PLAYER_REGEN_DISABLED",
+                custom_type = "event",
                 auranames = {
                     "Demon Skin",
                 },
                 unitExists = false,
+                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
-                useRem = false,
                 ownOnly = true,
                 use_incombat = true,
             },
@@ -73,6 +73,9 @@ end]],
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
                 DRUID = true,
@@ -80,9 +83,6 @@ end]],
             single = "DRUID",
         },
         spec = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
     },

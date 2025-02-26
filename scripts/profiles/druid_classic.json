@@ -1,0 +1,150 @@
+{
+    "name": "Druid Hardcore",
+    "actions": [
+        {
+            "group": "START GROUP: CC COUNTERS",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+
+        {
+            "group": "START GROUP: EMERGENCY ACTIONS WHEN LOW HEALTH",
+            "name": "healing touch",
+            "key": "z",
+            "conditions": ["inactive", "!player_casting", "!player_moving", "player_health_under_50", "power_25"]
+        },
+        {
+            "name": "healing touch on party member",
+            "key": "l",
+            "conditions": ["inactive", "!player_casting", "!player_moving", "party_1_health_under_70", "power_25"]
+        },
+        {
+            "name": "use bandage at 50% health",
+            "key": "b",
+            "conditions": ["bandage_in_inventory", "health_under_50", "!recently_bandaged_debuff", "!target_aggro", "!player_moving"]
+        },
+        {
+            "name": "use potion at 50% health",
+            "key": "n",
+            "conditions": ["potion_in_inventory", "combat", "health_under_50", "!potion_cooldown"]
+        },
+
+
+
+        {
+            "group": "START GROUP: CLEANSES",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["inactive"]
+        },
+
+
+        {
+            "group": "START GROUP: OOC BUFFS",
+            "name": "Thorns",
+            "key": ".",
+            "conditions": ["inactive", "humanoid_form", "!thorns_buff", "power_25"]
+        },
+
+ 
+        {
+            "group": "START GROUP: COMBAT BUFFS",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+
+        {
+            "name": "OOC Scan targetenemy",
+            "key": "q",
+            "conditions": ["!combat", "!target_skull"]
+        },
+
+
+        {
+            "name": "Target Triangle: /targetenemy",
+            "key": "q",
+            "conditions": ["inactive", "icon_triangle_exists", "!target_triangle", "power_25"]
+        },
+        {
+            "name": "ACTION Triangle",
+            "key": "0",
+            "conditions": ["inactive", "target_triangle", "power_25"]
+        },
+        {
+            "name": "Target cross: /targetenemy", 
+            "key": "q",
+            "conditions": ["inactive", "icon_cross_exists", "!target_cross", "power_25"]
+        },
+        {
+            "name": "ACTION Cross",
+            "key": "0",
+            "conditions": ["inactive", "target_cross", "power_25"]
+        },
+        {
+            "name": "Interrupt Target Diamond: /targetenemy",
+            "key": "q",
+            "conditions": ["inactive", "icon_diamond_exists", "can_interrupt_diamond", "!target_diamond", "power_25"]
+        },
+        {
+            "name": "Interrupt Diamond",
+            "key": "f",
+            "conditions": ["inactive", "!target_is_ooc", "target_diamond", "can_interrupt_diamond", "power_25"]
+        },
+        {
+            "name": "Target Skull: /targetenemy", 
+            "key": "q", 
+            "conditions": ["!target_skull"]
+        },
+
+
+        {
+            "group": "START GROUP: REACTIONARIES: HIGH PRIORITY ",
+            "name": "Interrupt Target",
+            "key": "f",
+            "conditions": ["inactive", "war_stomp", "target_interruptible_range_15", "power_25"]
+        },
+
+
+        {
+            "group": "START GROUP: ON COOLDOWN ABILITIES",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+
+        {
+            "group": "START GROUP: MULTIPLE ENEMIES IN MELEE",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+
+       
+        {
+            "group": "START GROUP: SINGLE TARGET ROTATION",
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+        {
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+        {
+            "name": "NA",
+            "key": ".",
+            "conditions": ["NA"]
+        },
+        {
+            "name": "cast auto attack",
+            "key": "r",
+            "conditions": ["!player_attacking", "range_8"]
+        }
+    ]
+} 

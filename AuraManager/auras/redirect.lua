@@ -8,8 +8,8 @@ ns.auras["redirect"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 124,
-    yOffset = 80,
+    xOffset = 148,
+    yOffset = 76,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,21 +37,21 @@ ns.auras["redirect"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "spell",
-                subeventSuffix = "_CAST_START",
-                event = "Action Usable",
-                unit = "player",
-                spellIds = {},
-                names = {},
                 subeventPrefix = "SPELL",
+                type = "spell",
+                names = {},
+                subeventSuffix = "_CAST_START",
                 debuffType = "HELPFUL",
-                spellName = 438040,
+                unit = "player",
+                event = "Action Usable",
+                spellIds = {},
                 use_genericShowOn = true,
                 realSpellName = "Amplify Magic",
                 use_spellName = true,
+                use_inverse = true,
                 genericShowOn = "showOnCooldown",
                 use_track = true,
-                use_inverse = true,
+                spellName = 438040,
             },
             untrigger = {},
         },
@@ -61,17 +61,17 @@ ns.auras["redirect"] = {
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
-                MAGE = true,
                 ROGUE = true,
+                MAGE = true,
             },
             single = "MAGE",
         },
         spec = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
         race = {

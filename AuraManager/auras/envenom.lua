@@ -8,7 +8,7 @@ ns.auras["envenom"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 124,
+    xOffset = 152,
     yOffset = 96,
     width = 3,
     height = 3,
@@ -37,21 +37,21 @@ ns.auras["envenom"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "spell",
-                subeventSuffix = "_CAST_START",
-                event = "Action Usable",
-                unit = "player",
-                spellIds = {},
-                names = {},
                 subeventPrefix = "SPELL",
+                type = "spell",
+                names = {},
+                subeventSuffix = "_CAST_START",
                 debuffType = "HELPFUL",
-                spellName = 399963,
+                unit = "player",
+                event = "Action Usable",
+                spellIds = {},
                 use_genericShowOn = true,
                 realSpellName = "Arcane Blast",
                 use_spellName = true,
+                use_inverse = false,
                 genericShowOn = "showOnCooldown",
                 use_track = true,
-                use_inverse = false,
+                spellName = 399963,
             },
             untrigger = {},
         },
@@ -61,17 +61,17 @@ ns.auras["envenom"] = {
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
-                MAGE = true,
                 ROGUE = true,
+                MAGE = true,
             },
             single = "MAGE",
         },
         spec = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
         race = {

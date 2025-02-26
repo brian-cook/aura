@@ -8,8 +8,8 @@ ns.auras["player_rooted"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 176,
-    yOffset = 88,
+    xOffset = 192,
+    yOffset = 84,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,32 +37,32 @@ ns.auras["player_rooted"] = {
         activeTriggerMode = -10,
         {
             trigger = {
+                subeventPrefix = "SPELL",
                 type = "unit",
+                names = {},
                 subeventSuffix = "_CAST_START",
-                event = "Crowd Controlled",
+                debuffType = "HELPFUL",
                 unit = "target",
+                event = "Crowd Controlled",
                 use_unit = true,
                 spellIds = {},
-                names = {},
-                subeventPrefix = "SPELL",
-                debuffType = "HELPFUL",
+                use_inverse = false,
                 auranames = {
                     "Quick Flame Ward",
                 },
                 unitExists = false,
+                useRem = false,
                 matchesShowOn = "showOnActive",
                 use_debuffClass = false,
                 useName = true,
-                useRem = false,
-                use_inverse = false,
                 debuffClass = {
                     magic = true,
                 },
                 use_controlType = true,
                 use_interruptSchool = true,
-                interruptSchool = 16,
-                controlType = "ROOT",
                 useExactSpellId = false,
+                controlType = "ROOT",
+                interruptSchool = 16,
                 auraspellids = {
                     "116",
                 },
@@ -75,17 +75,17 @@ ns.auras["player_rooted"] = {
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
-                MAGE = true,
                 ROGUE = true,
+                MAGE = true,
             },
             single = "MAGE",
         },
         spec = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
     },

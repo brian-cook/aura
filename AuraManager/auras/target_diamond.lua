@@ -8,8 +8,8 @@ ns.auras["target_diamond"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 144,
-    yOffset = 76,
+    xOffset = 180,
+    yOffset = 72,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -34,32 +34,32 @@ ns.auras["target_diamond"] = {
     texture = "Solid",
     textureSource = "LSM",
     triggers = {
-        disjunctive = "all",
         activeTriggerMode = 1,
+        disjunctive = "all",
         {
             trigger = {
+                duration = "1",
+                subeventPrefix = "SPELL",
                 custom_hide = "timed",
                 type = "unit",
+                names = {},
                 subeventSuffix = "_CAST_START",
-                unevent = "auto",
-                customVariables = "{}",
-                duration = "1",
-                event = "Unit Characteristics",
+                debuffType = "HELPFUL",
                 unit = "target",
-                custom_type = "stateupdate",
+                event = "Unit Characteristics",
                 use_unit = true,
                 spellIds = {},
                 check = "update",
-                names = {},
-                subeventPrefix = "SPELL",
-                debuffType = "HELPFUL",
+                custom_type = "stateupdate",
+                unevent = "auto",
+                customVariables = "{}",
                 use_unitisunit = false,
                 use_character = false,
                 use_class = false,
                 character = "player",
+                unitisunit = "player",
                 raidMarkIndex = 3,
                 use_raidMarkIndex = true,
-                unitisunit = "player",
             },
             untrigger = {},
         },
@@ -70,26 +70,26 @@ ns.auras["target_diamond"] = {
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
                 WARLOCK = true,
             },
             single = "WARLOCK",
         },
+        spec = {
+            multi = {},
+        },
         zoneIds = "",
-        use_level = false,
         level_operator = {
             "~=",
         },
         level = {
             "120",
         },
-        spec = {
-            multi = {},
-        },
-        size = {
-            multi = {},
-        },
+        use_level = false,
     },
     animation = {
         start = {

@@ -8,8 +8,8 @@ ns.auras["target_interruptible_range_12"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 172,
-    yOffset = 76,
+    xOffset = 208,
+    yOffset = 72,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,16 +37,16 @@ ns.auras["target_interruptible_range_12"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "custom",
-                subeventSuffix = "_CAST_START",
-                unevent = "auto",
-                customVariables = [[{
-  stacks = true,
-}]],
                 duration = "1",
-                event = "Health",
+                subeventPrefix = "SPELL",
+                use_absorbMode = true,
+                type = "custom",
+                names = {},
+                subeventSuffix = "_CAST_START",
+                debuffType = "HELPFUL",
                 unit = "player",
-                custom_type = "stateupdate",
+                event = "Health",
+                customStacks = [[function() return aura_env.count end]],
                 use_unit = true,
                 custom = [[function(allstates)
     -- Throttle the check for perf?  What is config?
@@ -92,11 +92,11 @@ ns.auras["target_interruptible_range_12"] = {
 end]],
                 spellIds = {},
                 check = "update",
-                names = {},
-                subeventPrefix = "SPELL",
-                debuffType = "HELPFUL",
-                use_absorbMode = true,
-                customStacks = [[function() return aura_env.count end]],
+                custom_type = "stateupdate",
+                unevent = "auto",
+                customVariables = [[{
+  stacks = true,
+}]],
             },
             untrigger = {},
         },
@@ -107,19 +107,19 @@ end]],
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
                 WARRIOR = true,
             },
             single = "WARRIOR",
         },
-        zoneIds = "",
         spec = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
     },
     animation = {
         start = {

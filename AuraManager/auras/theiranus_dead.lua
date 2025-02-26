@@ -8,8 +8,8 @@ ns.auras["theiranus_dead"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 104,
-    yOffset = 72,
+    xOffset = 140,
+    yOffset = 68,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -34,19 +34,19 @@ ns.auras["theiranus_dead"] = {
     texture = "Solid",
     textureSource = "LSM",
     triggers = {
-        disjunctive = "all",
         activeTriggerMode = 1,
+        disjunctive = "all",
         {
             trigger = {
+                duration = "1",
+                subeventPrefix = "SPELL",
                 custom_hide = "timed",
                 type = "custom",
+                names = {},
                 subeventSuffix = "_CAST_START",
-                unevent = "auto",
-                customVariables = "{}",
-                duration = "1",
-                event = "Health",
+                debuffType = "HELPFUL",
                 unit = "player",
-                custom_type = "stateupdate",
+                event = "Health",
                 use_unit = true,
                 custom = [[function(allstates)
     if not aura_env.last or GetTime() - aura_env.last > 0.5 then
@@ -71,9 +71,9 @@ ns.auras["theiranus_dead"] = {
 end]],
                 spellIds = {},
                 check = "update",
-                names = {},
-                subeventPrefix = "SPELL",
-                debuffType = "HELPFUL",
+                custom_type = "stateupdate",
+                unevent = "auto",
+                customVariables = "{}",
             },
             untrigger = {
                 custom = [[function()
@@ -88,27 +88,27 @@ end]],
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
                 WARLOCK = true,
             },
             single = "WARLOCK",
         },
-        use_spellknown = false,
+        spec = {
+            multi = {},
+        },
         zoneIds = "",
-        use_level = false,
         level_operator = {
             "~=",
         },
         level = {
             "120",
         },
-        spec = {
-            multi = {},
-        },
-        size = {
-            multi = {},
-        },
+        use_level = false,
+        use_spellknown = false,
     },
     animation = {
         start = {

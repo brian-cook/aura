@@ -8,8 +8,8 @@ ns.auras["player_slowed"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 192,
-    yOffset = 88,
+    xOffset = 208,
+    yOffset = 84,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,16 +37,16 @@ ns.auras["player_slowed"] = {
         activeTriggerMode = -10,
         {
             trigger = {
+                subeventPrefix = "SPELL",
+                use_absorbMode = true,
                 type = "unit",
+                names = {},
                 subeventSuffix = "_CAST_START",
-                event = "Crowd Controlled",
+                debuffType = "HARMFUL",
                 unit = "player",
+                event = "Crowd Controlled",
                 use_unit = true,
                 spellIds = {},
-                names = {},
-                subeventPrefix = "SPELL",
-                debuffType = "HARMFUL",
-                use_absorbMode = true,
                 use_absorbHealMode = true,
                 auranames = {
                     "Chains of Ice",
@@ -63,10 +63,10 @@ ns.auras["player_slowed"] = {
                     "Hamstring",
                 },
                 unitExists = false,
+                useRem = false,
                 matchesShowOn = "showOnActive",
                 use_debuffClass = false,
                 useName = false,
-                useRem = false,
                 use_controlType = true,
                 controlType = "ROOT",
                 use_health = true,
@@ -79,6 +79,9 @@ ns.auras["player_slowed"] = {
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
                 ROGUE = true,
@@ -86,9 +89,6 @@ ns.auras["player_slowed"] = {
             single = "ROGUE",
         },
         spec = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
     },

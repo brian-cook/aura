@@ -8,8 +8,8 @@ ns.auras["player_not_behind_target"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 208,
-    yOffset = 88,
+    xOffset = 104,
+    yOffset = 80,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,14 +37,17 @@ ns.auras["player_not_behind_target"] = {
         activeTriggerMode = -10,
         {
             trigger = {
+                duration = ".5",
+                subeventPrefix = "SPELL",
                 custom_hide = "timed",
                 type = "custom",
+                names = {},
                 subeventSuffix = "_CAST_START",
-                duration = ".5",
-                event = "Crowd Controlled",
+                debuffType = "HELPFUL",
                 unit = "target",
-                custom_type = "event",
+                event = "Crowd Controlled",
                 use_unit = true,
+                events = "UI_ERROR_MESSAGE",
                 custom = [[function(event, arg1, arg2)
     if event == "UI_ERROR_MESSAGE" and string.find(arg2, "be behind your") then
         return true
@@ -52,27 +55,24 @@ ns.auras["player_not_behind_target"] = {
     return false
 end]],
                 spellIds = {},
-                names = {},
-                subeventPrefix = "SPELL",
-                debuffType = "HELPFUL",
-                events = "UI_ERROR_MESSAGE",
+                custom_type = "event",
+                use_inverse = false,
                 auranames = {
                     "Quick Flame Ward",
                 },
                 unitExists = false,
+                useRem = false,
                 matchesShowOn = "showOnActive",
                 use_debuffClass = false,
                 useName = true,
-                useRem = false,
-                use_inverse = false,
                 debuffClass = {
                     magic = true,
                 },
                 use_controlType = true,
                 use_interruptSchool = true,
-                interruptSchool = 16,
-                controlType = "ROOT",
                 useExactSpellId = false,
+                controlType = "ROOT",
+                interruptSchool = 16,
                 auraspellids = {
                     "116",
                 },
@@ -85,17 +85,17 @@ end]],
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
-                MAGE = true,
                 ROGUE = true,
+                MAGE = true,
             },
             single = "MAGE",
         },
         spec = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
     },

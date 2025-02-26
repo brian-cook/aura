@@ -8,7 +8,7 @@ ns.auras["demon_skin_buff"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 100,
+    xOffset = 116,
     yOffset = 96,
     width = 3,
     height = 3,
@@ -37,27 +37,27 @@ ns.auras["demon_skin_buff"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "aura2",
-                subeventSuffix = "_CAST_START",
-                event = "Weapon Enchant",
-                unit = "player",
-                spellIds = {},
-                names = {},
                 subeventPrefix = "SPELL",
+                type = "aura2",
+                names = {},
+                subeventSuffix = "_CAST_START",
                 debuffType = "HELPFUL",
+                unit = "player",
+                event = "Weapon Enchant",
+                spellIds = {},
                 use_genericShowOn = true,
                 genericShowOn = "showOnCooldown",
                 auranames = {
                     "Demon Skin",
                 },
                 unitExists = false,
-                matchesShowOn = "showOnActive",
-                useName = true,
-                use_itemName = true,
                 useRem = false,
+                matchesShowOn = "showOnActive",
+                use_itemName = true,
+                useName = true,
                 enchant = "Rockbiter",
-                use_enchant = true,
                 use_weapon = true,
+                use_enchant = true,
                 use_showOn = true,
                 showOn = "showOnActive",
                 weapon = "main",
@@ -70,6 +70,9 @@ ns.auras["demon_skin_buff"] = {
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
                 ROGUE = true,
@@ -77,9 +80,6 @@ ns.auras["demon_skin_buff"] = {
             single = "ROGUE",
         },
         spec = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
     },

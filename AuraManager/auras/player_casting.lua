@@ -8,8 +8,8 @@ ns.auras["player_casting"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 124,
-    yOffset = 88,
+    xOffset = 140,
+    yOffset = 84,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -34,15 +34,17 @@ ns.auras["player_casting"] = {
     texture = "Solid",
     textureSource = "LSM",
     triggers = {
-        disjunctive = "any",
         activeTriggerMode = -10,
+        disjunctive = "any",
         {
             trigger = {
+                subeventPrefix = "SPELL",
                 type = "custom",
+                names = {},
                 subeventSuffix = "_CAST_START",
-                event = "Cast",
+                debuffType = "HELPFUL",
                 unit = "player",
-                custom_type = "stateupdate",
+                event = "Cast",
                 use_unit = true,
                 custom = [[function(allstates, event, ...)
     -- Throttle updates for performance
@@ -76,15 +78,13 @@ ns.auras["player_casting"] = {
 end]],
                 spellIds = {},
                 check = "update",
-                names = {},
-                subeventPrefix = "SPELL",
-                debuffType = "HELPFUL",
-                spellName = 0,
+                custom_type = "stateupdate",
                 use_genericShowOn = true,
                 realSpellName = 0,
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
                 use_track = true,
+                spellName = 0,
                 use_remaining = false,
                 use_castType = true,
                 use_showLatency = false,
@@ -98,13 +98,13 @@ end]],
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {},
         },
         spec = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
     },

@@ -8,7 +8,7 @@ ns.auras["distracting_shot"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 104,
+    xOffset = 124,
     yOffset = 96,
     width = 3,
     height = 3,
@@ -37,20 +37,20 @@ ns.auras["distracting_shot"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "spell",
-                subeventSuffix = "_CAST_START",
-                event = "Action Usable",
-                unit = "player",
-                spellIds = {},
-                names = {},
                 subeventPrefix = "SPELL",
+                type = "spell",
+                names = {},
+                subeventSuffix = "_CAST_START",
                 debuffType = "HELPFUL",
-                spellName = 20736,
+                unit = "player",
+                event = "Action Usable",
+                spellIds = {},
                 use_genericShowOn = true,
                 realSpellName = "Distracting Shot",
                 use_spellName = true,
                 genericShowOn = "showOnCooldown",
                 use_track = true,
+                spellName = 20736,
                 use_exact_spellName = false,
             },
             untrigger = {},
@@ -61,17 +61,17 @@ ns.auras["distracting_shot"] = {
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
-                ROGUE = true,
                 HUNTER = true,
+                ROGUE = true,
             },
             single = "HUNTER",
         },
         spec = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
         race = {

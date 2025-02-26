@@ -8,7 +8,7 @@ ns.auras["can_interrupt_diamond"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 168,
+    xOffset = 176,
     yOffset = 100,
     width = 3,
     height = 3,
@@ -37,14 +37,16 @@ ns.auras["can_interrupt_diamond"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "custom",
-                subeventSuffix = "_CAST_START",
-                unevent = "auto",
-                customVariables = "",
                 duration = "1",
-                event = "Health",
+                subeventPrefix = "SPELL",
+                use_absorbMode = true,
+                type = "custom",
+                names = {},
+                subeventSuffix = "_CAST_START",
+                debuffType = "HELPFUL",
                 unit = "player",
-                custom_type = "stateupdate",
+                event = "Health",
+                customStacks = [[function() return aura_env.count end]],
                 use_unit = true,
                 custom = [[function(allstates, event, ...)
         -- Throttle checks
@@ -92,11 +94,9 @@ ns.auras["can_interrupt_diamond"] = {
     end]],
                 spellIds = {},
                 check = "update",
-                names = {},
-                subeventPrefix = "SPELL",
-                debuffType = "HELPFUL",
-                use_absorbMode = true,
-                customStacks = [[function() return aura_env.count end]],
+                custom_type = "stateupdate",
+                unevent = "auto",
+                customVariables = "",
             },
             untrigger = {},
         },
@@ -107,19 +107,19 @@ ns.auras["can_interrupt_diamond"] = {
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
                 WARRIOR = true,
             },
             single = "WARRIOR",
         },
-        zoneIds = "",
         spec = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
     },
     animation = {
         start = {

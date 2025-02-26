@@ -8,8 +8,8 @@ ns.auras["hunter's_mark_debuff"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 164,
-    yOffset = 96,
+    xOffset = 120,
+    yOffset = 92,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,21 +37,21 @@ ns.auras["hunter's_mark_debuff"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                type = "aura2",
-                subeventSuffix = "_CAST_START",
-                event = "Health",
-                unit = "target",
-                spellIds = {},
-                names = {},
                 subeventPrefix = "SPELL",
+                type = "aura2",
+                names = {},
+                subeventSuffix = "_CAST_START",
                 debuffType = "HARMFUL",
+                unit = "target",
+                event = "Health",
+                spellIds = {},
                 auranames = {
                     "Hunter's Mark",
                 },
                 unitExists = false,
+                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
-                useRem = false,
             },
             untrigger = {},
         },
@@ -61,6 +61,9 @@ ns.auras["hunter's_mark_debuff"] = {
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
                 HUNTER = true,
@@ -68,9 +71,6 @@ ns.auras["hunter's_mark_debuff"] = {
             single = "HUNTER",
         },
         spec = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
     },

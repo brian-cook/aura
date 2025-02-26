@@ -8,8 +8,8 @@ ns.auras["target_is_player"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 176,
-    yOffset = 76,
+    xOffset = 212,
+    yOffset = 72,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -34,25 +34,25 @@ ns.auras["target_is_player"] = {
     texture = "Solid",
     textureSource = "LSM",
     triggers = {
-        disjunctive = "all",
         activeTriggerMode = 1,
+        disjunctive = "all",
         {
             trigger = {
+                duration = "1",
+                subeventPrefix = "SPELL",
                 custom_hide = "timed",
                 type = "unit",
+                names = {},
                 subeventSuffix = "_CAST_START",
-                unevent = "auto",
-                customVariables = "{}",
-                duration = "1",
-                event = "Unit Characteristics",
+                debuffType = "HELPFUL",
                 unit = "target",
-                custom_type = "stateupdate",
+                event = "Unit Characteristics",
                 use_unit = true,
                 spellIds = {},
                 check = "update",
-                names = {},
-                subeventPrefix = "SPELL",
-                debuffType = "HELPFUL",
+                custom_type = "stateupdate",
+                unevent = "auto",
+                customVariables = "{}",
                 use_unitisunit = false,
                 use_character = true,
                 use_class = false,
@@ -68,26 +68,26 @@ ns.auras["target_is_player"] = {
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
                 WARLOCK = true,
             },
             single = "WARLOCK",
         },
+        spec = {
+            multi = {},
+        },
         zoneIds = "",
-        use_level = false,
         level_operator = {
             "~=",
         },
         level = {
             "120",
         },
-        spec = {
-            multi = {},
-        },
-        size = {
-            multi = {},
-        },
+        use_level = false,
     },
     animation = {
         start = {

@@ -8,8 +8,8 @@ ns.auras["target_is_elite_boss_or_player"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 212,
-    yOffset = 76,
+    xOffset = 128,
+    yOffset = 68,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -34,20 +34,20 @@ ns.auras["target_is_elite_boss_or_player"] = {
     texture = "Solid",
     textureSource = "LSM",
     triggers = {
-        disjunctive = "any",
         activeTriggerMode = -10,
+        disjunctive = "any",
         {
             trigger = {
+                subeventPrefix = "SPELL",
+                use_absorbMode = true,
                 type = "unit",
+                names = {},
                 subeventSuffix = "_CAST_START",
-                event = "Unit Characteristics",
+                debuffType = "HELPFUL",
                 unit = "target",
+                event = "Unit Characteristics",
                 use_unit = true,
                 spellIds = {},
-                names = {},
-                subeventPrefix = "SPELL",
-                debuffType = "HELPFUL",
-                use_absorbMode = true,
                 use_unitisunit = false,
                 use_character = false,
                 unitisunit = "Quinik",
@@ -58,8 +58,8 @@ ns.auras["target_is_elite_boss_or_player"] = {
                     "20",
                 },
                 use_percentpower = false,
-                use_power = false,
                 use_showCost = true,
+                use_power = false,
                 use_percenthealth = true,
                 percenthealth_operator = {
                     "<",
@@ -74,8 +74,8 @@ ns.auras["target_is_elite_boss_or_player"] = {
                 },
                 use_classification = false,
                 use_specific_unitisunit = true,
-                use_npcId = false,
                 use_namerealm = false,
+                use_npcId = false,
             },
             untrigger = {},
         },
@@ -85,6 +85,9 @@ ns.auras["target_is_elite_boss_or_player"] = {
         talent = {
             multi = {},
         },
+        size = {
+            multi = {},
+        },
         class = {
             multi = {
                 ROGUE = true,
@@ -92,9 +95,6 @@ ns.auras["target_is_elite_boss_or_player"] = {
             single = "ROGUE",
         },
         spec = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
     },
