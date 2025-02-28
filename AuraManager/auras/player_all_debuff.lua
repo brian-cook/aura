@@ -8,8 +8,8 @@ ns.auras["player_all_debuff"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 100,
-    yOffset = 88,
+    xOffset = 136,
+    yOffset = 84,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,24 +37,24 @@ ns.auras["player_all_debuff"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HARMFUL",
+                subeventPrefix = "SPELL",
                 type = "aura2",
-                names = {},
+                subeventSuffix = "_CAST_START",
                 unit = "player",
                 event = "Crowd Controlled",
-                subeventPrefix = "SPELL",
                 spellIds = {},
                 use_unit = true,
-                subeventSuffix = "_CAST_START",
+                debuffType = "HARMFUL",
+                names = {},
+                use_inverse = false,
                 auranames = {
                     "Quick Flame Ward",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 use_debuffClass = true,
                 useName = false,
-                use_inverse = false,
+                useRem = false,
                 debuffClass = {
                     disease = true,
                     bleed = true,
@@ -66,10 +66,10 @@ ns.auras["player_all_debuff"] = {
                 use_interruptSchool = true,
                 useExactSpellId = false,
                 controlType = "FEAR",
-                interruptSchool = 16,
                 auraspellids = {
                     "116",
                 },
+                interruptSchool = 16,
             },
             untrigger = {},
         },
@@ -81,15 +81,15 @@ ns.auras["player_all_debuff"] = {
         },
         class = {
             multi = {
-                MAGE = true,
                 ROGUE = true,
+                MAGE = true,
             },
             single = "MAGE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

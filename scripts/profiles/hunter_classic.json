@@ -1,13 +1,6 @@
 {
     "name": "Hunter Hardcore",
     "actions": [
-        {
-            "group": "OOC Scan",
-            "name": "OOC Scan targetenemy",
-            "key": "q",
-            "conditions": ["!combat", "!target_skull"]
-        },
-
         
         {
             "group": "START GROUP: CC COUNTERS",
@@ -34,7 +27,17 @@
             "group": "START GROUP: PET",
             "name": "Call/Revive Pet uses macro",
             "key": ",",
-            "conditions": ["!player_has_pet"]
+            "conditions": ["inactive", "!player_has_pet", "!combat"]
+        },
+        {
+            "name": "Heal Pet",
+            "key": ";",
+            "conditions": ["inactive", "player_has_pet", "pet_health_under_50", "combat", "!player_moving", "pet_range_20", "power_20"]
+        },
+        {
+            "name": "use bandage on pet when low OOC",
+            "key": "v",
+            "conditions": ["inactive", "player_has_pet", "bandage_in_inventory", "pet_health_under_50", "!player_moving", "!combat", "pet_range_8"]
         },
 
 
@@ -47,35 +50,23 @@
 
 
         {
+            "group": "OOC Scan",
+            "name": "OOC Scan targetenemy",
+            "key": "q",
+            "conditions": ["!combat", "!target_skull"]
+        },
+
+
+        {
             "group": "START GROUP: Player Reactions",
             "name": "Target Cross for SS: /targetenemy",
             "key": "q",
-            "conditions": ["icon_cross_exists", "!target_cross", "serpent_sting_debuff_cross", "!range_8_cross", "range_35_cross", "power_15"]
+            "conditions": ["inactive", "icon_cross_exists", "!target_cross", "serpent_sting_debuff_cross", "!range_8_cross", "range_35_cross", "power_15"]
         },
         {
             "name": "SS Cross",
             "key": "0",
-            "conditions": ["!target_is_ooc", "target_cross", "serpent_sting_debuff_cross", "!range_8_cross", "range_35_cross", "power_15", "!leaving_combat"]
-        },
-        {
-            "name": "Target Circle for SS: /targetenemy",
-            "key": "q",
-            "conditions": ["icon_circle_exists", "!target_circle", "serpent_sting_debuff_circle", "!range_8_circle", "range_35_circle", "power_15"]
-        },
-        {
-            "name": "SS Circle",
-            "key": "0",
-            "conditions": ["!target_is_ooc", "target_circle", "serpent_sting_debuff_circle", "!range_8_circle", "range_35_circle", "power_15", "!leaving_combat"]
-        },
-        {
-            "name": "Target Square for SS: /targetenemy",
-            "key": "q",
-            "conditions": ["icon_square_exists", "!target_square", "serpent_sting_debuff_square", "!range_8_square", "range_35_square", "power_15"]
-        },
-        {
-            "name": "SS Square",
-            "key": "0",
-            "conditions": ["!target_is_ooc","target_square", "serpent_sting_debuff_square", "!range_8_square", "range_35_square", "power_15", "!leaving_combat"]
+            "conditions": ["inactive", "!target_is_ooc","target_cross", "serpent_sting_debuff_cross", "!range_8_cross", "range_35_cross", "power_15", "!leaving_combat"]
         },
         {
             "name": "Interrupt Target Diamond: /targetenemy",
@@ -89,51 +80,21 @@
         },
 
 
-        {
+       {
             "group": "START GROUP: PET AGGRO",
-            "name": "Target Cross for Pet Attack: /targetenemy",
+            "name": "Target Triangle for Pet Attack if not attacking and not aggro: /targetenemy",
             "key": "q",
-            "conditions": ["icon_cross_exists", "!target_cross", "!pet_attacking_cross", "!pet_aggro_cross"]
+            "conditions": ["inactive", "player_has_pet", "icon_triangle_exists", "!target_triangle", "!pet_attacking_triangle"]
         },
         {
-            "name": "Pet Attack Cross",
+            "name": "Pet Attack Triangle if not attacking and not aggro",
             "key": "'",
-            "conditions": ["icon_cross_exists","!pet_attacking_cross", "target_cross", "!pet_aggro_cross"]
-        },
-        {
-            "name": "Target Circle for Pet Attack: /targetenemy",
-            "key": "q",
-            "conditions": ["icon_circle_exists", "!target_circle", "!pet_attacking_circle", "!pet_aggro_circle", "pet_aggro_cross"]
-        },
-        {
-            "name": "Pet Attack Circle", 
-            "key": "'",
-            "conditions": ["icon_circle_exists", "!pet_attacking_circle", "target_circle", "!pet_aggro_circle", "pet_aggro_cross"]
-        },
-        {
-            "name": "Target Square for Pet Attack: /targetenemy",
-            "key": "q",
-            "conditions": ["icon_square_exists", "!target_square", "!pet_attacking_square", "!pet_aggro_square", "pet_aggro_cross", "pet_aggro_circle"]
-        },
-        {
-            "name": "Pet Attack Square", 
-            "key": "'",
-            "conditions": ["icon_square_exists", "!pet_attacking_square", "target_square", "!pet_aggro_square", "pet_aggro_cross", "pet_aggro_circle"]
-        },
-        {
-            "name": "Interrupt Target Diamond: /targetenemy",
-            "key": "q",
-            "conditions": ["inactive", "icon_diamond_exists", "!target_diamond"]
-        },
-        {
-            "name": "Interrupt Diamond",
-            "key": "f",
-            "conditions": ["inactive", "icon_diamond_exists", "!pet_attacking_diamond", "target_diamond"]
+            "conditions": ["inactive", "player_has_pet", "!pet_attacking_triangle", "target_triangle"]
         },
         {
             "name": "Target Skull: /targetenemy", 
-            "key": "q",
-            "conditions": ["!target_skull", "icon_skull_exists", "combat"]
+            "key": "q", 
+            "conditions": ["!target_skull"]
         },
 
 
@@ -143,19 +104,23 @@
             "key": "h",
             "conditions": ["inactive", "!hunter's_mark_debuff", "!range_15", "range_40", "power_10", "!target_health_under_50"]
         },
+        {
+            "name": "Wing Clip",
+            "key": "y",
+            "conditions": ["inactive", "range_8", "power_15"]
+        },
 
 
         {
             "group": "START GROUP: COMBAT BUFFS",
             "name": "Aspect of the Hawk",
             "key": "l",
-            "conditions": ["!aspect_of_the_hawk_buff", "!range_8", "power_20"]
+            "conditions": ["inactive", "!aspect_of_the_hawk_buff", "!range_8", "power_20"]
         },
         {
-            "group": "START GROUP: COMBAT BUFFS",
             "name": "Aspect of the Monkey",
             "key": "z",
-            "conditions": ["!aspect_of_the_monkey_buff", "range_8", "power_15", "combat", "target_aggro"]
+            "conditions": ["inactive", "!aspect_of_the_monkey_buff", "range_8_1+", "power_15", "combat", "player_has_aggro_from_any_mob"]
         },
 
 
@@ -163,23 +128,13 @@
             "group": "START GROUP: PET ATTACK",
             "name": "Pet Attack on player target only if NOT attacking already",
             "key": "'",
-            "conditions": ["!pet_attacking", "range_35", "!leaving_combat"]
+            "conditions": ["inactive", "player_has_pet", "!pet_attacking", "range_35", "!leaving_combat"]
 
         },
         {
-            "name": "Pet Attack on skull only if aggro on cross",
+            "name": "Pet Attack on skull",
             "key": "'",
-            "conditions": ["icon_cross_exists", "pet_attacking", "!pet_attacking_skull", "range_35", "pet_target_cross", "pet_aggro_cross", "target_skull"]
-        },
-        {
-            "name": "Pet Attack on skull only if aggro on cross and circle",
-            "key": "'",
-            "conditions": ["icon_cross_exists", "icon_circle_exists", "pet_attacking", "!pet_attacking_skull", "range_35", "pet_target_circle", "pet_aggro_circle", "pet_aggro_cross", "target_skull"]
-        },
-        {
-            "name": "Pet Attack on skull only if aggro on cross, circle and square",
-            "key": "'",
-            "conditions": ["icon_cross_exists", "icon_circle_exists", "icon_square_exists", "pet_attacking", "!pet_attacking_skull", "range_35", "pet_target_square", "pet_aggro_square", "pet_aggro_circle", "pet_aggro_cross", "target_skull"]
+            "conditions": ["inactive", "player_has_pet", "range_35", "!icon_triangle_exists", "!pet_attacking_skull", "target_skull"]
         },
 
 
@@ -187,17 +142,17 @@
             "group": "START GROUP: SINGLE TARGET ROTATION",
             "name": "Concussive Shot",
             "key": "7",
-            "conditions": ["!concussive_shot_debuff", "concussive_shot_cooldown", "!range_8", "range_35", "power_10", "!leaving_combat"]
+            "conditions": ["inactive", "!concussive_shot_debuff", "concussive_shot_cooldown", "!range_8", "range_35", "power_10", "!leaving_combat"]
         },
         {
             "name": "Arcane Shot",
             "key": "6",
-            "conditions": ["arcane_shot", "!range_8", "range_30", "power_15"]
+            "conditions": ["inactive", "arcane_shot", "!range_8", "range_30", "power_15"]
         },
         {
             "name": "Serpent Sting",
             "key": "5",
-            "conditions": ["!serpent_sting_debuff", "!range_8", "range_35", "power_10", "!leaving_combat"]
+            "conditions": ["inactive", "!serpent_sting_debuff", "!range_8", "range_35", "power_10", "!leaving_combat"]
         },
         {
             "name": "Raptor Strike in Melee Range",
@@ -208,6 +163,26 @@
             "name": "cast auto shoot",
             "key": "t",
             "conditions": ["!player_shooting", "!range_8", "range_30", "!leaving_combat"]
+        },
+        {
+            "name": "Stop and Shoot (Left)",
+            "key": "HOLD-d",
+            "conditions": ["combat", "is_moving_left", "player_shooting", "!swing_timer_ranged", "!range_8", "range_30"]
+        },
+        {
+            "name": "Stop and Shoot (Right)",
+            "key": "HOLD-a",
+            "conditions": ["combat", "is_moving_right", "player_shooting", "!swing_timer_ranged", "!range_8", "range_30"]
+        },
+        {
+            "name": "Stop and Shoot (forward)",
+            "key": "HOLD-s",
+            "conditions": ["combat", "is_moving_forward", "player_shooting", "!swing_timer_ranged", "!range_8", "range_30"]
+        },
+        {
+            "name": "Stop and Shoot (backward)",
+            "key": "HOLD-w",
+            "conditions": ["combat", "is_moving_backward", "player_shooting", "!swing_timer_ranged", "!range_8", "range_30"]
         },
         {
             "name": "cast auto attack",

@@ -8,8 +8,8 @@ ns.auras["target_square"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 160,
-    yOffset = 76,
+    xOffset = 124,
+    yOffset = 68,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -34,32 +34,32 @@ ns.auras["target_square"] = {
     texture = "Solid",
     textureSource = "LSM",
     triggers = {
-        disjunctive = "all",
         activeTriggerMode = 1,
+        disjunctive = "all",
         {
             trigger = {
-                debuffType = "HELPFUL",
-                type = "unit",
-                names = {},
-                unevent = "auto",
-                unit = "target",
                 duration = "1",
-                event = "Unit Characteristics",
                 subeventPrefix = "SPELL",
+                custom_hide = "timed",
+                type = "unit",
+                subeventSuffix = "_CAST_START",
+                unevent = "auto",
                 custom_type = "stateupdate",
+                unit = "target",
+                event = "Unit Characteristics",
                 spellIds = {},
                 use_unit = true,
                 check = "update",
+                debuffType = "HELPFUL",
+                names = {},
                 customVariables = "{}",
-                subeventSuffix = "_CAST_START",
-                custom_hide = "timed",
                 use_unitisunit = false,
                 use_character = false,
                 use_class = false,
                 character = "player",
+                use_raidMarkIndex = true,
                 unitisunit = "player",
                 raidMarkIndex = 6,
-                use_raidMarkIndex = true,
             },
             untrigger = {},
         },
@@ -70,26 +70,26 @@ ns.auras["target_square"] = {
         talent = {
             multi = {},
         },
+        zoneIds = "",
         class = {
             multi = {
                 WARLOCK = true,
             },
             single = "WARLOCK",
         },
+        spec = {
+            multi = {},
+        },
         size = {
             multi = {},
         },
-        spec = {
-            multi = {},
+        use_level = false,
+        level = {
+            "120",
         },
         level_operator = {
             "~=",
         },
-        level = {
-            "120",
-        },
-        use_level = false,
-        zoneIds = "",
     },
     animation = {
         start = {

@@ -8,8 +8,8 @@ ns.auras["role_toggle"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 112,
-    yOffset = 80,
+    xOffset = 168,
+    yOffset = 76,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,13 +37,12 @@ ns.auras["role_toggle"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
+                subeventPrefix = "SPELL",
                 type = "custom",
-                names = {},
+                subeventSuffix = "_CAST_START",
+                custom_type = "status",
                 unit = "player",
                 event = "Health",
-                subeventPrefix = "SPELL",
-                custom_type = "status",
                 custom = [[function(event,glStr,value)
     local cvar="WeakaurasCustomToggle1"
     if glStr and value and glStr==cvar then
@@ -53,9 +52,10 @@ ns.auras["role_toggle"] = {
     end
 end]],
                 spellIds = {},
-                check = "event",
-                subeventSuffix = "_CAST_START",
                 events = "CVAR_UPDATE",
+                check = "event",
+                debuffType = "HELPFUL",
+                names = {},
             },
             untrigger = {
                 custom = [[function(event,glStr,value)
@@ -73,16 +73,16 @@ end]],
         talent = {
             multi = {},
         },
+        zoneIds = "",
         class = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
         spec = {
             multi = {},
         },
-        zoneIds = "",
+        size = {
+            multi = {},
+        },
         role = {
             multi = {},
         },

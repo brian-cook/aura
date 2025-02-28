@@ -8,8 +8,8 @@ ns.auras["recently_bandaged_debuff"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 104,
-    yOffset = 80,
+    xOffset = 148,
+    yOffset = 76,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,21 +37,21 @@ ns.auras["recently_bandaged_debuff"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HARMFUL",
+                subeventPrefix = "SPELL",
                 type = "aura2",
-                names = {},
+                subeventSuffix = "_CAST_START",
                 unit = "player",
                 event = "Health",
-                subeventPrefix = "SPELL",
                 spellIds = {},
-                subeventSuffix = "_CAST_START",
+                debuffType = "HARMFUL",
+                names = {},
                 auranames = {
                     "Recently Bandaged",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
+                useRem = false,
                 ownOnly = true,
             },
             untrigger = {},
@@ -68,10 +68,10 @@ ns.auras["recently_bandaged_debuff"] = {
             },
             single = "ROGUE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

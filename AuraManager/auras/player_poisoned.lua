@@ -8,8 +8,8 @@ ns.auras["player_poisoned"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 156,
-    yOffset = 88,
+    xOffset = 192,
+    yOffset = 84,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,14 +37,14 @@ ns.auras["player_poisoned"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HARMFUL",
+                subeventPrefix = "SPELL",
                 type = "aura2",
-                names = {},
+                subeventSuffix = "_CAST_START",
                 unit = "player",
                 event = "Health",
-                subeventPrefix = "SPELL",
                 spellIds = {},
-                subeventSuffix = "_CAST_START",
+                debuffType = "HARMFUL",
+                names = {},
                 auranames = {
                     "17183",
                     "17292",
@@ -70,10 +70,10 @@ ns.auras["player_poisoned"] = {
                     "8313",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 use_debuffClass = true,
                 useName = false,
+                useRem = false,
                 debuffClass = {
                     poison = true,
                 },
@@ -92,10 +92,10 @@ ns.auras["player_poisoned"] = {
             },
             single = "ROGUE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

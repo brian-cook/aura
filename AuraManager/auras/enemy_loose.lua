@@ -8,7 +8,7 @@ ns.auras["enemy_loose"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 108,
+    xOffset = 144,
     yOffset = 96,
     width = 3,
     height = 3,
@@ -37,15 +37,16 @@ ns.auras["enemy_loose"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
-                type = "custom",
-                names = {},
-                unevent = "auto",
-                unit = "player",
                 duration = "1",
-                event = "Health",
                 subeventPrefix = "SPELL",
+                use_absorbMode = true,
+                type = "custom",
+                subeventSuffix = "_CAST_START",
+                unevent = "auto",
                 custom_type = "stateupdate",
+                unit = "player",
+                event = "Health",
+                customStacks = [[function() return aura_env.count end]],
                 custom = [[function(allstates)
     -- Throttle the check for perf?  What is config?
     if not aura_env.last or GetTime() - aura_env.last > 0.2 then
@@ -85,12 +86,11 @@ end]],
                 spellIds = {},
                 use_unit = true,
                 check = "update",
+                debuffType = "HELPFUL",
+                names = {},
                 customVariables = [[{
   stacks = true,
 }]],
-                subeventSuffix = "_CAST_START",
-                customStacks = [[function() return aura_env.count end]],
-                use_absorbMode = true,
             },
             untrigger = {},
         },
@@ -101,19 +101,19 @@ end]],
         talent = {
             multi = {},
         },
+        zoneIds = "",
         class = {
             multi = {
                 WARRIOR = true,
             },
             single = "WARRIOR",
         },
-        size = {
-            multi = {},
-        },
         spec = {
             multi = {},
         },
-        zoneIds = "",
+        size = {
+            multi = {},
+        },
     },
     animation = {
         start = {

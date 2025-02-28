@@ -8,7 +8,7 @@ ns.auras["can_cc_circle"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 140,
+    xOffset = 148,
     yOffset = 100,
     width = 3,
     height = 3,
@@ -37,15 +37,16 @@ ns.auras["can_cc_circle"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
-                type = "custom",
-                names = {},
-                unevent = "auto",
-                unit = "player",
                 duration = "1",
-                event = "Health",
                 subeventPrefix = "SPELL",
+                use_absorbMode = true,
+                type = "custom",
+                subeventSuffix = "_CAST_START",
+                unevent = "auto",
                 custom_type = "stateupdate",
+                unit = "player",
+                event = "Health",
+                customStacks = [[function() return aura_env.count end]],
                 custom = [[function(allstates, event, ...)
     -- Throttle checks
     if not aura_env.last or GetTime() - aura_env.last > 0.2 then
@@ -70,7 +71,10 @@ ns.auras["can_cc_circle"] = {
                         if not name then break end
                         
                         -- List of CC effects to check for
-                        if name == "Sap" or name == "Blind" or name == "Gouge" then
+                        if name == "Sap" or 
+                        name == "Blind" or 
+                        name == "Gouge" or
+                        name == "Fear" then  -- Added Warlock's Fear
                             isCC = true
                             break
                         end
@@ -101,10 +105,9 @@ end]],
                 spellIds = {},
                 use_unit = true,
                 check = "update",
+                debuffType = "HELPFUL",
+                names = {},
                 customVariables = "",
-                subeventSuffix = "_CAST_START",
-                customStacks = [[function() return aura_env.count end]],
-                use_absorbMode = true,
             },
             untrigger = {},
         },
@@ -115,19 +118,19 @@ end]],
         talent = {
             multi = {},
         },
+        zoneIds = "",
         class = {
             multi = {
                 WARRIOR = true,
             },
             single = "WARRIOR",
         },
-        size = {
-            multi = {},
-        },
         spec = {
             multi = {},
         },
-        zoneIds = "",
+        size = {
+            multi = {},
+        },
     },
     animation = {
         start = {

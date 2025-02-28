@@ -8,8 +8,8 @@ ns.auras["pet_attacking"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 140,
-    yOffset = 92,
+    xOffset = 176,
+    yOffset = 88,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -34,19 +34,19 @@ ns.auras["pet_attacking"] = {
     texture = "Solid",
     textureSource = "LSM",
     triggers = {
-        disjunctive = "all",
         activeTriggerMode = 1,
+        disjunctive = "all",
         {
             trigger = {
-                debuffType = "HELPFUL",
-                type = "custom",
-                names = {},
-                unevent = "auto",
-                unit = "player",
                 duration = "1",
-                event = "Health",
                 subeventPrefix = "SPELL",
+                custom_hide = "timed",
+                type = "custom",
+                subeventSuffix = "_CAST_START",
+                unevent = "auto",
                 custom_type = "stateupdate",
+                unit = "player",
+                event = "Health",
                 custom = [[function(allstates)
     -- Initialize state if needed
     aura_env.last = aura_env.last or 0
@@ -73,12 +73,12 @@ ns.auras["pet_attacking"] = {
     return false
 end]],
                 spellIds = {},
+                events = "UNIT_PET PET_ATTACK_START PET_ATTACK_STOP PLAYER_TARGET_CHANGED",
                 use_unit = true,
                 check = "update",
+                debuffType = "HELPFUL",
+                names = {},
                 customVariables = "{}",
-                subeventSuffix = "_CAST_START",
-                custom_hide = "timed",
-                events = "UNIT_PET PET_ATTACK_START PET_ATTACK_STOP PLAYER_TARGET_CHANGED",
             },
             untrigger = {
                 custom = [[function()
@@ -93,27 +93,27 @@ end]],
         talent = {
             multi = {},
         },
+        zoneIds = "",
         class = {
             multi = {
                 WARLOCK = true,
             },
             single = "WARLOCK",
         },
-        use_spellknown = false,
+        spec = {
+            multi = {},
+        },
         size = {
             multi = {},
         },
-        spec = {
-            multi = {},
+        use_level = false,
+        level = {
+            "120",
         },
         level_operator = {
             "~=",
         },
-        level = {
-            "120",
-        },
-        use_level = false,
-        zoneIds = "",
+        use_spellknown = false,
     },
     animation = {
         start = {

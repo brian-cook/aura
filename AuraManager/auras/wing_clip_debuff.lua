@@ -8,8 +8,8 @@ ns.auras["wing_clip_debuff"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 208,
-    yOffset = 76,
+    xOffset = 192,
+    yOffset = 68,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,21 +37,21 @@ ns.auras["wing_clip_debuff"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HARMFUL",
+                subeventPrefix = "SPELL",
                 type = "aura2",
-                names = {},
+                subeventSuffix = "_CAST_START",
                 unit = "target",
                 event = "Health",
-                subeventPrefix = "SPELL",
                 spellIds = {},
-                subeventSuffix = "_CAST_START",
+                debuffType = "HARMFUL",
+                names = {},
                 auranames = {
                     "2974",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
+                useRem = false,
             },
             untrigger = {},
         },
@@ -67,10 +67,10 @@ ns.auras["wing_clip_debuff"] = {
             },
             single = "HUNTER",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

@@ -8,8 +8,8 @@ ns.auras["curse_of_weakness_debuff"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 216,
-    yOffset = 100,
+    xOffset = 112,
+    yOffset = 96,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,21 +37,21 @@ ns.auras["curse_of_weakness_debuff"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HARMFUL",
+                subeventPrefix = "SPELL",
                 type = "aura2",
-                names = {},
+                subeventSuffix = "_CAST_START",
                 unit = "target",
                 event = "Health",
-                subeventPrefix = "SPELL",
                 spellIds = {},
-                subeventSuffix = "_CAST_START",
+                debuffType = "HARMFUL",
+                names = {},
                 auranames = {
                     "702",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
+                useRem = false,
             },
             untrigger = {},
         },
@@ -67,10 +67,10 @@ ns.auras["curse_of_weakness_debuff"] = {
             },
             single = "ROGUE",
         },
-        size = {
+        spec = {
             multi = {},
         },
-        spec = {
+        size = {
             multi = {},
         },
     },

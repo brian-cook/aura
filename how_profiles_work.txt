@@ -1,3 +1,20 @@
+# How Profiles Work
+Version: 1.1.0 | Last Updated: 2023-04-14
+
+## Navigation
+- [1. Overview](#1-overview)
+- [2. Profile Structure](#2-profile-structure)
+- [3. Profile Loading](#3-profile-loading)
+- [4. Profile Management](#4-profile-management)
+- [5. Testing & Validation](#5-testing-validation)
+- [6. Troubleshooting](#6-troubleshooting)
+- [7. Resources](#7-resources)
+
+> **Related Documentation**: 
+> - For WeakAuras implementation: See [building_auras.txt](building_auras.txt)
+> - For project overview: See [README.md](README.md)
+> - For all documentation: See [ProjectFileIndex.md](ProjectFileIndex.md)
+
 # World of Warcraft Profile Creation Guide: AI Implementation
 
 ## 1. Profile Structure and Syntax
@@ -216,30 +233,285 @@ Solution:
 }
 ```
 
-## 5. Testing and Validation
+## 5. Testing & Validation
 
-### 5.1 Profile Testing Checklist
-- [ ] Test all emergency actions
-- [ ] Verify buff management
-- [ ] Check resource usage
-- [ ] Test target switching
-- [ ] Verify AOE functionality
-- [ ] Test crowd control priority
-- [ ] Check combat entry/exit
-- [ ] Verify mark management
+### 5.1 Profile Validation Process
 
-### 5.2 Common Aura Requirements
-1. Ability availability
-2. Resource checks
-3. Range requirements
-4. Buff/debuff tracking
-5. Cooldown monitoring
-6. Target state tracking
-7. Combat state checks
-8. Health/resource thresholds
+When developing and maintaining profiles, the following validation processes should be applied:
 
-## 6. Resources
+#### Schema Validation
+```python
+def validate_profile_schema(profile_data):
+    """
+    Validates that a profile conforms to the expected schema.
+    
+    Args:
+        profile_data (dict): The profile data to validate
+        
+    Returns:
+        tuple: (is_valid, list_of_errors)
+    """
+    required_keys = ['name', 'version', 'config', 'auras']
+    errors = []
+    
+    # Check required keys
+    for key in required_keys:
+        if key not in profile_data:
+            errors.append(f"Missing required key: {key}")
+    
+    # Validate name
+    if 'name' in profile_data and not isinstance(profile_data['name'], str):
+        errors.append("'name' must be a string")
+    
+    # Validate version
+    if 'version' in profile_data:
+        if not isinstance(profile_data['version'], str):
+            errors.append("'version' must be a string")
+        elif not re.match(r'^\d+\.\d+\.\d+$', profile_data['version']):
+            errors.append("'version' must follow semver format (e.g., '1.0.0')")
+    
+    # Validate config
+    if 'config' in profile_data:
+        if not isinstance(profile_data['config'], dict):
+            errors.append("'config' must be a dictionary")
+    
+    # Validate auras
+    if 'auras' in profile_data:
+        if not isinstance(profile_data['auras'], dict):
+            errors.append("'auras' must be a dictionary")
+        else:
+            for aura_name, aura_data in profile_data['auras'].items():
+                if not isinstance(aura_data, dict):
+                    errors.append(f"Aura '{aura_name}' must be a dictionary")
+                elif 'type' not in aura_data:
+                    errors.append(f"Aura '{aura_name}' is missing required key: 'type'")
+    
+    return (len(errors) == 0, errors)
+```
+
+#### Functional Validation
+
+The validation process should also test the profile's functionality:
+
+```python
+def validate_profile_functionality(profile_data, test_context=None):
+    """
+    Validates that a profile functions as expected.
+    
+    Args:
+        profile_data (dict): The profile data to validate
+        test_context (dict, optional): Test context including game state mocks
+        
+    Returns:
+        tuple: (is_valid, list_of_test_results)
+    """
+    results = []
+    
+    # Initialize test environment
+    test_env = create_test_environment(test_context)
+    
+    # Test profile loading
+    load_result = test_env.load_profile(profile_data)
+    results.append({
+        'name': 'profile_loading',
+        'passed': load_result.success,
+        'message': load_result.message
+    })
+    
+    if not load_result.success:
+        return (False, results)
+    
+    # Test aura creation
+    for aura_name, aura_data in profile_data['auras'].items():
+        aura_result = test_env.validate_aura(aura_name, aura_data)
+        results.append({
+            'name': f'aura_{aura_name}',
+            'passed': aura_result.success,
+            'message': aura_result.message
+        })
+    
+    # Test config application
+    config_result = test_env.apply_config(profile_data['config'])
+    results.append({
+        'name': 'config_application',
+        'passed': config_result.success,
+        'message': config_result.message
+    })
+    
+    # Check for overall success
+    is_valid = all(result['passed'] for result in results)
+    
+    return (is_valid, results)
+```
+
+### 5.2 Integration Testing
+
+For integration testing, you should verify that profiles interact correctly with:
+
+1. **Game Environment**: Test profiles in various in-game scenarios
+2. **WeakAuras Framework**: Ensure compatibility with WeakAuras API
+3. **Other Profiles**: Check for conflicts between profiles when multiple are loaded
+
+```python
+def run_integration_tests(profile_data, test_cases):
+    """
+    Runs integration tests for a profile with different test cases.
+    
+    Args:
+        profile_data (dict): The profile to test
+        test_cases (list): List of test cases to run
+        
+    Returns:
+        dict: Test results by category
+    """
+    results = {
+        'game_environment': [],
+        'weakauras_framework': [],
+        'profile_conflicts': []
+    }
+    
+    # Game environment tests
+    for test_case in test_cases.get('game_environment', []):
+        env = create_game_environment_mock(**test_case['setup'])
+        result = env.test_profile(profile_data)
+        results['game_environment'].append({
+            'name': test_case['name'],
+            'passed': result.success,
+            'message': result.message
+        })
+    
+    # WeakAuras framework tests
+    for test_case in test_cases.get('weakauras_framework', []):
+        wa_env = create_weakauras_mock(**test_case['setup'])
+        result = wa_env.test_profile(profile_data)
+        results['weakauras_framework'].append({
+            'name': test_case['name'],
+            'passed': result.success,
+            'message': result.message
+        })
+    
+    # Profile conflict tests
+    for test_case in test_cases.get('profile_conflicts', []):
+        other_profile = load_profile(test_case['other_profile'])
+        conflict_checker = ProfileConflictChecker()
+        conflicts = conflict_checker.check_conflicts(profile_data, other_profile)
+        results['profile_conflicts'].append({
+            'name': test_case['name'],
+            'passed': len(conflicts) == 0,
+            'message': f"Found {len(conflicts)} conflicts" if conflicts else "No conflicts found",
+            'conflicts': conflicts
+        })
+    
+    return results
+```
+
+### 5.3 Automated Testing Pipeline
+
+For continuous integration, you can use the following automated testing pipeline:
+
+```python
+def create_testing_pipeline():
+    """Creates an automated testing pipeline for profiles"""
+    pipeline = TestingPipeline()
+    
+    # Add validation stages
+    pipeline.add_stage("schema_validation", validate_profile_schema)
+    pipeline.add_stage("functional_validation", validate_profile_functionality)
+    
+    # Add integration test stages
+    pipeline.add_stage("game_integration", lambda profile: run_integration_tests(
+        profile, load_test_cases('game_environment')
+    ))
+    pipeline.add_stage("weakauras_integration", lambda profile: run_integration_tests(
+        profile, load_test_cases('weakauras_framework')
+    ))
+    pipeline.add_stage("conflict_detection", lambda profile: run_integration_tests(
+        profile, load_test_cases('profile_conflicts')
+    ))
+    
+    # Add performance testing stage
+    pipeline.add_stage("performance", test_profile_performance)
+    
+    return pipeline
+```
+
+## 6. Troubleshooting
+
+### 6.1 Common Issues
+
+| Issue | Possible Causes | Solution |
+|-------|----------------|----------|
+| Profile fails to load | - Invalid JSON format<br>- Missing required fields<br>- Incompatible version | - Validate JSON syntax<br>- Check schema validation<br>- Update profile version |
+| Auras don't appear in-game | - Incorrect aura type<br>- Missing trigger configuration<br>- WeakAuras addon disabled | - Verify aura configuration<br>- Check trigger settings<br>- Enable WeakAuras addon |
+| Configuration not applied | - Incorrect config format<br>- Missing config keys<br>- Permission issues | - Validate config structure<br>- Add required config keys<br>- Check file permissions |
+| Version conflicts | - Multiple profiles with different versions<br>- Outdated profile format | - Synchronize profile versions<br>- Update to latest format |
+
+### 6.2 Debugging
+
+When debugging profiles, use the following techniques:
+
+1. **Enable Debug Logging**
+   ```lua
+   -- In WeakAuras:
+   /run WeakAuras.debug = true
+   ```
+
+2. **Profile Diff Analysis**
+   Compare working and non-working profiles to identify differences:
+   ```python
+   def analyze_profile_diff(working_profile, broken_profile):
+       """Analyzes differences between working and broken profiles"""
+       diff = {}
+       for key in set(list(working_profile.keys()) + list(broken_profile.keys())):
+           if key not in working_profile:
+               diff[key] = {"status": "missing_in_working", "value": broken_profile[key]}
+           elif key not in broken_profile:
+               diff[key] = {"status": "missing_in_broken", "value": working_profile[key]}
+           elif working_profile[key] != broken_profile[key]:
+               diff[key] = {
+                   "status": "different",
+                   "working_value": working_profile[key],
+                   "broken_value": broken_profile[key]
+               }
+       return diff
+   ```
+
+3. **Runtime Validation**
+   Add runtime validation to your profile loading process:
+   ```python
+   def safe_load_profile(profile_data):
+       """Loads a profile with runtime validation"""
+       try:
+           # Validate schema first
+           is_valid, errors = validate_profile_schema(profile_data)
+           if not is_valid:
+               logger.error(f"Invalid profile schema: {errors}")
+               return False
+           
+           # Apply profile
+           applied = apply_profile(profile_data)
+           if not applied:
+               logger.error("Failed to apply profile")
+               return False
+           
+           # Verify application
+           verification = verify_profile_application(profile_data)
+           if not verification['success']:
+               logger.error(f"Profile verification failed: {verification['errors']}")
+               return False
+           
+           return True
+       except Exception as e:
+           logger.exception(f"Error loading profile: {str(e)}")
+           return False
+   ```
+
+## 7. Resources
 1. [Wowhead](https://www.wowhead.com/)
 2. [Icy Veins](https://www.icy-veins.com/)
 3. [WoW API Documentation](https://wowpedia.fandom.com/wiki/World_of_Warcraft_API)
 4. Class Discord channels
+
+## Changelog
+- v1.1.0 (2023-04-14): Added Testing & Validation (Section 5) and Troubleshooting (Section 6)
+- v1.0.0 (2023-01-19): Initial comprehensive documentation

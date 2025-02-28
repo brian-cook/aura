@@ -8,8 +8,8 @@ ns.auras["scanner_test_no_load"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 144,
-    yOffset = 80,
+    xOffset = 200,
+    yOffset = 76,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,15 +37,17 @@ ns.auras["scanner_test_no_load"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
-                type = "custom",
-                names = {},
-                unevent = "auto",
-                unit = "player",
                 duration = "1",
-                event = "Health",
                 subeventPrefix = "SPELL",
+                custom_hide = "timed",
+                use_absorbMode = true,
+                type = "custom",
+                subeventSuffix = "_CAST_START",
+                unevent = "auto",
                 custom_type = "stateupdate",
+                unit = "player",
+                event = "Health",
+                customStacks = "",
                 custom = [[function(allstates, event, ...)
     -- Debug setup
     aura_env.debug = true
@@ -533,18 +535,20 @@ ns.auras["scanner_test_no_load"] = {
     
     -- After calculating spell efficiency
     for spellName, efficiency in pairs(spellEfficiency) do
-        -- Broadcast updates for each spell
-        WeakAuras.ScanEvents(
-            "WARLOCK_SPELL_UPDATE_"..string.upper(spellName:gsub(" ", "_")), 
-            efficiency.shouldCast,
-            efficiency.reason
+        -- Format event name consistently
+        local eventName = string.format(
+            "WARLOCK_SPELL_UPDATE_%s",
+            spellName:upper():gsub(" ", "_")
         )
         
-        debugPrint("Broadcasting %s update: shouldCast=%s, reason=%s", 
-            spellName,
+        debugPrint("Broadcasting event: %s (shouldCast=%s, reason=%s)", 
+            eventName,
             tostring(efficiency.shouldCast),
             efficiency.reason
         )
+        
+        -- Broadcast the event
+        WeakAuras.ScanEvents(eventName, efficiency.shouldCast, efficiency.reason)
     end
     
     -- Update state
@@ -564,14 +568,12 @@ ns.auras["scanner_test_no_load"] = {
     return true
 end]],
                 spellIds = {},
+                events = "PLAYER_TARGET_CHANGED, UNIT_HEALTH, PLAYER_REGEN_DISABLED, PLAYER_REGEN_ENABLED PLAYER_TARGET_CHANGED, UNIT_HEALTH, UNIT_HEALTH_FREQUENT",
                 use_unit = true,
                 check = "update",
+                debuffType = "HELPFUL",
+                names = {},
                 customVariables = "",
-                subeventSuffix = "_CAST_START",
-                custom_hide = "timed",
-                customStacks = "",
-                events = "PLAYER_TARGET_CHANGED, UNIT_HEALTH, PLAYER_REGEN_DISABLED, PLAYER_REGEN_ENABLED PLAYER_TARGET_CHANGED, UNIT_HEALTH, UNIT_HEALTH_FREQUENT",
-                use_absorbMode = true,
             },
             untrigger = {
                 custom = "",
@@ -580,23 +582,23 @@ end]],
     },
     conditions = {},
     load = {
-        use_never = false,
+        use_never = true,
         talent = {
             multi = {},
         },
+        zoneIds = "",
         class = {
             multi = {
                 WARRIOR = true,
             },
             single = "WARRIOR",
         },
-        size = {
-            multi = {},
-        },
         spec = {
             multi = {},
         },
-        zoneIds = "",
+        size = {
+            multi = {},
+        },
         group_leader = {
             multi = {
                 LEADER = true,

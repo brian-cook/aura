@@ -8,8 +8,8 @@ ns.auras["target_diamond"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 112,
-    yOffset = 76,
+    xOffset = 196,
+    yOffset = 72,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -34,32 +34,32 @@ ns.auras["target_diamond"] = {
     texture = "Solid",
     textureSource = "LSM",
     triggers = {
-        disjunctive = "all",
         activeTriggerMode = 1,
+        disjunctive = "all",
         {
             trigger = {
-                debuffType = "HELPFUL",
-                type = "unit",
-                names = {},
-                unevent = "auto",
-                unit = "target",
                 duration = "1",
-                event = "Unit Characteristics",
                 subeventPrefix = "SPELL",
+                custom_hide = "timed",
+                type = "unit",
+                subeventSuffix = "_CAST_START",
+                unevent = "auto",
                 custom_type = "stateupdate",
+                unit = "target",
+                event = "Unit Characteristics",
                 spellIds = {},
                 use_unit = true,
                 check = "update",
+                debuffType = "HELPFUL",
+                names = {},
                 customVariables = "{}",
-                subeventSuffix = "_CAST_START",
-                custom_hide = "timed",
                 use_unitisunit = false,
                 use_character = false,
                 use_class = false,
                 character = "player",
+                use_raidMarkIndex = true,
                 unitisunit = "player",
                 raidMarkIndex = 3,
-                use_raidMarkIndex = true,
             },
             untrigger = {},
         },
@@ -70,26 +70,26 @@ ns.auras["target_diamond"] = {
         talent = {
             multi = {},
         },
+        zoneIds = "",
         class = {
             multi = {
                 WARLOCK = true,
             },
             single = "WARLOCK",
         },
+        spec = {
+            multi = {},
+        },
         size = {
             multi = {},
         },
-        spec = {
-            multi = {},
+        use_level = false,
+        level = {
+            "120",
         },
         level_operator = {
             "~=",
         },
-        level = {
-            "120",
-        },
-        use_level = false,
-        zoneIds = "",
     },
     animation = {
         start = {

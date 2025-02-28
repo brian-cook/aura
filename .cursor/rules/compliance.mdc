@@ -1,0 +1,93 @@
+---
+description: 
+globs: *.*
+---
+---
+description: ALL TASKS
+globs: *.*
+---
+---
+description: AI Rules
+globs: *.*
+---
+
+# AGENT RULES COMPLIANCE
+
+## Overview
+This rule defines the mandatory compliance process for all AGENT operations in the codebase.
+
+## Priority
+CRITICAL - 
+
+!!! ensure that you review all project files.
+
+!!! Do not make assumptions.
+
+## Process
+1. Pre-Operation Checks:
+   - Verify AGENT compliance with each rule category:
+     * File Verification (Critical)
+     * Cursor First Operations (Critical)
+     * Cursor Integration (Critical)
+     * Technical Standards (Critical)
+     * Project Alignment (Critical)
+     * Error Handling (Critical)
+     * Documentation (Critical)
+     * Workspace Settings (Critical)
+     * Implementation Tracking (Critical)
+     * Implementation Requirements (Critical)
+     * Interaction Personalization (Critical)
+ 
+
+2. During Operation:
+   - Maintain active AGENT compliance with all rules
+   - Track modifications against requirements
+   - Document changes in accordance with guidelines
+   - Follow proper tool usage patterns
+
+3. Post-Operation Verification:
+   - Verify changes against all AGENT rule requirements
+   - Ensure documentation is updated
+   - Validate technical standards compliance
+   - Confirm workspace integrity
+
+## Conflict Resolution
+If a rule conflicts with package best practices:
+1. Document the conflict
+2. Explain the best practice recommendation
+3. Propose a solution that maintains compliance while following best practices
+4. Request clarification if needed
+
+## Reference Files
+- Supporting:
+  * @building_auras.txt
+  * @how_profiles_work.txt
+  * @requirements.txt
+  * @README.md
+
+## Implementation Requirements
+1. Every AGENT response must:
+   - Document AGENT compliance with each relevant rule
+   - Maintain proper versioning and dependencies
+   - Use appropriate tools and patterns
+   - Respect workspace structure and settings
+
+2. All code changes must:
+   - Be implemented through Cursor when possible
+   - Maintain project architecture
+   - Include proper error handling
+   - Update relevant documentation
+
+3. All tool operations must:
+   - Respect tool limitations
+   - Follow proper calling patterns
+   - Maintain workspace integrity
+   - Track modifications appropriately
+
+## Validation
+Before completing any operation, verify:
+1. All relevant rules have been followed
+2. Changes comply with project standards
+3. Documentation is complete and accurate
+4. Technical requirements are met
+5. Workspace integrity is maintained

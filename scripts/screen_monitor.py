@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Any
 import threading
 import inputs
-from pynput import keyboard 
+from pynput import keyboard
 from pynput.keyboard import Key, Controller, Listener, KeyCode
 from src.core.screen_checker import ScreenChecker
 
@@ -75,6 +75,20 @@ class ScreenMonitor:
         self.monitor_thread = None
         self.gamepad_available = False
         
+        # Add special key mapping
+        self.special_keys = {
+            "up": Key.up,
+            "down": Key.down,
+            "left": Key.left,
+            "right": Key.right,
+            "shift": Key.shift,
+            "ctrl": Key.ctrl,
+            "enter": Key.enter,
+            "space": Key.space,
+            "tab": Key.tab,
+            "esc": Key.esc
+        }
+        
         # In test mode, don't start monitoring
         if not test_mode:
             self.start()
@@ -102,27 +116,39 @@ class ScreenMonitor:
                 # Check conditions and execute actions if monitoring is active
                 current_time = time.time()
                 if self.is_monitoring_active() and (current_time - self.last_check) >= self.check_interval:
-                    # Get current conditions
-                    active_conditions = self.checker.check_conditions()
+                    # Get current game conditions
+                    game_conditions = self.checker.check_conditions()
+                    if not game_conditions and self.debug:
+                        print("\nDEBUG - WARNING: check_conditions() returned empty list!")
+                        print("DEBUG - Last check time:", self.last_check)
+                        print("DEBUG - Current time:", current_time)
+                        print("DEBUG - Check interval:", self.check_interval)
                     
-                    # Add movement conditions to active conditions
-                    active_conditions.extend([
+                    # Get movement conditions
+                    movement_conditions = [
                         condition for condition, is_active in self.movement_states.items()
                         if is_active
-                    ])
+                    ]
                     
-                    # Get next action
-                    action = self.get_next_action(active_conditions)
-                    
-                    # If we have a held key but no action or a different action,
-                    # release the held key
-                    if self.currently_held_key:
-                        if not action or action != self.current_hold_action:
-                            self._release_held_key()
-                    
-                    # Execute the action if we have one
-                    if action:
-                        self.execute_action(action)
+                    # Only proceed with action evaluation if we have game conditions
+                    if game_conditions:
+                        # Combine all conditions
+                        active_conditions = game_conditions + movement_conditions
+                        
+                        # Get next action
+                        action = self.get_next_action(active_conditions)
+                        
+                        # If we have a held key but no action or a different action,
+                        # release the held key
+                        if self.currently_held_key:
+                            if not action or action != self.current_hold_action:
+                                self._release_held_key()
+                        
+                        # Execute the action if we have one
+                        if action:
+                            self.execute_action(action, active_conditions)
+                    elif self.debug and movement_conditions:
+                        print("DEBUG - Skipping action evaluation - only movement conditions present:", movement_conditions)
                     
                     self.last_check = current_time
                 elif not self.is_monitoring_active() and self.currently_held_key:
@@ -267,7 +293,7 @@ class ScreenMonitor:
     
     def get_next_action(self, active_conditions):
         """Get the next action to execute based on active conditions"""
-        if not self.is_monitoring_active():
+        if not self.is_monitoring_active() or not active_conditions:
             return None
 
         for action in self.profile["actions"]:
@@ -275,35 +301,71 @@ class ScreenMonitor:
             for condition in action["conditions"]:
                 if condition.startswith("!"):
                     condition_name = condition[1:]
+                    # For negated conditions, they are met when the condition is NOT in active_conditions
                     if condition_name in active_conditions:
                         all_conditions_met = False
                         break
                 else:
+                    # For normal conditions, they are met when the condition IS in active_conditions
                     if condition not in active_conditions:
                         all_conditions_met = False
                         break
             
             if all_conditions_met:
+                # Only log debug info if we're about to return a key "1" action
+                if action["key"] == "1":
+                    print(f"\nDEBUG - Selected action: {action['name']}")
+                    print(f"DEBUG - Current conditions: {active_conditions}")
+                    print(f"DEBUG - Required conditions: {action['conditions']}")
+                    print("DEBUG - All conditions met\n")
                 return action
         return None
     
-    def execute_action(self, action: Dict[str, Any]):
+    def _parse_key(self, key_str: str):
+        """Parse a key string into a pynput key object"""
+        if key_str in self.special_keys:
+            return self.special_keys[key_str]
+        elif len(key_str) == 1:
+            return key_str
+        else:
+            return KeyCode.from_char(key_str)
+
+    def execute_action(self, action: Dict[str, Any], active_conditions: List[str]):
         """Execute a keyboard action"""
         action_name = action.get('name', 'Name Missing')
         key = action['key']
         
+        # Verify conditions are still met
+        all_conditions_met = True
+        for condition in action['conditions']:
+            if condition.startswith('!'):
+                condition_name = condition[1:]
+                if condition_name in active_conditions:
+                    all_conditions_met = False
+                    break
+            else:
+                if condition not in active_conditions:
+                    all_conditions_met = False
+                    break
+                    
+        if not all_conditions_met:
+            return
+        
         # Build condition status string
-        active_conditions = self.checker.check_conditions()
         condition_status = []
         for condition in action['conditions']:
             if condition.startswith('!'):
                 condition_name = condition[1:]
-                is_met = condition_name not in active_conditions
-                status = "FALSE" if is_met else "TRUE"
+                is_present = condition_name in active_conditions
+                # For negated conditions, they are met when the condition is NOT present
+                is_met = not is_present
+                status = "PRESENT" if is_present else "NOT_PRESENT"
             else:
-                is_met = condition in active_conditions
-                status = "TRUE" if is_met else "FALSE"
-            condition_status.append(f"{condition}: {status}")
+                is_present = condition in active_conditions
+                # For normal conditions, they are met when the condition IS present
+                is_met = is_present
+                status = "PRESENT" if is_present else "NOT_PRESENT"
+            condition_status.append(f"{condition}: {status} ({is_met})")
         
         print(f"Executing: {action_name} [key: {key}]")
         print(f"Conditions: {', '.join(condition_status)}")
@@ -315,7 +377,7 @@ class ScreenMonitor:
         
         # Handle different key modifiers
         if key.startswith("SHIFT-"):
-            actual_key = key[6:]  # Remove "SHIFT-" prefix
+            actual_key = self._parse_key(key[6:])  # Remove "SHIFT-" prefix
             if key.startswith("HOLD-"):
                 # For HOLD modifier, only press if not already holding this combination
                 if self.currently_held_key != (Key.shift, actual_key):
@@ -331,7 +393,7 @@ class ScreenMonitor:
                 self.keyboard.release(actual_key)
                 self.keyboard.release(Key.shift)
         elif key.startswith("CTRL-"):
-            actual_key = key[5:]  # Remove "CTRL-" prefix
+            actual_key = self._parse_key(key[5:])  # Remove "CTRL-" prefix
             if key.startswith("HOLD-"):
                 # For HOLD modifier, only press if not already holding this combination
                 if self.currently_held_key != (Key.ctrl, actual_key):
@@ -347,16 +409,17 @@ class ScreenMonitor:
                 self.keyboard.release(actual_key)
                 self.keyboard.release(Key.ctrl)
         elif key.startswith("HOLD-"):
-            actual_key = key[5:]  # Remove "HOLD-" prefix
+            actual_key = self._parse_key(key[5:])  # Remove "HOLD-" prefix
             # Only press if not already holding this key
             if self.currently_held_key != actual_key:
                 self.keyboard.press(actual_key)
                 self.currently_held_key = actual_key
                 self.current_hold_action = action
         else:
-            self.keyboard.press(key)
+            actual_key = self._parse_key(key)
+            self.keyboard.press(actual_key)
             time.sleep(self.key_hold_duration)
-            self.keyboard.release(key)
+            self.keyboard.release(actual_key)
     
     def run(self):
         """Keep the program running until exit"""
@@ -386,7 +449,7 @@ def main():
                       default='scripts/layout.json',
                       help='Path to layout JSON file')
     parser.add_argument('--profile', '-p',
-                      default='scripts/profiles/rogue_classic_test.json',
+                      default='scripts/profiles/shaman_classic.json',
                       help='Path to profile JSON file')
     parser.add_argument('--debug', '-d',
                       action='store_true',

@@ -8,8 +8,8 @@ ns.auras["target_is_player"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 144,
-    yOffset = 76,
+    xOffset = 108,
+    yOffset = 68,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -34,25 +34,25 @@ ns.auras["target_is_player"] = {
     texture = "Solid",
     textureSource = "LSM",
     triggers = {
-        disjunctive = "all",
         activeTriggerMode = 1,
+        disjunctive = "all",
         {
             trigger = {
-                debuffType = "HELPFUL",
-                type = "unit",
-                names = {},
-                unevent = "auto",
-                unit = "target",
                 duration = "1",
-                event = "Unit Characteristics",
                 subeventPrefix = "SPELL",
+                custom_hide = "timed",
+                type = "unit",
+                subeventSuffix = "_CAST_START",
+                unevent = "auto",
                 custom_type = "stateupdate",
+                unit = "target",
+                event = "Unit Characteristics",
                 spellIds = {},
                 use_unit = true,
                 check = "update",
+                debuffType = "HELPFUL",
+                names = {},
                 customVariables = "{}",
-                subeventSuffix = "_CAST_START",
-                custom_hide = "timed",
                 use_unitisunit = false,
                 use_character = true,
                 use_class = false,
@@ -68,26 +68,26 @@ ns.auras["target_is_player"] = {
         talent = {
             multi = {},
         },
+        zoneIds = "",
         class = {
             multi = {
                 WARLOCK = true,
             },
             single = "WARLOCK",
         },
+        spec = {
+            multi = {},
+        },
         size = {
             multi = {},
         },
-        spec = {
-            multi = {},
+        use_level = false,
+        level = {
+            "120",
         },
         level_operator = {
             "~=",
         },
-        level = {
-            "120",
-        },
-        use_level = false,
-        zoneIds = "",
     },
     animation = {
         start = {

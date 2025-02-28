@@ -8,8 +8,8 @@ ns.auras["scanner_triangle"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 148,
-    yOffset = 80,
+    xOffset = 204,
+    yOffset = 76,
     width = 3,
     height = 3,
     frameStrata = 1,
@@ -37,15 +37,17 @@ ns.auras["scanner_triangle"] = {
         activeTriggerMode = -10,
         {
             trigger = {
-                debuffType = "HELPFUL",
-                type = "custom",
-                names = {},
-                unevent = "auto",
-                unit = "player",
                 duration = "1",
-                event = "Health",
                 subeventPrefix = "SPELL",
+                custom_hide = "timed",
+                use_absorbMode = true,
+                type = "custom",
+                subeventSuffix = "_CAST_START",
+                unevent = "auto",
                 custom_type = "stateupdate",
+                unit = "player",
+                event = "Health",
+                customStacks = [[function() return aura_env.count end]],
                 custom = [[function(allstates)
     -- Throttle updates for performance
     if not aura_env.lastUpdate or GetTime() - aura_env.lastUpdate > 0.1 then
@@ -129,39 +131,37 @@ ns.auras["scanner_triangle"] = {
     return true
 end]],
                 spellIds = {},
+                events = "PLAYER_TARGET_CHANGED",
                 use_unit = true,
                 check = "update",
+                debuffType = "HELPFUL",
+                names = {},
                 customVariables = [[{
   stacks = true,
 }]],
-                subeventSuffix = "_CAST_START",
-                custom_hide = "timed",
-                customStacks = [[function() return aura_env.count end]],
-                events = "PLAYER_TARGET_CHANGED",
-                use_absorbMode = true,
             },
             untrigger = {},
         },
     },
     conditions = {},
     load = {
-        use_never = false,
+        use_never = true,
         talent = {
             multi = {},
         },
+        zoneIds = "",
         class = {
             multi = {
                 WARRIOR = true,
             },
             single = "WARRIOR",
         },
-        size = {
-            multi = {},
-        },
         spec = {
             multi = {},
         },
-        zoneIds = "",
+        size = {
+            multi = {},
+        },
     },
     animation = {
         start = {
