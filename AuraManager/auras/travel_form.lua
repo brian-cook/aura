@@ -8,7 +8,7 @@ ns.auras["travel_form"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 152,
+    xOffset = 172,
     yOffset = 68,
     width = 3,
     height = 3,
@@ -39,22 +39,22 @@ ns.auras["travel_form"] = {
             trigger = {
                 subeventPrefix = "SPELL",
                 type = "unit",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "BOTH",
                 unit = "player",
                 event = "Stance/Form/Aura",
-                use_unit = true,
                 spellIds = {},
+                use_unit = true,
+                debuffType = "BOTH",
+                names = {},
                 auranames = {
                     "Cat Form",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 use_debuffClass = false,
                 useName = true,
                 useNamePattern = false,
+                useRem = false,
                 ownOnly = true,
                 use_form = true,
                 form = {
@@ -69,9 +69,6 @@ ns.auras["travel_form"] = {
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
         class = {
             multi = {
                 DRUID = true,
@@ -79,6 +76,9 @@ ns.auras["travel_form"] = {
             single = "DRUID",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
     },

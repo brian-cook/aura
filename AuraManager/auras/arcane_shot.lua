@@ -39,15 +39,15 @@ ns.auras["arcane_shot"] = {
             trigger = {
                 subeventPrefix = "SPELL",
                 type = "spell",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
                 unit = "player",
                 event = "Action Usable",
                 spellIds = {},
-                use_genericShowOn = true,
+                debuffType = "HELPFUL",
+                names = {},
                 realSpellName = "Arcane Shot",
                 use_spellName = true,
+                use_genericShowOn = true,
                 genericShowOn = "showOnCooldown",
                 use_track = true,
                 spellName = 14281,
@@ -61,14 +61,14 @@ ns.auras["arcane_shot"] = {
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
         class = {
             multi = {},
             single = "HUNTER",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
         race = {

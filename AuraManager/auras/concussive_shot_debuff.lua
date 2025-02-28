@@ -39,19 +39,19 @@ ns.auras["concussive_shot_debuff"] = {
             trigger = {
                 subeventPrefix = "SPELL",
                 type = "aura2",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HARMFUL",
                 unit = "target",
                 event = "Health",
                 spellIds = {},
+                debuffType = "HARMFUL",
+                names = {},
                 auranames = {
                     "5116",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
+                useRem = false,
             },
             untrigger = {},
         },
@@ -61,9 +61,6 @@ ns.auras["concussive_shot_debuff"] = {
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
         class = {
             multi = {
                 HUNTER = true,
@@ -71,6 +68,9 @@ ns.auras["concussive_shot_debuff"] = {
             single = "HUNTER",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
     },

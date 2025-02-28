@@ -8,7 +8,7 @@ ns.auras["scanner_cross"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 188,
+    xOffset = 192,
     yOffset = 76,
     width = 3,
     height = 3,
@@ -42,14 +42,12 @@ ns.auras["scanner_cross"] = {
                 custom_hide = "timed",
                 use_absorbMode = true,
                 type = "custom",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
+                unevent = "auto",
+                custom_type = "stateupdate",
                 unit = "player",
                 event = "Health",
                 customStacks = [[function() return aura_env.count end]],
-                use_unit = true,
-                events = "PLAYER_TARGET_CHANGED",
                 custom = [[function(allstates)
     -- Throttle updates for performance
     if not aura_env.lastUpdate or GetTime() - aura_env.lastUpdate > 0.1 then
@@ -131,9 +129,11 @@ ns.auras["scanner_cross"] = {
     return true
 end]],
                 spellIds = {},
+                events = "PLAYER_TARGET_CHANGED",
+                use_unit = true,
                 check = "update",
-                custom_type = "stateupdate",
-                unevent = "auto",
+                debuffType = "HELPFUL",
+                names = {},
                 customVariables = [[{
   stacks = true,
 }]],
@@ -143,13 +143,11 @@ end]],
     },
     conditions = {},
     load = {
-        use_never = false,
+        use_never = true,
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
         class = {
             multi = {
                 WARRIOR = true,
@@ -159,7 +157,9 @@ end]],
         spec = {
             multi = {},
         },
-        zoneIds = "",
+        size = {
+            multi = {},
+        },
     },
     animation = {
         start = {

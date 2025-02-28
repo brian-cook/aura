@@ -39,13 +39,13 @@ ns.auras["combo_points_2"] = {
             trigger = {
                 subeventPrefix = "SPELL",
                 type = "unit",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
                 unit = "player",
                 event = "Power",
-                use_unit = true,
                 spellIds = {},
+                use_unit = true,
+                debuffType = "HELPFUL",
+                names = {},
                 powertype = 4,
                 use_powertype = true,
                 use_percentpower = false,
@@ -72,9 +72,6 @@ ns.auras["combo_points_2"] = {
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
         class = {
             multi = {
                 ROGUE = true,
@@ -82,6 +79,9 @@ ns.auras["combo_points_2"] = {
             single = "ROGUE",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
     },

@@ -8,7 +8,7 @@ ns.auras["target_cross"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 176,
+    xOffset = 192,
     yOffset = 72,
     width = 3,
     height = 3,
@@ -42,24 +42,24 @@ ns.auras["target_cross"] = {
                 subeventPrefix = "SPELL",
                 custom_hide = "timed",
                 type = "unit",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
+                unevent = "auto",
+                custom_type = "stateupdate",
                 unit = "target",
                 event = "Unit Characteristics",
-                use_unit = true,
                 spellIds = {},
+                use_unit = true,
                 check = "update",
-                custom_type = "stateupdate",
-                unevent = "auto",
+                debuffType = "HELPFUL",
+                names = {},
                 customVariables = "{}",
                 use_unitisunit = false,
                 use_character = false,
                 use_class = false,
                 character = "player",
+                use_raidMarkIndex = true,
                 unitisunit = "player",
                 raidMarkIndex = 7,
-                use_raidMarkIndex = true,
             },
             untrigger = {},
         },
@@ -70,9 +70,7 @@ ns.auras["target_cross"] = {
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
         class = {
             multi = {
                 WARLOCK = true,
@@ -82,14 +80,16 @@ ns.auras["target_cross"] = {
         spec = {
             multi = {},
         },
-        zoneIds = "",
-        level_operator = {
-            "~=",
+        size = {
+            multi = {},
         },
+        use_level = false,
         level = {
             "120",
         },
-        use_level = false,
+        level_operator = {
+            "~=",
+        },
     },
     animation = {
         start = {

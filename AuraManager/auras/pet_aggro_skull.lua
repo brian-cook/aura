@@ -8,7 +8,7 @@ ns.auras["pet_aggro_skull"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 160,
+    xOffset = 164,
     yOffset = 88,
     width = 3,
     height = 3,
@@ -41,13 +41,12 @@ ns.auras["pet_aggro_skull"] = {
                 subeventPrefix = "SPELL",
                 use_absorbMode = true,
                 type = "custom",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
+                unevent = "auto",
+                custom_type = "stateupdate",
                 unit = "player",
                 event = "Health",
                 customStacks = [[function() return aura_env.count end]],
-                use_unit = true,
                 custom = [[function(allstates)
     -- Throttle the check for perf?  What is config?
     if not aura_env.last or GetTime() - aura_env.last > 0.2 then
@@ -79,9 +78,10 @@ ns.auras["pet_aggro_skull"] = {
     end
 end]],
                 spellIds = {},
+                use_unit = true,
                 check = "update",
-                custom_type = "stateupdate",
-                unevent = "auto",
+                debuffType = "HELPFUL",
+                names = {},
                 customVariables = [[{
   stacks = true,
 }]],
@@ -95,9 +95,7 @@ end]],
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
         class = {
             multi = {
                 WARRIOR = true,
@@ -107,7 +105,9 @@ end]],
         spec = {
             multi = {},
         },
-        zoneIds = "",
+        size = {
+            multi = {},
+        },
     },
     animation = {
         start = {

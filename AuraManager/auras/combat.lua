@@ -42,26 +42,26 @@ ns.auras["combat"] = {
                 subeventPrefix = "SPELL",
                 custom_hide = "timed",
                 type = "unit",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "BOTH",
+                custom_type = "event",
                 unit = "player",
                 event = "Conditions",
-                use_unit = true,
-                events = "PLAYER_REGEN_ENABLED PLAYER_REGEN_DISABLED",
                 custom = [[function(event)
     return UnitAffectingCombat("player")
 end]],
                 spellIds = {},
+                events = "PLAYER_REGEN_ENABLED PLAYER_REGEN_DISABLED",
+                use_unit = true,
                 check = "update",
-                custom_type = "event",
+                debuffType = "BOTH",
+                names = {},
                 auranames = {
                     "Demon Skin",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
+                useRem = false,
                 ownOnly = true,
                 use_incombat = true,
             },
@@ -73,9 +73,6 @@ end]],
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
         class = {
             multi = {
                 DRUID = true,
@@ -83,6 +80,9 @@ end]],
             single = "DRUID",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
     },

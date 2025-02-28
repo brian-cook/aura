@@ -8,7 +8,7 @@ ns.auras["magma_totem_dropped"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 176,
+    xOffset = 180,
     yOffset = 92,
     width = 3,
     height = 3,
@@ -39,21 +39,21 @@ ns.auras["magma_totem_dropped"] = {
             trigger = {
                 subeventPrefix = "SPELL",
                 type = "spell",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
                 unit = "player",
                 event = "Totem",
                 spellIds = {},
-                use_genericShowOn = true,
+                debuffType = "HELPFUL",
+                names = {},
+                use_inverse = false,
                 realSpellName = "Arcane Blast",
                 use_spellName = true,
-                use_inverse = false,
+                use_genericShowOn = true,
                 genericShowOn = "showOnCooldown",
                 use_track = true,
                 spellName = 5730,
-                totemName = "Magma Totem",
                 use_totemName = true,
+                totemName = "Magma Totem",
             },
             untrigger = {},
         },
@@ -61,9 +61,6 @@ ns.auras["magma_totem_dropped"] = {
     conditions = {},
     load = {
         talent = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
         class = {
@@ -74,6 +71,9 @@ ns.auras["magma_totem_dropped"] = {
             single = "MAGE",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
         race = {

@@ -8,7 +8,7 @@ ns.auras["target_is_humanoid"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 132,
+    xOffset = 152,
     yOffset = 68,
     width = 3,
     height = 3,
@@ -39,18 +39,18 @@ ns.auras["target_is_humanoid"] = {
             trigger = {
                 subeventPrefix = "SPELL",
                 type = "custom",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
+                custom_type = "status",
                 unit = "player",
                 event = "Health",
-                events = "PLAYER_TARGET_CHANGED",
                 custom = [[function()
     return UnitExists("target") and (UnitCreatureType("target") == "Humanoid")
 end]],
                 spellIds = {},
+                events = "PLAYER_TARGET_CHANGED",
                 check = "event",
-                custom_type = "status",
+                debuffType = "HELPFUL",
+                names = {},
             },
             untrigger = {},
         },
@@ -60,13 +60,13 @@ end]],
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
         class = {
             multi = {},
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
     },

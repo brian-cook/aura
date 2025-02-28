@@ -8,7 +8,7 @@ ns.auras["frostbrand_weapon_buff"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 192,
+    xOffset = 196,
     yOffset = 96,
     width = 3,
     height = 3,
@@ -39,22 +39,22 @@ ns.auras["frostbrand_weapon_buff"] = {
             trigger = {
                 subeventPrefix = "SPELL",
                 type = "item",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
                 unit = "player",
                 event = "Weapon Enchant",
                 spellIds = {},
+                debuffType = "HELPFUL",
+                names = {},
                 use_genericShowOn = true,
                 genericShowOn = "showOnCooldown",
                 auranames = {
                     "687",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 use_itemName = true,
                 useName = true,
+                useRem = false,
                 ownOnly = true,
                 enchant = "Rockbiter",
                 use_weapon = true,
@@ -71,9 +71,6 @@ ns.auras["frostbrand_weapon_buff"] = {
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
         class = {
             multi = {
                 ROGUE = true,
@@ -81,6 +78,9 @@ ns.auras["frostbrand_weapon_buff"] = {
             single = "ROGUE",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
     },

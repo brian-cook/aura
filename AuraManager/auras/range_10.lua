@@ -8,7 +8,7 @@ ns.auras["range_10"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 188,
+    xOffset = 192,
     yOffset = 80,
     width = 3,
     height = 3,
@@ -40,14 +40,14 @@ ns.auras["range_10"] = {
                 subeventPrefix = "SPELL",
                 use_absorbMode = true,
                 type = "unit",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
                 unit = "target",
                 event = "Range Check",
-                use_unit = true,
                 range = "10",
                 spellIds = {},
+                use_unit = true,
+                debuffType = "HELPFUL",
+                names = {},
                 powertype = 3,
                 use_powertype = true,
                 use_absorbHealMode = true,
@@ -56,9 +56,9 @@ ns.auras["range_10"] = {
                 },
                 use_percentpower = false,
                 use_showCost = true,
-                use_power = false,
-                use_range = true,
                 range_operator = "<=",
+                use_range = true,
+                use_power = false,
                 use_percenthealth = true,
                 percenthealth_operator = {
                     "<",
@@ -72,9 +72,6 @@ ns.auras["range_10"] = {
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
         class = {
             multi = {
                 ROGUE = true,
@@ -82,6 +79,9 @@ ns.auras["range_10"] = {
             single = "ROGUE",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
     },

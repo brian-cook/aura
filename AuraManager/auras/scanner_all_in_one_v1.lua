@@ -8,7 +8,7 @@ ns.auras["scanner_all_in_one_v1"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 180,
+    xOffset = 184,
     yOffset = 76,
     width = 3,
     height = 3,
@@ -41,14 +41,12 @@ ns.auras["scanner_all_in_one_v1"] = {
                 subeventPrefix = "SPELL",
                 use_absorbMode = true,
                 type = "custom",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
+                unevent = "auto",
+                custom_type = "stateupdate",
                 unit = "player",
                 event = "Health",
                 customStacks = [[function() return aura_env.count end]],
-                use_unit = true,
-                events = "PLAYER_TARGET_CHANGED UNIT_TARGET NAME_PLATE_UNIT_ADDED NAME_PLATE_UNIT_REMOVED PLAYER_TARGET_CHANGED UNIT_TARGET PLAYER_REGEN_DISABLED PLAYER_REGEN_ENABLED",
                 custom = [[function(allstates)
     -- Initialize aura environment variables if not exists
     aura_env.last = aura_env.last or 0
@@ -319,9 +317,11 @@ ns.auras["scanner_all_in_one_v1"] = {
     return false
 end]],
                 spellIds = {},
+                events = "PLAYER_TARGET_CHANGED UNIT_TARGET NAME_PLATE_UNIT_ADDED NAME_PLATE_UNIT_REMOVED PLAYER_TARGET_CHANGED UNIT_TARGET PLAYER_REGEN_DISABLED PLAYER_REGEN_ENABLED",
+                use_unit = true,
                 check = "update",
-                custom_type = "stateupdate",
-                unevent = "auto",
+                debuffType = "HELPFUL",
+                names = {},
                 customVariables = [[{
   stacks = true,
 }]],
@@ -335,9 +335,7 @@ end]],
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
         class = {
             multi = {
                 WARRIOR = true,
@@ -347,7 +345,9 @@ end]],
         spec = {
             multi = {},
         },
-        zoneIds = "",
+        size = {
+            multi = {},
+        },
         group_leader = {
             multi = {
                 LEADER = true,

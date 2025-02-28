@@ -8,7 +8,7 @@ ns.auras["serpent_sting_debuff_circle"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 212,
+    xOffset = 216,
     yOffset = 76,
     width = 3,
     height = 3,
@@ -39,9 +39,8 @@ ns.auras["serpent_sting_debuff_circle"] = {
             trigger = {
                 subeventPrefix = "SPELL",
                 type = "custom",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HARMFUL",
+                custom_type = "stateupdate",
                 unit = "target",
                 event = "Combat Log",
                 custom = [[function(allstates, event, ...)
@@ -97,14 +96,15 @@ ns.auras["serpent_sting_debuff_circle"] = {
 end]],
                 spellIds = {},
                 check = "update",
-                custom_type = "stateupdate",
+                debuffType = "HARMFUL",
+                names = {},
                 auranames = {
                     "Serpent Sting",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
+                useRem = false,
                 ownOnly = true,
             },
             untrigger = {},
@@ -115,9 +115,6 @@ end]],
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
         class = {
             multi = {
                 HUNTER = true,
@@ -125,6 +122,9 @@ end]],
             single = "HUNTER",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
     },

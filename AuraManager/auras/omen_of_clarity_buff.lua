@@ -8,7 +8,7 @@ ns.auras["omen_of_clarity_buff"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 128,
+    xOffset = 132,
     yOffset = 88,
     width = 3,
     height = 3,
@@ -40,21 +40,21 @@ ns.auras["omen_of_clarity_buff"] = {
             trigger = {
                 subeventPrefix = "SPELL",
                 type = "aura2",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
                 unit = "player",
                 event = "Health",
                 spellIds = {},
+                debuffType = "HELPFUL",
+                names = {},
                 auranames = {
                     "Omen of Clarity",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 use_debuffClass = false,
                 useName = true,
                 useNamePattern = false,
+                useRem = false,
                 ownOnly = true,
             },
             untrigger = {},
@@ -65,9 +65,6 @@ ns.auras["omen_of_clarity_buff"] = {
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
         class = {
             multi = {
                 DRUID = true,
@@ -75,6 +72,9 @@ ns.auras["omen_of_clarity_buff"] = {
             single = "DRUID",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
     },

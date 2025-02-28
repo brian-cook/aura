@@ -49,6 +49,7 @@ auras/distracting_shot.lua
 auras/earth_shock.lua
 auras/earthbind_totem.lua
 auras/earthbind_totem_dropped.lua
+auras/earthbind_totem_exists.lua
 auras/enemy_loose.lua
 auras/entangled_debuff.lua
 auras/entering_combat.lua
@@ -229,10 +230,13 @@ auras/sprint.lua
 auras/stealth_buff.lua
 auras/stoneclaw_totem.lua
 auras/stoneclaw_totem_dropped.lua
+auras/stoneclaw_totem_exists.lua
 auras/stoneskin_buff.lua
 auras/stoneskin_totem.lua
 auras/stoneskin_totem_dropped.lua
+auras/stoneskin_totem_exists.lua
 auras/strength_of_earth_totem_dropped.lua
+auras/strength_of_earth_totem_exists.lua
 auras/swing_timer_main_hand.lua
 auras/swing_timer_ranged.lua
 auras/target_aggro.lua
@@ -248,6 +252,7 @@ auras/target_health_under_90.lua
 auras/target_interruptible.lua
 auras/target_interruptible_range_12.lua
 auras/target_interruptible_range_15.lua
+auras/target_interruptible_range_20.lua
 auras/target_interruptible_range_30.lua
 auras/target_is_elite_boss_or_player.lua
 auras/target_is_humanoid.lua

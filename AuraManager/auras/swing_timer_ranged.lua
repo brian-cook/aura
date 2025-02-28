@@ -8,7 +8,7 @@ ns.auras["swing_timer_ranged"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 160,
+    xOffset = 176,
     yOffset = 72,
     width = 3,
     height = 3,
@@ -39,21 +39,21 @@ ns.auras["swing_timer_ranged"] = {
             trigger = {
                 subeventPrefix = "SPELL",
                 type = "unit",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "BOTH",
                 unit = "player",
                 event = "Swing Timer",
-                use_unit = true,
                 spellIds = {},
+                use_unit = true,
+                debuffType = "BOTH",
+                names = {},
                 use_inverse = false,
                 auranames = {
                     "Demon Skin",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
+                useRem = false,
                 ownOnly = true,
                 remaining_operator = "<=",
                 use_remaining = false,
@@ -70,9 +70,6 @@ ns.auras["swing_timer_ranged"] = {
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
         class = {
             multi = {
                 DRUID = true,
@@ -80,6 +77,9 @@ ns.auras["swing_timer_ranged"] = {
             single = "DRUID",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
     },

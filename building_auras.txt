@@ -1,4 +1,23 @@
 # Building WeakAuras: Comprehensive Guide for AI Implementation
+Version: 1.2.0 | Last Updated: 2023-04-14
+
+## Navigation
+- [1. Core Concepts & Architecture](#1-core-concepts-architecture)
+- [2. Implementation Patterns](#2-implementation-patterns)
+- [3. Advanced Techniques](#3-advanced-techniques)
+- [4. Testing & Troubleshooting](#4-testing-troubleshooting)
+  - [4.1 Common Issues and Solutions](#41-common-issues-and-solutions)
+  - [4.2 Debugging Techniques](#42-debugging-techniques)
+  - [4.3 Testing Framework](#43-testing-framework)
+  - [4.4 Best Practices](#44-best-practices)
+  - [4.5 Advanced Troubleshooting](#45-advanced-troubleshooting)
+- [5. Resources & References](#5-resources-references)
+  - [5.9 Classic WoW Nameplate Unit Data](#59-classic-wow-nameplate-unit-data)
+
+> **Related Documentation**: 
+> - For profile creation: See [how_profiles_work.txt](how_profiles_work.txt)
+> - For project overview: See [README.md](README.md)
+> - For all documentation: See [ProjectFileIndex.md](ProjectFileIndex.md)
 
 ## Table of Contents
 1. Core Concepts & Architecture
@@ -693,6 +712,314 @@ aura_env.tests = {
    - Verify state transitions
    - Check performance impact
 
+### 4.5 Advanced Troubleshooting
+
+#### Diagnosing State Management Issues
+```lua
+-- Diagnostic utility for state tracking
+aura_env.diagnostics = {
+    stateHistory = {},
+    maxHistory = 10,
+    
+    captureState = function(self, allstates, trigger)
+        -- Create a state snapshot
+        local snapshot = {
+            timestamp = GetTime(),
+            trigger = trigger or "unknown",
+            stateCount = 0,
+            activeCount = 0,
+            states = {}
+        }
+        
+        -- Analyze states
+        for key, state in pairs(allstates) do
+            snapshot.stateCount = snapshot.stateCount + 1
+            if state.show then
+                snapshot.activeCount = snapshot.activeCount + 1
+                -- Store basic info for active states
+                snapshot.states[key] = {
+                    show = state.show,
+                    changed = state.changed,
+                    -- Add other important properties
+                }
+            end
+        end
+        
+        -- Add to history
+        table.insert(self.stateHistory, 1, snapshot)
+        -- Trim history if needed
+        if #self.stateHistory > self.maxHistory then
+            table.remove(self.stateHistory)
+        end
+        
+        return snapshot
+    end,
+    
+    printHistory = function(self)
+        print("=== WeakAura State History ===")
+        for i, snapshot in ipairs(self.stateHistory) do
+            print(string.format("[%d] %.2fs ago: %s - %d states (%d active)", 
+                i, GetTime() - snapshot.timestamp, snapshot.trigger,
+                snapshot.stateCount, snapshot.activeCount))
+        end
+    end,
+    
+    analyzeChanges = function(self)
+        if #self.stateHistory < 2 then
+            print("Not enough history to analyze changes")
+            return
+        end
+        
+        local current = self.stateHistory[1]
+        local previous = self.stateHistory[2]
+        
+        print("=== State Changes Analysis ===")
+        print(string.format("Trigger: %s → %s", previous.trigger, current.trigger))
+        print(string.format("Total States: %d → %d", previous.stateCount, current.stateCount))
+        print(string.format("Active States: %d → %d", previous.activeCount, current.activeCount))
+        
+        -- Compare state keys
+        local added = {}
+        local removed = {}
+        local changed = {}
+        
+        for key in pairs(current.states) do
+            if not previous.states[key] then
+                table.insert(added, key)
+            end
+        end
+        
+        for key in pairs(previous.states) do
+            if not current.states[key] then
+                table.insert(removed, key)
+            elseif current.states[key].changed then
+                table.insert(changed, key)
+            end
+        end
+        
+        if #added > 0 then print("Added states: " .. table.concat(added, ", ")) end
+        if #removed > 0 then print("Removed states: " .. table.concat(removed, ", ")) end
+        if #changed > 0 then print("Changed states: " .. table.concat(changed, ", ")) end
+    end
+}
+
+-- Usage example
+function(allstates, event, ...)
+    -- Capture state at beginning
+    aura_env.diagnostics:captureState(allstates, "start-" .. (event or "unknown"))
+    
+    -- Normal processing...
+    
+    -- Capture state at end
+    aura_env.diagnostics:captureState(allstates, "end-" .. (event or "unknown"))
+    
+    -- Print analysis on demand (can be triggered by a custom WeakAura event)
+    if event == "WA_DIAGNOSTICS_REQUEST" then
+        aura_env.diagnostics:printHistory()
+        aura_env.diagnostics:analyzeChanges()
+    end
+    
+    return true
+end
+```
+
+#### Performance Bottleneck Detection
+```lua
+-- Bottleneck detection utility
+aura_env.profiler = {
+    enabled = false,
+    samples = {},
+    maxSamples = 20,
+    
+    start = function(self, label)
+        if not self.enabled then return end
+        self.current = {
+            label = label,
+            startTime = debugprofilestop(),
+            segments = {}
+        }
+    end,
+    
+    segment = function(self, segmentLabel)
+        if not self.enabled or not self.current then return end
+        local now = debugprofilestop()
+        table.insert(self.current.segments, {
+            label = segmentLabel,
+            time = now,
+            duration = now - (self.current.segments[#self.current.segments] 
+                              and self.current.segments[#self.current.segments].time 
+                              or self.current.startTime)
+        })
+    end,
+    
+    finish = function(self)
+        if not self.enabled or not self.current then return end
+        local now = debugprofilestop()
+        self.current.totalTime = now - self.current.startTime
+        
+        -- Add to samples
+        table.insert(self.samples, 1, self.current)
+        if #self.samples > self.maxSamples then
+            table.remove(self.samples)
+        end
+        
+        self.current = nil
+    end,
+    
+    report = function(self)
+        if #self.samples == 0 then
+            print("No profiling data available")
+            return
+        end
+        
+        print("=== WeakAura Performance Report ===")
+        
+        -- Calculate averages
+        local samplesByLabel = {}
+        for _, sample in ipairs(self.samples) do
+            if not samplesByLabel[sample.label] then
+                samplesByLabel[sample.label] = {
+                    count = 0,
+                    totalTime = 0,
+                    samples = {}
+                }
+            end
+            
+            local labelData = samplesByLabel[sample.label]
+            labelData.count = labelData.count + 1
+            labelData.totalTime = labelData.totalTime + sample.totalTime
+            table.insert(labelData.samples, sample)
+        end
+        
+        -- Print summary
+        for label, data in pairs(samplesByLabel) do
+            local avgTime = data.totalTime / data.count
+            print(string.format("%s: %.2fms avg (samples: %d)", 
+                  label, avgTime, data.count))
+            
+            -- Find slowest sample
+            table.sort(data.samples, function(a, b) 
+                return a.totalTime > b.totalTime 
+            end)
+            
+            local slowest = data.samples[1]
+            print(string.format("  Slowest: %.2fms", slowest.totalTime))
+            
+            for _, segment in ipairs(slowest.segments) do
+                print(string.format("    - %s: %.2fms", segment.label, segment.duration))
+            end
+        end
+    end
+}
+
+-- Usage example
+function(allstates, event, ...)
+    aura_env.profiler:start("TRIGGER_UPDATE")
+    
+    -- Process nameplate scanning
+    aura_env.profiler:segment("nameplate_scan_start")
+    for i = 1, 40 do
+        local unit = "nameplate"..i
+        if UnitExists(unit) then
+            -- Process unit
+        end
+    end
+    aura_env.profiler:segment("nameplate_scan_end")
+    
+    -- Update states
+    aura_env.profiler:segment("state_update_start")
+    for guid, state in pairs(allstates) do
+        -- Update state
+    end
+    aura_env.profiler:segment("state_update_end")
+    
+    aura_env.profiler:finish()
+    
+    -- Report on command
+    if event == "WA_PROFILE_REPORT" then
+        aura_env.profiler:report()
+    end
+    
+    return true
+end
+```
+
+#### Cross-Aura Communication Troubleshooting
+```lua
+-- Debug utility for cross-aura communication
+aura_env.commsDebug = {
+    sent = {},
+    received = {},
+    maxHistory = 20,
+    
+    logSent = function(self, targetAura, messageType, data)
+        table.insert(self.sent, 1, {
+            timestamp = GetTime(),
+            target = targetAura,
+            type = messageType,
+            data = data
+        })
+        
+        if #self.sent > self.maxHistory then
+            table.remove(self.sent)
+        end
+    end,
+    
+    logReceived = function(self, sourceAura, messageType, data)
+        table.insert(self.received, 1, {
+            timestamp = GetTime(),
+            source = sourceAura,
+            type = messageType,
+            data = data
+        })
+        
+        if #self.received > self.maxHistory then
+            table.remove(self.received)
+        end
+    end,
+    
+    printLog = function(self)
+        print("=== WeakAuras Communication Log ===")
+        print("--- Sent Messages ---")
+        for i, msg in ipairs(self.sent) do
+            print(string.format("[%d] To: %s, Type: %s, %.2fs ago", 
+                  i, msg.target, msg.type, GetTime() - msg.timestamp))
+        end
+        
+        print("--- Received Messages ---")
+        for i, msg in ipairs(self.received) do
+            print(string.format("[%d] From: %s, Type: %s, %.2fs ago", 
+                  i, msg.source, msg.type, GetTime() - msg.timestamp))
+        end
+    end
+}
+
+-- Example sender aura
+function(allstates, event, ...)
+    -- Send data to another aura
+    local data = { value = 42, status = "active" }
+    WeakAuras.ScanEvents("CUSTOM_MESSAGE_FOR_TARGET_AURA", data)
+    aura_env.commsDebug:logSent("TargetAura", "CUSTOM_MESSAGE", data)
+    
+    return true
+end
+
+-- Example receiver aura
+function(allstates, event, ...)
+    if event == "CUSTOM_MESSAGE_FOR_TARGET_AURA" then
+        local data = ...
+        aura_env.commsDebug:logReceived("SourceAura", "CUSTOM_MESSAGE", data)
+        -- Process data
+    end
+    
+    if event == "WA_COMMS_DEBUG" then
+        aura_env.commsDebug:printLog()
+    end
+    
+    return true
+end
+```
+
 ## 5. Resources & References
 
 ### 5.1 WoW API Resources
@@ -827,5 +1154,169 @@ end
 - Test across WoW versions
 - Maintain compatibility
 
----
-End of Documentation
+### 5.9 Classic WoW Nameplate Unit Data
+When a player identifies a mob via its nameplate in Classic WoW, the following unit information becomes available using the unit ID format "nameplate[1-40]":
+
+#### Basic Unit Information
+```lua
+-- Basic unit data
+local unitName = UnitName(unit)         -- Name of the unit
+local unitGUID = UnitGUID(unit)         -- Globally unique identifier
+local unitLevel = UnitLevel(unit)       -- Level of the unit (returns -1 for bosses or much higher level units)
+local unitClass = UnitClassification(unit) -- Returns "worldboss", "elite", "rare", "rareelite", or "normal"
+local exists = UnitExists(unit)         -- Check if unit still exists (is visible)
+```
+
+#### Combat and Targeting Information
+```lua
+-- Targeting and threat
+local canAttack = UnitCanAttack("player", unit)  -- Check if unit is attackable by player
+local isTarget = UnitIsUnit(unit, "target")      -- Check if unit is player's current target
+local unitTarget = unit.."target"                -- Get what the unit is targeting (e.g., "nameplate1target")
+local inCombat = UnitAffectingCombat(unit)       -- Check if unit is in combat
+
+-- Threat information (returns multiple values)
+local isTanking, status, threatpct, rawthreatpct, threatvalue = 
+    UnitDetailedThreatSituation("player", unit)
+```
+
+#### Unit Statistics
+```lua
+-- Health information
+local health = UnitHealth(unit)         -- Current health value
+local maxHealth = UnitHealthMax(unit)   -- Maximum health value
+local healthPercent = health / maxHealth * 100
+
+-- Power information (mana, rage, energy, etc.)
+local power = UnitPower(unit)           -- Current power value
+local maxPower = UnitPowerMax(unit)     -- Maximum power value
+local powerType = UnitPowerType(unit)   -- Type of power (0=mana, 1=rage, 2=focus, 3=energy, etc.)
+```
+
+#### Unit Type Information
+```lua
+-- Creature information
+local creatureType = UnitCreatureType(unit)   -- Returns "Beast", "Humanoid", "Demon", etc.
+local creatureFamily = UnitCreatureFamily(unit)  -- Returns the creature family
+
+-- Faction and reaction
+local faction, localizedFaction = UnitFactionGroup(unit)
+local reaction = UnitReaction("player", unit)  -- 1=hostile, 4=neutral, 5=friendly
+```
+
+#### Unit Status Effects
+```lua
+-- Buff checking (multiple approaches)
+local buffName, _, _, _, _, _, _, _, _, buffSpellId = UnitBuff(unit, index)
+-- or
+local auraName, _, _, _, _, _, _, _, _, auraSpellId = 
+    UnitAura(unit, index, "HELPFUL")
+
+-- Debuff checking
+local debuffName, _, _, _, _, _, _, _, _, debuffSpellId = UnitDebuff(unit, index)
+-- or
+local auraName, _, _, _, _, _, _, _, _, auraSpellId = 
+    UnitAura(unit, index, "HARMFUL")
+
+-- Raid target markers (1=star, 2=circle, 3=diamond, 4=triangle, 5=moon, 6=square, 7=cross, 8=skull)
+local markerIndex = GetRaidTargetIndex(unit)
+```
+
+#### Positional Information
+```lua
+-- Range checking
+local inRange = WeakAuras.CheckRange(unit, 8, "<=")  -- Within 8 yards
+-- or using spell range
+local isInRange = IsSpellInRange("Spell Name", unit)  -- 1=in range, 0=out of range, nil=invalid
+```
+
+#### Implementation Example: Scanning Nameplates
+```lua
+function(allstates)
+    -- Throttle updates for performance
+    if not aura_env.last or GetTime() - aura_env.last > 0.3 then
+        aura_env.last = GetTime()
+        
+        -- Initialize counters
+        local friendlyCount = 0
+        local enemyCount = 0
+        
+        -- Scan all nameplates (max 40)
+        for i = 1, 40 do
+            local unit = "nameplate"..i
+            
+            if UnitExists(unit) then
+                local guid = UnitGUID(unit)
+                local name = UnitName(unit)
+                
+                -- Process based on reaction
+                if UnitCanAttack("player", unit) then
+                    -- Enemy unit
+                    enemyCount = enemyCount + 1
+                    
+                    -- Create or update state for this unit
+                    allstates[guid] = allstates[guid] or {show = false}
+                    allstates[guid].changed = true
+                    allstates[guid].show = true
+                    allstates[guid].unit = unit
+                    allstates[guid].name = name
+                    
+                    -- Store additional information
+                    allstates[guid].health = UnitHealth(unit)
+                    allstates[guid].maxHealth = UnitHealthMax(unit)
+                    allstates[guid].level = UnitLevel(unit)
+                    
+                    -- Check if targeting player
+                    local targetUnit = unit.."target"
+                    if UnitExists(targetUnit) and UnitIsUnit(targetUnit, "player") then
+                        allstates[guid].targetingPlayer = true
+                    else
+                        allstates[guid].targetingPlayer = false
+                    end
+                else
+                    -- Friendly unit
+                    friendlyCount = friendlyCount + 1
+                end
+            end
+        end
+        
+        -- Cleanup states for units no longer visible
+        for guid, state in pairs(allstates) do
+            if state.unit and not UnitExists(state.unit) then
+                state.show = false
+                state.changed = true
+            end
+        end
+        
+        -- Update global counts
+        aura_env.enemyCount = enemyCount
+        aura_env.friendlyCount = friendlyCount
+        
+        return true
+    end
+    
+    return false
+end
+```
+
+#### Best Practices for Nameplate Scanning
+1. **Performance Optimization**
+   - Always throttle nameplate scans (0.2-0.5 seconds recommended)
+   - Store GUIDs rather than unit IDs for persistence
+   - Use early returns for invalid conditions
+
+2. **Error Handling**
+   - Always check if a unit exists before accessing its properties
+   - Validate GUIDs before using them as table keys
+   - Handle unit disappearance gracefully
+
+3. **Classic WoW Limitations**
+   - Nameplate visibility is limited by distance and settings
+   - Maximum of 40 nameplates can be displayed at once
+   - Some APIs available in retail are not available in Classic
+   - Threat data works differently in Classic compared to retail
+
+## Changelog
+- v1.2.0 (2023-04-14): Added Classic WoW nameplate unit data section (5.9)
+- v1.1.0 (2023-01-21): Added advanced troubleshooting section (4.5)
+- v1.0.0 (2023-01-19): Initial comprehensive documentation

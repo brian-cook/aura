@@ -39,22 +39,22 @@ ns.auras["demon_skin_buff"] = {
             trigger = {
                 subeventPrefix = "SPELL",
                 type = "aura2",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
                 unit = "player",
                 event = "Weapon Enchant",
                 spellIds = {},
+                debuffType = "HELPFUL",
+                names = {},
                 use_genericShowOn = true,
                 genericShowOn = "showOnCooldown",
                 auranames = {
                     "Demon Skin",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 use_itemName = true,
                 useName = true,
+                useRem = false,
                 enchant = "Rockbiter",
                 use_weapon = true,
                 use_enchant = true,
@@ -70,9 +70,6 @@ ns.auras["demon_skin_buff"] = {
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
         class = {
             multi = {
                 ROGUE = true,
@@ -80,6 +77,9 @@ ns.auras["demon_skin_buff"] = {
             single = "ROGUE",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
     },

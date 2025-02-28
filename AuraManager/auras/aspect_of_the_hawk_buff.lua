@@ -39,19 +39,19 @@ ns.auras["aspect_of_the_hawk_buff"] = {
             trigger = {
                 subeventPrefix = "SPELL",
                 type = "aura2",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "BOTH",
                 unit = "player",
                 event = "Health",
                 spellIds = {},
+                debuffType = "BOTH",
+                names = {},
                 auranames = {
                     "13165",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
+                useRem = false,
                 ownOnly = true,
             },
             untrigger = {},
@@ -60,9 +60,6 @@ ns.auras["aspect_of_the_hawk_buff"] = {
     conditions = {},
     load = {
         talent = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
         class = {
@@ -74,6 +71,9 @@ ns.auras["aspect_of_the_hawk_buff"] = {
             single = "HUNTER",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
     },

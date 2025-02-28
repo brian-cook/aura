@@ -40,13 +40,13 @@ ns.auras["combat_start"] = {
                 duration = "2",
                 subeventPrefix = "DAMAGE_SHIELD",
                 type = "event",
-                names = {},
                 subeventSuffix = "",
-                debuffType = "HARMFUL",
                 unit = "target",
                 event = "Combat Events",
-                use_unit = true,
                 spellIds = {},
+                use_unit = true,
+                debuffType = "HARMFUL",
+                names = {},
                 use_genericShowOn = true,
                 genericShowOn = "showOnCooldown",
                 itemName = 0,
@@ -55,10 +55,10 @@ ns.auras["combat_start"] = {
                     "Moonfire",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 use_itemName = true,
                 useName = true,
+                useRem = false,
                 use_threatvalue = false,
                 threatpct_operator = {
                     ">=",
@@ -69,13 +69,13 @@ ns.auras["combat_start"] = {
                 threatpct = {
                     "100",
                 },
-                use_threatpct = false,
-                use_alertType = true,
                 use_delay = false,
-                use_status = false,
-                use_aggro = true,
                 ownOnly = true,
                 use_eventtype = true,
+                use_status = false,
+                use_aggro = true,
+                use_alertType = true,
+                use_threatpct = false,
                 use_messageType = true,
                 delay = 2,
             },
@@ -87,9 +87,6 @@ ns.auras["combat_start"] = {
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
         class = {
             multi = {
                 DRUID = true,
@@ -97,6 +94,9 @@ ns.auras["combat_start"] = {
             single = "DRUID",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
     },

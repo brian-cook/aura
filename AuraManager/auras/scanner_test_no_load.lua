@@ -8,7 +8,7 @@ ns.auras["scanner_test_no_load"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 196,
+    xOffset = 200,
     yOffset = 76,
     width = 3,
     height = 3,
@@ -42,14 +42,12 @@ ns.auras["scanner_test_no_load"] = {
                 custom_hide = "timed",
                 use_absorbMode = true,
                 type = "custom",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
+                unevent = "auto",
+                custom_type = "stateupdate",
                 unit = "player",
                 event = "Health",
                 customStacks = "",
-                use_unit = true,
-                events = "PLAYER_TARGET_CHANGED, UNIT_HEALTH, PLAYER_REGEN_DISABLED, PLAYER_REGEN_ENABLED PLAYER_TARGET_CHANGED, UNIT_HEALTH, UNIT_HEALTH_FREQUENT",
                 custom = [[function(allstates, event, ...)
     -- Debug setup
     aura_env.debug = true
@@ -570,9 +568,11 @@ ns.auras["scanner_test_no_load"] = {
     return true
 end]],
                 spellIds = {},
+                events = "PLAYER_TARGET_CHANGED, UNIT_HEALTH, PLAYER_REGEN_DISABLED, PLAYER_REGEN_ENABLED PLAYER_TARGET_CHANGED, UNIT_HEALTH, UNIT_HEALTH_FREQUENT",
+                use_unit = true,
                 check = "update",
-                custom_type = "stateupdate",
-                unevent = "auto",
+                debuffType = "HELPFUL",
+                names = {},
                 customVariables = "",
             },
             untrigger = {
@@ -586,9 +586,7 @@ end]],
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
         class = {
             multi = {
                 WARRIOR = true,
@@ -598,7 +596,9 @@ end]],
         spec = {
             multi = {},
         },
-        zoneIds = "",
+        size = {
+            multi = {},
+        },
         group_leader = {
             multi = {
                 LEADER = true,

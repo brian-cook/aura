@@ -8,7 +8,7 @@ ns.auras["pet_attacking_diamond"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 184,
+    xOffset = 188,
     yOffset = 88,
     width = 3,
     height = 3,
@@ -42,13 +42,11 @@ ns.auras["pet_attacking_diamond"] = {
                 subeventPrefix = "SPELL",
                 custom_hide = "timed",
                 type = "custom",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
+                unevent = "auto",
+                custom_type = "stateupdate",
                 unit = "player",
                 event = "Health",
-                use_unit = true,
-                events = "UNIT_PET, PET_ATTACK_START PET_ATTACK_STOP RAID_TARGET_UPDATE",
                 custom = [[function(allstates)
     -- Initialize state if needed
     aura_env.last = aura_env.last or 0
@@ -78,9 +76,11 @@ ns.auras["pet_attacking_diamond"] = {
     return false
 end]],
                 spellIds = {},
+                events = "UNIT_PET, PET_ATTACK_START PET_ATTACK_STOP RAID_TARGET_UPDATE",
+                use_unit = true,
                 check = "update",
-                custom_type = "stateupdate",
-                unevent = "auto",
+                debuffType = "HELPFUL",
+                names = {},
                 customVariables = "{}",
             },
             untrigger = {
@@ -96,9 +96,7 @@ end]],
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
         class = {
             multi = {
                 WARLOCK = true,
@@ -108,14 +106,16 @@ end]],
         spec = {
             multi = {},
         },
-        zoneIds = "",
-        level_operator = {
-            "~=",
+        size = {
+            multi = {},
         },
+        use_level = false,
         level = {
             "120",
         },
-        use_level = false,
+        level_operator = {
+            "~=",
+        },
         use_spellknown = false,
     },
     animation = {

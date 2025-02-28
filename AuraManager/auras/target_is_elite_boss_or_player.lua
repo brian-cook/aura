@@ -8,7 +8,7 @@ ns.auras["target_is_elite_boss_or_player"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 128,
+    xOffset = 148,
     yOffset = 68,
     width = 3,
     height = 3,
@@ -41,13 +41,13 @@ ns.auras["target_is_elite_boss_or_player"] = {
                 subeventPrefix = "SPELL",
                 use_absorbMode = true,
                 type = "unit",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
                 unit = "target",
                 event = "Unit Characteristics",
-                use_unit = true,
                 spellIds = {},
+                use_unit = true,
+                debuffType = "HELPFUL",
+                names = {},
                 use_unitisunit = false,
                 use_character = false,
                 unitisunit = "Quinik",
@@ -73,8 +73,8 @@ ns.auras["target_is_elite_boss_or_player"] = {
                     single = "elite",
                 },
                 use_classification = false,
-                use_specific_unitisunit = true,
                 use_namerealm = false,
+                use_specific_unitisunit = true,
                 use_npcId = false,
             },
             untrigger = {},
@@ -85,9 +85,6 @@ ns.auras["target_is_elite_boss_or_player"] = {
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
         class = {
             multi = {
                 ROGUE = true,
@@ -95,6 +92,9 @@ ns.auras["target_is_elite_boss_or_player"] = {
             single = "ROGUE",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
     },

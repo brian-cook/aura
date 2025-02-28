@@ -8,7 +8,7 @@ ns.auras["ghost_wolf_buff"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 200,
+    xOffset = 204,
     yOffset = 96,
     width = 3,
     height = 3,
@@ -39,19 +39,19 @@ ns.auras["ghost_wolf_buff"] = {
             trigger = {
                 subeventPrefix = "SPELL",
                 type = "aura2",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "BOTH",
                 unit = "player",
                 event = "Health",
                 spellIds = {},
+                debuffType = "BOTH",
+                names = {},
                 auranames = {
                     "2645",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 useName = true,
+                useRem = false,
                 ownOnly = true,
             },
             untrigger = {},
@@ -60,9 +60,6 @@ ns.auras["ghost_wolf_buff"] = {
     conditions = {},
     load = {
         talent = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
         class = {
@@ -74,6 +71,9 @@ ns.auras["ghost_wolf_buff"] = {
             single = "HUNTER",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
     },

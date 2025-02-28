@@ -8,7 +8,7 @@ ns.auras["party_4_health_under_70"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 152,
+    xOffset = 156,
     yOffset = 88,
     width = 3,
     height = 3,
@@ -42,12 +42,11 @@ ns.auras["party_4_health_under_70"] = {
                 subeventPrefix = "SPELL",
                 custom_hide = "timed",
                 type = "custom",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
+                unevent = "auto",
+                custom_type = "stateupdate",
                 unit = "player",
                 event = "Health",
-                use_unit = true,
                 custom = [[function(allstates)
     if not aura_env.last or GetTime() - aura_env.last > 0.5 then
         aura_env.last = GetTime()
@@ -75,9 +74,10 @@ ns.auras["party_4_health_under_70"] = {
     end
 end]],
                 spellIds = {},
+                use_unit = true,
                 check = "update",
-                custom_type = "stateupdate",
-                unevent = "auto",
+                debuffType = "HELPFUL",
+                names = {},
                 customVariables = "{}",
             },
             untrigger = {
@@ -93,9 +93,7 @@ end]],
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
         class = {
             multi = {
                 WARLOCK = true,
@@ -105,14 +103,16 @@ end]],
         spec = {
             multi = {},
         },
-        zoneIds = "",
-        level_operator = {
-            "~=",
+        size = {
+            multi = {},
         },
+        use_level = false,
         level = {
             "120",
         },
-        use_level = false,
+        level_operator = {
+            "~=",
+        },
         use_spellknown = false,
     },
     animation = {

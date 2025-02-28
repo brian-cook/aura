@@ -8,7 +8,7 @@ ns.auras["player_not_behind_target"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 104,
+    xOffset = 108,
     yOffset = 80,
     width = 3,
     height = 3,
@@ -41,13 +41,10 @@ ns.auras["player_not_behind_target"] = {
                 subeventPrefix = "SPELL",
                 custom_hide = "timed",
                 type = "custom",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
+                custom_type = "event",
                 unit = "target",
                 event = "Crowd Controlled",
-                use_unit = true,
-                events = "UI_ERROR_MESSAGE",
                 custom = [[function(event, arg1, arg2)
     if event == "UI_ERROR_MESSAGE" and string.find(arg2, "be behind your") then
         return true
@@ -55,16 +52,19 @@ ns.auras["player_not_behind_target"] = {
     return false
 end]],
                 spellIds = {},
-                custom_type = "event",
+                events = "UI_ERROR_MESSAGE",
+                use_unit = true,
+                debuffType = "HELPFUL",
+                names = {},
                 use_inverse = false,
                 auranames = {
                     "Quick Flame Ward",
                 },
                 unitExists = false,
-                useRem = false,
                 matchesShowOn = "showOnActive",
                 use_debuffClass = false,
                 useName = true,
+                useRem = false,
                 debuffClass = {
                     magic = true,
                 },
@@ -72,10 +72,10 @@ end]],
                 use_interruptSchool = true,
                 useExactSpellId = false,
                 controlType = "ROOT",
-                interruptSchool = 16,
                 auraspellids = {
                     "116",
                 },
+                interruptSchool = 16,
             },
             untrigger = {},
         },
@@ -83,9 +83,6 @@ end]],
     conditions = {},
     load = {
         talent = {
-            multi = {},
-        },
-        size = {
             multi = {},
         },
         class = {
@@ -96,6 +93,9 @@ end]],
             single = "MAGE",
         },
         spec = {
+            multi = {},
+        },
+        size = {
             multi = {},
         },
     },

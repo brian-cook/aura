@@ -8,7 +8,7 @@ ns.auras["player_shooting_or_wanding"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 200,
+    xOffset = 204,
     yOffset = 84,
     width = 3,
     height = 3,
@@ -42,13 +42,11 @@ ns.auras["player_shooting_or_wanding"] = {
                 subeventPrefix = "SPELL",
                 custom_hide = "timed",
                 type = "custom",
-                names = {},
                 subeventSuffix = "_CAST_START",
-                debuffType = "HELPFUL",
+                unevent = "auto",
+                custom_type = "stateupdate",
                 unit = "player",
                 event = "Health",
-                use_unit = true,
-                events = "PLAYER_TARGET_CHANGED START_AUTOREPEAT_SPELL STOP_AUTOREPEAT_SPELL",
                 custom = [[function(allstates)
     -- Initialize state if needed
     aura_env.last = aura_env.last or 0
@@ -76,9 +74,11 @@ ns.auras["player_shooting_or_wanding"] = {
     return false
 end]],
                 spellIds = {},
+                events = "PLAYER_TARGET_CHANGED START_AUTOREPEAT_SPELL STOP_AUTOREPEAT_SPELL",
+                use_unit = true,
                 check = "update",
-                custom_type = "stateupdate",
-                unevent = "auto",
+                debuffType = "HELPFUL",
+                names = {},
                 customVariables = "{}",
             },
             untrigger = {
@@ -94,9 +94,7 @@ end]],
         talent = {
             multi = {},
         },
-        size = {
-            multi = {},
-        },
+        zoneIds = "",
         class = {
             multi = {
                 WARLOCK = true,
@@ -106,14 +104,16 @@ end]],
         spec = {
             multi = {},
         },
-        zoneIds = "",
-        level_operator = {
-            "~=",
+        size = {
+            multi = {},
         },
+        use_level = false,
         level = {
             "120",
         },
-        use_level = false,
+        level_operator = {
+            "~=",
+        },
         use_spellknown = false,
     },
     animation = {
