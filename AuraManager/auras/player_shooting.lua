@@ -106,11 +106,11 @@ end]],
             multi = {},
         },
         use_level = false,
-        level = {
-            "120",
-        },
         level_operator = {
             "~=",
+        },
+        level = {
+            "120",
         },
         use_spellknown = false,
     },

@@ -8,7 +8,7 @@ ns.auras["target_is_player"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 108,
+    xOffset = 124,
     yOffset = 68,
     width = 3,
     height = 3,
@@ -82,11 +82,11 @@ ns.auras["target_is_player"] = {
             multi = {},
         },
         use_level = false,
-        level = {
-            "120",
-        },
         level_operator = {
             "~=",
+        },
+        level = {
+            "120",
         },
     },
     animation = {

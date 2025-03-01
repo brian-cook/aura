@@ -59,8 +59,8 @@ ns.auras["pet_range_20"] = {
                 },
                 unitExists = false,
                 matchesShowOn = "showOnActive",
-                use_itemName = true,
                 useName = true,
+                use_itemName = true,
                 useRem = false,
                 use_threatvalue = false,
                 threatpct_operator = {

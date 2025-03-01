@@ -71,12 +71,12 @@
         {
             "name": "Interrupt Target Diamond: /targetenemy",
             "key": "q",
-            "conditions": ["icon_diamond_exists", "earth_shock", "can_interrupt_diamond", "!target_diamond", "power_25"]
+            "conditions": ["icon_diamond_exists", "earth_shock", "can_interrupt_diamond", "!target_diamond", "range_20_diamond", "power_25"]
         },
         {
             "name": "Interrupt Diamond",
             "key": "f",
-            "conditions": ["!target_is_ooc", "earth_shock", "target_diamond", "can_interrupt_diamond", "power_25"]
+            "conditions": ["earth_shock", "target_diamond", "target_interruptible", "power_25", "range_20"]
         },
         {
             "name": "Target Skull: /targetenemy", 
@@ -89,7 +89,12 @@
             "group": "START GROUP: REACTIONARIES: HIGH PRIORITY ",
             "name": "Interrupt Target",
             "key": "f",
-            "conditions": ["earth_shock", "target_interruptible", "range_20_1+", "power_30"]
+            "conditions": ["earth_shock", "target_interruptible", "range_20", "power_25"]
+        },
+        {
+            "name": "Purge Target",
+            "key": "9",
+            "conditions": ["target_has_magic_debuff", "range_30", "power_40"]
         },
 
 
@@ -116,36 +121,36 @@
             "conditions": ["!strength_of_earth_totem_exists", "!stoneskin_totem_dropped", "!stoneclaw_totem_dropped", "!earthbind_totem_exists", "power_40", "range_8_1+", "combat", "!player_moving", "!enemy_health_under_35"]
         },
         {
+            "name": "Fire Nova Totem",
+            "key": "p",
+            "conditions": ["!fire_nova_totem", "power_40", "range_8_3+", "combat", "!player_moving"]
+        },
+        {
             "name": "Searing Totem", 
             "key": "g",
-            "conditions": ["!searing_totem_dropped", "power_40", "combat", "!player_moving", "!enemy_health_under_35"]
+            "conditions": ["!fire_nova_totem", "!searing_totem_dropped", "power_40", "combat", "!player_moving", "!enemy_health_under_35"]
         },
  
 
         {
-            "name": "Lightning Bolt",
+            "name": "Lightning Bolt Rank 1 Pull",
             "key": "7",
             "conditions": ["!player_casting", "!player_moving", "power_40", "range_30", "!combat"]
         },
         {
             "name": "Flame Shock",
             "key": "8",
-            "conditions": ["inactive", "flame_shock", "power_80", "range_20_1+", "target_health_under_75"]
+            "conditions": ["inactive", "flame_shock", "power_60", "range_20", "!target_health_under_75"]
         },
         {
             "name": "Earth Shock",
             "key": "6",
-            "conditions": ["inactive", "earth_shock", "power_80", "range_20_1+", "target_health_under_75"]
+            "conditions": ["inactive", "earth_shock", "power_60", "range_20", "!target_health_under_75"]
         },
         {
             "name": "Lightning Bolt",
             "key": "5",
-            "conditions": ["!player_casting", "!player_moving", "power_40", "range_30", "health_under_50"]
-        },
-        {
-            "name": "Lightning Bolt",
-            "key": "5",
-            "conditions": ["!player_casting", "!player_moving", "power_80", "!range_8", "range_30"]
+            "conditions": ["!player_casting", "!player_moving", "power_60", "!range_8", "range_30", "!target_health_under_75"]
         },
         {
             "name": "cast auto attack",

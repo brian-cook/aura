@@ -8,7 +8,7 @@ ns.auras["target_is_ooc"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 156,
+    xOffset = 176,
     yOffset = 68,
     width = 3,
     height = 3,
@@ -58,8 +58,8 @@ ns.auras["target_is_ooc"] = {
                 use_class = false,
                 character = "player",
                 use_raidMarkIndex = false,
-                unitisunit = "player",
                 raidMarkIndex = 8,
+                unitisunit = "player",
                 use_inCombat = false,
                 use_attackable = true,
             },
@@ -86,11 +86,11 @@ ns.auras["target_is_ooc"] = {
             multi = {},
         },
         use_level = false,
-        level = {
-            "120",
-        },
         level_operator = {
             "~=",
+        },
+        level = {
+            "120",
         },
     },
     animation = {

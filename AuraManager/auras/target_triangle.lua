@@ -8,7 +8,7 @@ ns.auras["target_triangle"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 132,
+    xOffset = 148,
     yOffset = 68,
     width = 3,
     height = 3,
@@ -58,8 +58,8 @@ ns.auras["target_triangle"] = {
                 use_class = false,
                 character = "player",
                 use_raidMarkIndex = true,
-                unitisunit = "player",
                 raidMarkIndex = 4,
+                unitisunit = "player",
             },
             untrigger = {},
         },
@@ -84,11 +84,11 @@ ns.auras["target_triangle"] = {
             multi = {},
         },
         use_level = false,
-        level = {
-            "120",
-        },
         level_operator = {
             "~=",
+        },
+        level = {
+            "120",
         },
     },
     animation = {

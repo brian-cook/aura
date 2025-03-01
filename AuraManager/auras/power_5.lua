@@ -51,11 +51,11 @@ ns.auras["power_5"] = {
                 use_percentpower = true,
                 use_showCost = false,
                 use_power = false,
-                percentpower = {
-                    "5",
-                },
                 percentpower_operator = {
                     ">=",
+                },
+                percentpower = {
+                    "5",
                 },
             },
             untrigger = {},

@@ -8,7 +8,7 @@ ns.auras["target_moving"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 116,
+    xOffset = 132,
     yOffset = 68,
     width = 3,
     height = 3,
@@ -96,11 +96,11 @@ end]],
             multi = {},
         },
         use_level = false,
-        level = {
-            "120",
-        },
         level_operator = {
             "~=",
+        },
+        level = {
+            "120",
         },
     },
     animation = {

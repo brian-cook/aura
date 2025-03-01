@@ -8,7 +8,7 @@ ns.auras["theiranus_dead"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 160,
+    xOffset = 180,
     yOffset = 68,
     width = 3,
     height = 3,
@@ -102,11 +102,11 @@ end]],
             multi = {},
         },
         use_level = false,
-        level = {
-            "120",
-        },
         level_operator = {
             "~=",
+        },
+        level = {
+            "120",
         },
         use_spellknown = false,
     },

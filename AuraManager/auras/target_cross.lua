@@ -8,7 +8,7 @@ ns.auras["target_cross"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 192,
+    xOffset = 204,
     yOffset = 72,
     width = 3,
     height = 3,
@@ -58,8 +58,8 @@ ns.auras["target_cross"] = {
                 use_class = false,
                 character = "player",
                 use_raidMarkIndex = true,
-                unitisunit = "player",
                 raidMarkIndex = 7,
+                unitisunit = "player",
             },
             untrigger = {},
         },
@@ -84,11 +84,11 @@ ns.auras["target_cross"] = {
             multi = {},
         },
         use_level = false,
-        level = {
-            "120",
-        },
         level_operator = {
             "~=",
+        },
+        level = {
+            "120",
         },
     },
     animation = {

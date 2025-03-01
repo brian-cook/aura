@@ -184,7 +184,9 @@ auras/pvp_trinket.lua
 auras/rake_debuff.lua
 auras/range_10.lua
 auras/range_15.lua
+auras/range_20.lua
 auras/range_20_1+.lua
+auras/range_20_diamond.lua
 auras/range_25.lua
 auras/range_30.lua
 auras/range_35.lua
@@ -213,6 +215,7 @@ auras/sap_debuff.lua
 auras/scanner_all_in_one_v1.lua
 auras/scanner_all_in_one_v2_triangle.lua
 auras/scanner_cross.lua
+auras/scanner_diamond.lua
 auras/scanner_skull.lua
 auras/scanner_test_no_load.lua
 auras/scanner_triangle.lua
@@ -244,6 +247,8 @@ auras/target_casting.lua
 auras/target_circle.lua
 auras/target_cross.lua
 auras/target_diamond.lua
+auras/target_dies_30.lua
+auras/target_has_magic_buff.lua
 auras/target_health_under_20.lua
 auras/target_health_under_35.lua
 auras/target_health_under_50.lua

@@ -97,17 +97,23 @@ class ScreenMonitor:
         """Release any currently held key"""
         if self.currently_held_key:
             if isinstance(self.currently_held_key, tuple):
-                # Release modifier key combinations
-                modifier_key, actual_key = self.currently_held_key
-                self.keyboard.release(actual_key)
-                self.keyboard.release(modifier_key)
+                # Handle multiple held keys
+                for key in self.currently_held_key:
+                    if isinstance(key, tuple):
+                        # Handle modifier key combinations
+                        modifier_key, actual_key = key
+                        self.keyboard.release(actual_key)
+                        self.keyboard.release(modifier_key)
+                    else:
+                        # Release single key
+                        self.keyboard.release(key)
             else:
                 # Release single key
                 self.keyboard.release(self.currently_held_key)
             self.currently_held_key = None
             self.current_hold_action = None
             if self.debug:
-                print(f"Released held key")
+                print(f"Released held key(s)")
     
     def _monitor_loop(self):
         """Main monitoring loop that runs in a separate thread"""
@@ -130,25 +136,29 @@ class ScreenMonitor:
                         if is_active
                     ]
                     
-                    # Only proceed with action evaluation if we have game conditions
-                    if game_conditions:
-                        # Combine all conditions
-                        active_conditions = game_conditions + movement_conditions
-                        
-                        # Get next action
-                        action = self.get_next_action(active_conditions)
-                        
-                        # If we have a held key but no action or a different action,
-                        # release the held key
-                        if self.currently_held_key:
-                            if not action or action != self.current_hold_action:
-                                self._release_held_key()
-                        
-                        # Execute the action if we have one
-                        if action:
-                            self.execute_action(action, active_conditions)
-                    elif self.debug and movement_conditions:
-                        print("DEBUG - Skipping action evaluation - only movement conditions present:", movement_conditions)
+                    # Combine all conditions
+                    active_conditions = game_conditions + movement_conditions
+                    
+                    # Get next action
+                    action = self.get_next_action(active_conditions)
+                    
+                    # Special handling for STOP actions when we only have movement conditions
+                    if not game_conditions and movement_conditions and self.current_hold_action and self.current_hold_action.get('key') == 'STOP':
+                        # Keep the STOP action active if its non-movement conditions were previously met
+                        action = self.current_hold_action
+                    
+                    # If we have a held key but no action or a different action,
+                    # release the held key
+                    if self.currently_held_key:
+                        if not action or action != self.current_hold_action:
+                            self._release_held_key()
+                    
+                    # Execute the action if we have one and we either have game conditions
+                    # or it's a STOP action with movement conditions
+                    if action and (game_conditions or (action.get('key') == 'STOP' and movement_conditions)):
+                        self.execute_action(action, active_conditions)
+                    elif self.debug and movement_conditions and not game_conditions:
+                        print("DEBUG - Skipping non-STOP action evaluation - only movement conditions present:", movement_conditions)
                     
                     self.last_check = current_time
                 elif not self.is_monitoring_active() and self.currently_held_key:
@@ -280,12 +290,40 @@ class ScreenMonitor:
         # Convert stick position to -1 to 1 range
         value = event.state / 32768.0
         
+        # Store the absolute value for comparison
+        abs_value = abs(value)
+        
         if axis == "horizontal":
-            self.movement_states["is_moving_left"] = value < -deadzone
-            self.movement_states["is_moving_right"] = value > deadzone
+            # If vertical movement is strong, require more horizontal movement
+            vertical_strong = any(v > 0.7 for v in [
+                abs(self.movement_states.get("vertical_value", 0))
+            ])
+            
+            # Require stronger horizontal input if there's strong vertical movement
+            effective_deadzone = deadzone * 2.5 if vertical_strong else deadzone
+            
+            # Update horizontal movement states
+            self.movement_states["is_moving_left"] = value < -effective_deadzone
+            self.movement_states["is_moving_right"] = value > effective_deadzone
+            
+            # Store the raw horizontal value for comparison
+            self.movement_states["horizontal_value"] = value
+            
         else:  # vertical
-            self.movement_states["is_moving_forward"] = value < -deadzone
-            self.movement_states["is_moving_backward"] = value > deadzone
+            # If horizontal movement is strong, require more vertical movement
+            horizontal_strong = any(v > 0.7 for v in [
+                abs(self.movement_states.get("horizontal_value", 0))
+            ])
+            
+            # Require stronger vertical input if there's strong horizontal movement
+            effective_deadzone = deadzone * 2.5 if horizontal_strong else deadzone
+            
+            # Update vertical movement states
+            self.movement_states["is_moving_forward"] = value > effective_deadzone
+            self.movement_states["is_moving_backward"] = value < -effective_deadzone
+            
+            # Store the raw vertical value for comparison
+            self.movement_states["vertical_value"] = value
     
     def is_monitoring_active(self):
         """Check if monitoring should be active"""
@@ -370,6 +408,49 @@ class ScreenMonitor:
         print(f"Executing: {action_name} [key: {key}]")
         print(f"Conditions: {', '.join(condition_status)}")
         
+        # Special handling for STOP key type
+        if key == "STOP":
+            # Define the counter-keys for each movement direction
+            counter_keys = {
+                "is_moving_left": "right",
+                "is_moving_right": "left",
+                "is_moving_forward": "down",
+                "is_moving_backward": "up"
+            }
+            
+            # Get currently active movement directions
+            active_movements = [
+                direction for direction, is_active in self.movement_states.items()
+                if is_active and direction in counter_keys
+            ]
+            
+            # If no movement, release any held keys
+            if not active_movements:
+                self._release_held_key()
+                return
+                
+            # Convert movement directions to counter keys that need to be held
+            counter_keys_to_hold = [counter_keys[movement] for movement in active_movements]
+            
+            # If the set of keys to hold is different from what we're currently holding,
+            # release current keys and press new ones
+            current_held_keys = set(self.currently_held_key) if isinstance(self.currently_held_key, tuple) else {self.currently_held_key} if self.currently_held_key else set()
+            keys_to_hold = set(self._parse_key(key) for key in counter_keys_to_hold)
+            
+            if current_held_keys != keys_to_hold:
+                # Release currently held keys
+                self._release_held_key()
+                
+                # Press all needed counter keys
+                if counter_keys_to_hold:
+                    for key in counter_keys_to_hold:
+                        self.keyboard.press(self._parse_key(key))
+                    # Store as tuple if multiple keys, single key otherwise
+                    self.currently_held_key = tuple(self._parse_key(key) for key in counter_keys_to_hold) if len(counter_keys_to_hold) > 1 else self._parse_key(counter_keys_to_hold[0])
+                    self.current_hold_action = action
+            
+            return
+            
         # If this is a different action than the current hold action,
         # release any currently held key
         if action != self.current_hold_action:

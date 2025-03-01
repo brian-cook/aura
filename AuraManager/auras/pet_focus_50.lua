@@ -57,14 +57,14 @@ ns.auras["pet_focus_50"] = {
                 },
                 unitExists = false,
                 matchesShowOn = "showOnActive",
-                use_itemName = true,
                 useName = true,
+                use_itemName = true,
                 useRem = false,
-                percentpower = {
-                    "50",
-                },
                 percentpower_operator = {
                     ">=",
+                },
+                percentpower = {
+                    "50",
                 },
                 use_threatvalue = false,
                 threatpct_operator = {

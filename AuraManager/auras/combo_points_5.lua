@@ -51,11 +51,11 @@ ns.auras["combo_points_5"] = {
                 use_percentpower = false,
                 use_showCost = false,
                 use_power = true,
-                percentpower = {
-                    "5",
-                },
                 percentpower_operator = {
                     ">=",
+                },
+                percentpower = {
+                    "5",
                 },
                 power_operator = {
                     "==",

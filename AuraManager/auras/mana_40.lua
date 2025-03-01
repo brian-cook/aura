@@ -50,11 +50,11 @@ ns.auras["mana_40"] = {
                 use_powertype = true,
                 use_percentpower = true,
                 use_showCost = false,
-                percentpower = {
-                    "40",
-                },
                 percentpower_operator = {
                     ">=",
+                },
+                percentpower = {
+                    "40",
                 },
             },
             untrigger = {},

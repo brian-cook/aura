@@ -56,8 +56,8 @@ ns.auras["pet_combat"] = {
                 },
                 unitExists = false,
                 matchesShowOn = "showOnActive",
-                use_itemName = true,
                 useName = true,
+                use_itemName = true,
                 useRem = false,
                 use_threatvalue = false,
                 threatpct_operator = {

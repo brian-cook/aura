@@ -8,7 +8,7 @@ ns.auras["target_star"] = {
     regionType = "aurabar",
     anchorPoint = "CENTER",
     selfPoint = "CENTER",
-    xOffset = 128,
+    xOffset = 144,
     yOffset = 68,
     width = 3,
     height = 3,
@@ -58,8 +58,8 @@ ns.auras["target_star"] = {
                 use_class = false,
                 character = "player",
                 use_raidMarkIndex = true,
-                unitisunit = "player",
                 raidMarkIndex = 1,
+                unitisunit = "player",
             },
             untrigger = {},
         },
@@ -84,11 +84,11 @@ ns.auras["target_star"] = {
             multi = {},
         },
         use_level = false,
-        level = {
-            "120",
-        },
         level_operator = {
             "~=",
+        },
+        level = {
+            "120",
         },
     },
     animation = {
